@@ -2,35 +2,76 @@
 <html lang="hi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#FF6B00">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Singh Ji AI</title>
 <link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:Arial,sans-serif;background:#1a1a2e;color:white;min-height:100vh}
-.header{background:#FF6B00;padding:15px;text-align:center;font-size:22px;font-weight:bold}
-.tabs{display:flex;overflow-x:auto;background:#16213e;padding:5px}
-.tab{padding:8px 16px;border:none;background:transparent;color:#aaa;cursor:pointer;white-space:nowrap;font-size:14px;border-radius:20px}
-.tab.active{background:#FF6B00;color:white}
-.content{padding:15px;display:none}
+:root{--primary:#FF6B00;--bg:#1a1a2e;--card:#16213e;--text:#fff;--accent:#0f3460}
+.light{--bg:#f0f0f0;--card:#fff;--text:#333;--accent:#e0e0e0}
+*{margin:0;padding:0;box-sizing:border-box;transition:background 0.3s,color 0.3s}
+body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+.header{background:var(--primary);padding:15px;text-align:center;font-size:22px;font-weight:bold;position:sticky;top:0;z-index:100;box-shadow:0 2px 10px rgba(0,0,0,0.3);display:flex;align-items:center;justify-content:center;gap:10px}
+.theme-btn{position:absolute;right:15px;background:rgba(255,255,255,0.2);border:none;color:white;padding:8px 12px;border-radius:20px;cursor:pointer;font-size:12px}
+.tabs{display:flex;overflow-x:auto;background:var(--card);padding:8px;gap:5px;position:sticky;top:58px;z-index:99;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{padding:10px 18px;border:none;background:transparent;color:#888;cursor:pointer;white-space:nowrap;font-size:13px;border-radius:25px;font-weight:500;transition:all 0.3s}
+.tab.active{background:var(--primary);color:white;transform:scale(1.05);box-shadow:0 2px 8px rgba(255,107,0,0.4)}
+.content{padding:15px;display:none;animation:fadeIn 0.4s}
 .content.active{display:block}
-.chat-messages{height:55vh;overflow-y:auto;padding:10px;background:#16213e;border-radius:10px;margin-bottom:10px}
-.msg{margin:8px 0}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.chat-messages{height:50vh;overflow-y:auto;padding:15px;background:var(--card);border-radius:15px;margin-bottom:12px;box-shadow:inset 0 2px 10px rgba(0,0,0,0.1)}
+.msg{margin:10px 0;animation:slideIn 0.3s}
+@keyframes slideIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
 .msg.user{text-align:right}
-.msg.user span{background:#FF6B00;padding:8px 12px;border-radius:12px 12px 0 12px;display:inline-block;max-width:80%}
-.msg.bot span{background:#0f3460;padding:8px 12px;border-radius:12px 12px 12px 0;display:inline-block;max-width:80%}
-.input-row{display:flex;gap:8px}
-input{flex:1;padding:10px;border-radius:20px;border:none;background:#16213e;color:white;font-size:14px}
-button{background:#FF6B00;color:white;border:none;padding:10px 16px;border-radius:20px;cursor:pointer}
-.feature-btn{width:100%;margin:5px 0;padding:12px;font-size:15px;border-radius:10px}
-.result{background:#16213e;padding:12px;border-radius:10px;margin-top:10px;min-height:80px;white-space:pre-wrap;line-height:1.6}
-select{width:100%;padding:10px;background:#16213e;color:white;border:1px solid #FF6B00;border-radius:10px;margin-bottom:10px}
-textarea{width:100%;padding:10px;background:#16213e;color:white;border:1px solid #FF6B00;border-radius:10px;min-height:80px;margin-bottom:10px}
+.msg.user span{background:var(--primary);padding:10px 15px;border-radius:18px 18px 0 18px;display:inline-block;max-width:85%;box-shadow:0 2px 8px rgba(255,107,0,0.3)}
+.msg.bot span{background:var(--accent);padding:10px 15px;border-radius:18px 18px 18px 0;display:inline-block;max-width:85%;box-shadow:0 2px 8px rgba(0,0,0,0.1)}
+.input-row{display:flex;gap:10px;align-items:center}
+input,textarea{flex:1;padding:12px 18px;border-radius:25px;border:2px solid transparent;background:var(--card);color:var(--text);font-size:14px;outline:none;transition:border 0.3s}
+input:focus,textarea:focus{border-color:var(--primary)}
+button{background:var(--primary);color:white;border:none;padding:12px 20px;border-radius:25px;cursor:pointer;font-weight:600;transition:all 0.3s;box-shadow:0 2px 10px rgba(255,107,0,0.3)}
+button:hover{transform:translateY(-2px);box-shadow:0 4px 15px rgba(255,107,0,0.5)}
+button:active{transform:scale(0.95)}
+.feature-btn{width:100%;margin:8px 0;padding:14px;font-size:15px;border-radius:12px;display:flex;align-items:center;gap:10px;justify-content:center}
+.result{background:var(--card);padding:15px;border-radius:15px;margin-top:12px;min-height:100px;white-space:pre-wrap;line-height:1.7;box-shadow:0 2px 10px rgba(0,0,0,0.1);border-left:4px solid var(--primary)}
+select{width:100%;padding:12px;background:var(--card);color:var(--text);border:2px solid var(--primary);border-radius:12px;margin-bottom:12px;font-size:14px;outline:none}
+textarea{width:100%;padding:12px;background:var(--card);color:var(--text);border:2px solid var(--primary);border-radius:12px;min-height:100px;margin-bottom:12px;font-size:14px;resize:vertical}
+.voice-btn{background:linear-gradient(135deg,#FF6B00,#FF8C00);border-radius:50%;width:50px;height:50px;display:flex;align-items:center;justify-content:center;font-size:20px;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(255,107,0,0.7)}50%{box-shadow:0 0 0 15px rgba(255,107,0,0)}}
+.install-btn{position:fixed;bottom:20px;right:20px;background:var(--primary);padding:15px 25px;border-radius:30px;box-shadow:0 4px 20px rgba(0,0,0,0.3);z-index:1000;display:none;animation:bounce 2s infinite}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.loading{display:flex;align-items:center;gap:8px;color:#888;font-size:14px}
+.dot{animation:blink 1.4s infinite both}
+.dot:nth-child(2){animation-delay:0.2s}
+.dot:nth-child(3){animation-delay:0.4s}
+@keyframes blink{0%,80%,100%{opacity:0}40%{opacity:1}}
+.camera-preview{width:100%;max-width:400px;height:300px;background:#000;border-radius:15px;margin:10px auto;display:none;object-fit:cover}
+.qr-scanner{width:100%;max-width:300px;height:300px;margin:10px auto;background:#000;border-radius:15px;display:none}
+.status-bar{display:flex;gap:10px;margin-bottom:15px;flex-wrap:wrap}
+.status-pill{background:var(--card);padding:8px 15px;border-radius:20px;font-size:12px;display:flex;align-items:center;gap:5px}
+.status-pill.online{border:1px solid #00c853;color:#00c853}
+.status-pill.offline{border:1px solid #ff1744;color:#ff1744}
+.history-list{max-height:200px;overflow-y:auto;background:var(--card);border-radius:12px;padding:10px;margin-top:10px}
+.history-item{padding:8px 12px;border-bottom:1px solid rgba(255,255,255,0.1);cursor:pointer;font-size:13px;transition:background 0.2s}
+.history-item:hover{background:rgba(255,107,0,0.1)}
+.history-item:last-child{border-bottom:none}
 </style>
 </head>
 <body>
-<div class="header">🤖 Singh Ji AI</div>
+<div class="header">
+  🤖 Singh Ji AI
+  <button class="theme-btn" onclick="toggleTheme()">🌙</button>
+</div>
+
+<div class="status-bar">
+  <div class="status-pill" id="net-status">🌐 Checking...</div>
+  <div class="status-pill" id="loc-status">📍 Location...</div>
+  <div class="status-pill" id="mic-status">🎤 Mic Ready</div>
+</div>
+
 <div class="tabs">
   <button class="tab active" onclick="showTab('chat')">💬 Chat</button>
   <button class="tab" onclick="showTab('weather')">🌤️ Weather</button>
@@ -42,112 +83,241 @@ textarea{width:100%;padding:10px;background:#16213e;color:white;border:1px solid
   <button class="tab" onclick="showTab('task')">✅ Task</button>
   <button class="tab" onclick="showTab('finance')">💰 Finance</button>
   <button class="tab" onclick="showTab('guard')">🛡️ Guard</button>
+  <button class="tab" onclick="showTab('tools')">🛠️ Tools</button>
 </div>
 
 <!-- CHAT -->
 <div id="chat" class="content active">
   <div class="chat-messages" id="chat-messages">
-    <div class="msg bot"><span>नमस्ते! मैं Singh Ji हूँ। कैसे मदद करूं? 🙏</span></div>
+    <div class="msg bot"><span>नमस्ते! मैं Singh Ji हूँ। कैसे मदद करूं? 🙏<br><br>🎤 Voice से बोलके भी पूछ सकते हो!</span></div>
   </div>
   <div class="input-row">
-    <input id="chat-input" placeholder="कुछ पूछो..." onkeypress="if(event.key==='Enter')sendChat()">
+    <input id="chat-input" placeholder="कुछ पूछो या 🎤 दबाओ..." onkeypress="if(event.key==='Enter')sendChat()">
+    <button class="voice-btn" onclick="startVoice()" title="Voice Input">🎤</button>
     <button onclick="sendChat()">➤</button>
   </div>
+  <div class="history-list" id="chat-history"></div>
 </div>
 
 <!-- WEATHER -->
 <div id="weather" class="content">
   <div class="input-row">
-    <input id="city-input" placeholder="शहर का नाम... (Kanpur)" value="Kanpur">
-    <button onclick="getWeather()">देखो</button>
+    <input id="city-input" placeholder="शहर का नाम..." value="Kanpur">
+    <button onclick="getWeather()">🌤️ देखो</button>
+    <button onclick="getAutoWeather()" title="Auto Location">📍</button>
   </div>
-  <div class="result" id="weather-result">यहाँ weather दिखेगा...</div>
+  <div class="result" id="weather-result">Weather देखने के लिए शहर डालो या 📍 दबाओ...</div>
 </div>
 
 <!-- NEWS -->
 <div id="news" class="content">
   <button class="feature-btn" onclick="getNews()">📰 आज की खबरें लाओ</button>
-  <div class="result" id="news-result">यहाँ news दिखेगी...</div>
+  <div class="result" id="news-result">News यहाँ दिखेगी...</div>
 </div>
 
 <!-- CRICKET -->
 <div id="cricket" class="content">
-  <button class="feature-btn" onclick="getCricket()">🏏 Latest Cricket Scores</button>
-  <div class="result" id="cricket-result">यहाँ cricket scores दिखेंगे...</div>
+  <button class="feature-btn" onclick="getCricket()">🏏 Live Cricket Scores</button>
+  <div class="result" id="cricket-result">Cricket scores यहाँ दिखेंगे...</div>
 </div>
 
 <!-- HOROSCOPE -->
 <div id="horoscope" class="content">
   <select id="sign-select">
-    <option>Aries</option><option>Taurus</option><option>Gemini</option>
-    <option>Cancer</option><option>Leo</option><option>Virgo</option>
-    <option>Libra</option><option>Scorpio</option><option>Sagittarius</option>
-    <option>Capricorn</option><option>Aquarius</option><option>Pisces</option>
+    <option value="aries">♈ Aries (मेष)</option>
+    <option value="taurus">♉ Taurus (वृष)</option>
+    <option value="gemini">♊ Gemini (मिथुन)</option>
+    <option value="cancer">♋ Cancer (कर्क)</option>
+    <option value="leo">♌ Leo (सिंह)</option>
+    <option value="virgo">♍ Virgo (कन्या)</option>
+    <option value="libra">♎ Libra (तुला)</option>
+    <option value="scorpio">♏ Scorpio (वृश्चिक)</option>
+    <option value="sagittarius">♐ Sagittarius (धनु)</option>
+    <option value="capricorn">♑ Capricorn (मकर)</option>
+    <option value="aquarius">♒ Aquarius (कुंभ)</option>
+    <option value="pisces">♓ Pisces (मीन)</option>
   </select>
   <button class="feature-btn" onclick="getHoroscope()">⭐ राशिफल देखो</button>
-  <div class="result" id="horoscope-result">यहाँ राशिफल दिखेगा...</div>
+  <div class="result" id="horoscope-result">राशिफल यहाँ दिखेगा...</div>
 </div>
 
 <!-- STOCK -->
 <div id="stock" class="content">
   <div class="input-row">
     <input id="stock-input" placeholder="Stock symbol... (RELIANCE)" value="RELIANCE">
-    <button onclick="getStock()">देखो</button>
+    <button onclick="getStock()">📈 देखो</button>
   </div>
-  <div class="result" id="stock-result">यहाँ stock info दिखेगी...</div>
+  <div class="result" id="stock-result">Stock info यहाँ दिखेगी...</div>
 </div>
 
 <!-- INVOICE -->
 <div id="invoice" class="content">
-  <textarea id="invoice-input" placeholder="Invoice details लिखो... जैसे: 5 kg चावल @ ₹50, 2 kg दाल @ ₹100"></textarea>
+  <textarea id="invoice-input" placeholder="Invoice details लिखो... जैसे:&#10;5 kg चावल @ ₹50&#10;2 kg दाल @ ₹100&#10;3 L तेल @ ₹150"></textarea>
   <button class="feature-btn" onclick="getInvoice()">🧾 Invoice बनाओ</button>
-  <div class="result" id="invoice-result">यहाँ invoice दिखेगा...</div>
+  <div class="result" id="invoice-result">Invoice यहाँ दिखेगा...</div>
 </div>
 
 <!-- TASK -->
 <div id="task" class="content">
-  <textarea id="task-input" placeholder="Task लिखो... जैसे: आज का काम - meeting, report, client call"></textarea>
+  <textarea id="task-input" placeholder="Task लिखो... जैसे:&#10;आज का काम - meeting, report, client call&#10;कल - gym, shopping"></textarea>
   <button class="feature-btn" onclick="getTask()">✅ Tasks Organize करो</button>
-  <div class="result" id="task-result">यहाँ tasks दिखेंगे...</div>
+  <div class="result" id="task-result">Tasks यहाँ दिखेंगे...</div>
+  <div style="margin-top:15px">
+    <h4>📋 Saved Tasks:</h4>
+    <div class="history-list" id="saved-tasks"></div>
+    <button onclick="clearTasks()" style="margin-top:10px;background:#ff1744">🗑️ Clear All</button>
+  </div>
 </div>
 
 <!-- FINANCE -->
 <div id="finance" class="content">
-  <textarea id="finance-input" placeholder="Financial query लिखो... जैसे: ₹50000 invest करना है, कहाँ करूं?"></textarea>
+  <textarea id="finance-input" placeholder="Financial query लिखो... जैसे:&#10;₹50000 invest करना है, कहाँ करूं?&#10;EMI vs SIP क्या better है?"></textarea>
   <button class="feature-btn" onclick="getFinance()">💰 Finance Advice लो</button>
-  <div class="result" id="finance-result">यहाँ advice दिखेगी...</div>
+  <div class="result" id="finance-result">Advice यहाँ दिखेगी...</div>
 </div>
 
 <!-- GUARD -->
 <div id="guard" class="content">
-  <textarea id="guard-input" placeholder="Alert describe करो... जैसे: रात 2 बजे दरवाजे पर आवाज आई"></textarea>
-  <button class="feature-btn" onclick="getGuard()">🛡️ Security Analysis करो</button>
-  <div class="result" id="guard-result">यहाँ analysis दिखेगा...</div>
+  <textarea id="guard-input" placeholder="Alert describe करो... जैसे:&#10;रात 2 बजे दरवाजे पर आवाज आई&#10;Camera में कुछ दिखा"></textarea>
+  <button class="feature-btn" onclick="getGuard()">🛡️ Security Analysis</button>
+  <div class="result" id="guard-result">Analysis यहाँ दिखेगा...</div>
+  <div style="margin-top:15px">
+    <button class="feature-btn" onclick="startCamera()">📷 Camera Open करो</button>
+    <video class="camera-preview" id="camera-preview" autoplay playsinline></video>
+    <button onclick="capturePhoto()" id="capture-btn" style="display:none;margin-top:10px">📸 Photo लो</button>
+    <canvas id="photo-canvas" style="display:none"></canvas>
+    <img id="captured-photo" style="max-width:100%;border-radius:15px;margin-top:10px;display:none">
+  </div>
 </div>
+
+<!-- TOOLS -->
+<div id="tools" class="content">
+  <button class="feature-btn" onclick="speakText()">🔊 Text को बोलो (TTS)</button>
+  <button class="feature-btn" onclick="shareApp()">📤 App Share करो</button>
+  <button class="feature-btn" onclick="copyToClipboard()">📋 Copy Result</button>
+  <button class="feature-btn" onclick="exportData()">💾 Data Export करो</button>
+  <button class="feature-btn" onclick="clearAllHistory()">🗑️ सब History Clear करो</button>
+  <div class="result" id="tools-result">Tools यहाँ काम करेंगे...</div>
+</div>
+
+<button class="install-btn" id="install-btn" onclick="installPWA()">📲 Install App</button>
 
 <script>
 const API = "https://singhji-api.onrender.com";
+let deferredPrompt;
+let mediaRecorder;
+let audioChunks = [];
+let currentTab = 'chat';
 
+// ==================== THEME ====================
+function toggleTheme() {
+  document.body.classList.toggle('light');
+  const btn = document.querySelector('.theme-btn');
+  btn.textContent = document.body.classList.contains('light') ? '☀️' : '🌙';
+  localStorage.setItem('theme', document.body.classList.contains('light') ? 'light' : 'dark');
+}
+if(localStorage.getItem('theme') === 'light') toggleTheme();
+
+// ==================== TABS ====================
 function showTab(name) {
+  currentTab = name;
   document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.getElementById(name).classList.add('active');
   event.target.classList.add('active');
 }
 
+// ==================== NETWORK STATUS ====================
+function updateNetStatus() {
+  const el = document.getElementById('net-status');
+  if(navigator.onLine) {
+    el.className = 'status-pill online';
+    el.innerHTML = '🌐 Online';
+  } else {
+    el.className = 'status-pill offline';
+    el.innerHTML = '❌ Offline';
+  }
+}
+window.addEventListener('online', updateNetStatus);
+window.addEventListener('offline', updateNetStatus);
+updateNetStatus();
+
+// ==================== GEOLOCATION ====================
+function getLocation() {
+  const el = document.getElementById('loc-status');
+  if(!navigator.geolocation) {
+    el.innerHTML = '❌ GPS Not Supported';
+    return;
+  }
+  navigator.geolocation.getCurrentPosition(
+    pos => {
+      el.innerHTML = `📍 ${pos.coords.latitude.toFixed(2)}, ${pos.coords.longitude.toFixed(2)}`;
+      localStorage.setItem('lat', pos.coords.latitude);
+      localStorage.setItem('lon', pos.coords.longitude);
+    },
+    err => { el.innerHTML = '❌ Location Denied'; }
+  );
+}
+getLocation();
+
+// ==================== VOICE INPUT ====================
+function startVoice() {
+  if(!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+    alert('Voice input आपके browser में supported नहीं है!');
+    return;
+  }
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const rec = new SpeechRecognition();
+  rec.lang = 'hi-IN';
+  rec.start();
+  document.getElementById('mic-status').innerHTML = '🎤 Listening...';
+  document.getElementById('mic-status').style.borderColor = '#FF6B00';
+  
+  rec.onresult = e => {
+    const text = e.results[0][0].transcript;
+    document.getElementById('chat-input').value = text;
+    document.getElementById('mic-status').innerHTML = '🎤 Mic Ready';
+    document.getElementById('mic-status').style.borderColor = '';
+    sendChat();
+  };
+  rec.onerror = () => {
+    document.getElementById('mic-status').innerHTML = '❌ Mic Error';
+  };
+}
+
+// ==================== TEXT TO SPEECH ====================
+function speakText(text) {
+  if(!text) {
+    const results = document.querySelectorAll('.result');
+    text = results[results.length-1]?.innerText || 'कोई text नहीं मिला';
+  }
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = 'hi-IN';
+  utter.rate = 0.9;
+  speechSynthesis.speak(utter);
+}
+
+// ==================== CHAT ====================
 async function sendChat() {
   const input = document.getElementById('chat-input');
   const msg = input.value.trim();
-  if (!msg) return;
+  if(!msg) return;
   addMsg(msg, 'user');
   input.value = '';
-  addMsg('टाइप हो रहा है...', 'bot', 'typing');
+  addMsg('<span class="loading">टाइप हो रहा है<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></span>', 'bot', 'typing');
+  
+  saveToHistory('chat', msg);
+  
   try {
     const r = await fetch(API+'/chat', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({message:msg})});
     const d = await r.json();
     document.getElementById('typing')?.remove();
     addMsg(d.reply, 'bot');
-  } catch { document.getElementById('typing')?.remove(); addMsg('Error! Try again.', 'bot'); }
+    speakText(d.reply);
+  } catch {
+    document.getElementById('typing')?.remove();
+    addMsg('❌ Error! Server down हो सकता है। बाद में try करो।', 'bot');
+  }
 }
 
 function addMsg(text, type, id) {
@@ -156,75 +326,269 @@ function addMsg(text, type, id) {
   div.scrollTop = div.scrollHeight;
 }
 
+function saveToHistory(type, data) {
+  let hist = JSON.parse(localStorage.getItem('history') || '[]');
+  hist.push({type, data, time: new Date().toLocaleString('hi-IN')});
+  if(hist.length > 50) hist.shift();
+  localStorage.setItem('history', JSON.stringify(hist));
+  updateHistoryDisplay();
+}
+
+function updateHistoryDisplay() {
+  const hist = JSON.parse(localStorage.getItem('history') || '[]');
+  const div = document.getElementById('chat-history');
+  div.innerHTML = hist.slice(-10).reverse().map(h => 
+    `<div class="history-item" onclick="document.getElementById('chat-input').value='${h.data}'">${h.type}: ${h.data.substring(0,30)}...</div>`
+  ).join('');
+}
+
+// ==================== WEATHER ====================
 async function getWeather() {
   const city = document.getElementById('city-input').value || 'Kanpur';
-  document.getElementById('weather-result').innerText = 'Loading...';
-  const r = await fetch(API+'/weather?city='+city);
-  const d = await r.json();
-  document.getElementById('weather-result').innerText = d.reply;
+  document.getElementById('weather-result').innerHTML = '<span class="loading">Loading<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></span>';
+  try {
+    const r = await fetch(API+'/weather?city='+city);
+    const d = await r.json();
+    document.getElementById('weather-result').innerText = d.reply;
+  } catch {
+    document.getElementById('weather-result').innerText = '❌ Error! Try again.';
+  }
 }
 
+async function getAutoWeather() {
+  const lat = localStorage.getItem('lat');
+  const lon = localStorage.getItem('lon');
+  if(!lat) { getWeather(); return; }
+  document.getElementById('weather-result').innerHTML = '<span class="loading">Location से Loading<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></span>';
+  try {
+    const r = await fetch(API+`/weather?lat=${lat}&lon=${lon}`);
+    const d = await r.json();
+    document.getElementById('weather-result').innerText = d.reply;
+  } catch { getWeather(); }
+}
+
+// ==================== NEWS ====================
 async function getNews() {
-  document.getElementById('news-result').innerText = 'खबरें आ रही हैं...';
-  const r = await fetch(API+'/news');
-  const d = await r.json();
-  document.getElementById('news-result').innerText = d.reply;
+  document.getElementById('news-result').innerHTML = '<span class="loading">खबरें आ रही हैं<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></span>';
+  try {
+    const r = await fetch(API+'/news');
+    const d = await r.json();
+    document.getElementById('news-result').innerText = d.reply;
+  } catch {
+    document.getElementById('news-result').innerText = '❌ Error! Try again.';
+  }
 }
 
+// ==================== CRICKET ====================
 async function getCricket() {
-  document.getElementById('cricket-result').innerText = 'Scores आ रहे हैं...';
-  const r = await fetch(API+'/cricket');
-  const d = await r.json();
-  document.getElementById('cricket-result').innerText = d.reply;
+  document.getElementById('cricket-result').innerHTML = '<span class="loading">Scores आ रहे हैं<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></span>';
+  try {
+    const r = await fetch(API+'/cricket');
+    const d = await r.json();
+    document.getElementById('cricket-result').innerText = d.reply;
+  } catch {
+    document.getElementById('cricket-result').innerText = '❌ Error! Try again.';
+  }
 }
 
+// ==================== HOROSCOPE ====================
 async function getHoroscope() {
   const sign = document.getElementById('sign-select').value;
-  document.getElementById('horoscope-result').innerText = 'राशिफल आ रहा है...';
-  const r = await fetch(API+'/horoscope', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({sign:sign})});
-  const d = await r.json();
-  document.getElementById('horoscope-result').innerText = d.reply;
+  document.getElementById('horoscope-result').innerHTML = '<span class="loading">राशिफल आ रहा है<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></span>';
+  try {
+    const r = await fetch(API+'/horoscope', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({sign})});
+    const d = await r.json();
+    document.getElementById('horoscope-result').innerText = d.reply;
+  } catch {
+    document.getElementById('horoscope-result').innerText = '❌ Error! Try again.';
+  }
 }
 
+// ==================== STOCK ====================
 async function getStock() {
   const symbol = document.getElementById('stock-input').value || 'RELIANCE';
-  document.getElementById('stock-result').innerText = 'Stock info आ रही है...';
-  const r = await fetch(API+'/stock?symbol='+symbol);
-  const d = await r.json();
-  document.getElementById('stock-result').innerText = d.reply;
+  document.getElementById('stock-result').innerHTML = '<span class="loading">Stock info आ रही है<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></span>';
+  try {
+    const r = await fetch(API+'/stock?symbol='+symbol);
+    const d = await r.json();
+    document.getElementById('stock-result').innerText = d.reply;
+  } catch {
+    document.getElementById('stock-result').innerText = '❌ Error! Try again.';
+  }
 }
 
+// ==================== INVOICE ====================
 async function getInvoice() {
   const details = document.getElementById('invoice-input').value;
-  document.getElementById('invoice-result').innerText = 'Invoice बन रहा है...';
-  const r = await fetch(API+'/invoice', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({details:details})});
-  const d = await r.json();
-  document.getElementById('invoice-result').innerText = d.reply;
+  document.getElementById('invoice-result').innerHTML = '<span class="loading">Invoice बन रहा है<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></span>';
+  try {
+    const r = await fetch(API+'/invoice', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({details})});
+    const d = await r.json();
+    document.getElementById('invoice-result').innerText = d.reply;
+  } catch {
+    document.getElementById('invoice-result').innerText = '❌ Error! Try again.';
+  }
 }
 
+// ==================== TASK ====================
 async function getTask() {
   const task = document.getElementById('task-input').value;
-  document.getElementById('task-result').innerText = 'Tasks organize हो रहे हैं...';
-  const r = await fetch(API+'/task', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({task:task})});
-  const d = await r.json();
-  document.getElementById('task-result').innerText = d.reply;
+  document.getElementById('task-result').innerHTML = '<span class="loading">Tasks organize हो रहे हैं<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></span>';
+  try {
+    const r = await fetch(API+'/task', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({task})});
+    const d = await r.json();
+    document.getElementById('task-result').innerText = d.reply;
+    saveTask(task);
+  } catch {
+    document.getElementById('task-result').innerText = '❌ Error! Try again.';
+  }
 }
 
+function saveTask(task) {
+  let tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+  tasks.push({task, time: new Date().toLocaleString('hi-IN')});
+  localStorage.setItem('tasks', JSON.stringify(tasks));
+  updateTaskDisplay();
+}
+
+function updateTaskDisplay() {
+  const tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+  const div = document.getElementById('saved-tasks');
+  div.innerHTML = tasks.slice(-10).reverse().map(t => 
+    `<div class="history-item">${t.time}: ${t.task.substring(0,40)}...</div>`
+  ).join('') || '<div class="history-item">कोई task saved नहीं</div>';
+}
+
+function clearTasks() {
+  localStorage.removeItem('tasks');
+  updateTaskDisplay();
+}
+
+// ==================== FINANCE ====================
 async function getFinance() {
   const query = document.getElementById('finance-input').value;
-  document.getElementById('finance-result').innerText = 'Advice आ रही है...';
-  const r = await fetch(API+'/finance', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({query:query})});
-  const d = await r.json();
-  document.getElementById('finance-result').innerText = d.reply;
+  document.getElementById('finance-result').innerHTML = '<span class="loading">Advice आ रही है<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></span>';
+  try {
+    const r = await fetch(API+'/finance', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({query})});
+    const d = await r.json();
+    document.getElementById('finance-result').innerText = d.reply;
+  } catch {
+    document.getElementById('finance-result').innerText = '❌ Error! Try again.';
+  }
 }
 
+// ==================== GUARD ====================
 async function getGuard() {
   const alert = document.getElementById('guard-input').value;
-  document.getElementById('guard-result').innerText = 'Analysis हो रहा है...';
-  const r = await fetch(API+'/guard', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({alert:alert})});
-  const d = await r.json();
-  document.getElementById('guard-result').innerText = d.reply;
+  document.getElementById('guard-result').innerHTML = '<span class="loading">Analysis हो रहा है<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></span>';
+  try {
+    const r = await fetch(API+'/guard', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({alert})});
+    const d = await r.json();
+    document.getElementById('guard-result').innerText = d.reply;
+  } catch {
+    document.getElementById('guard-result').innerText = '❌ Error! Try again.';
+  }
 }
+
+// ==================== CAMERA ====================
+async function startCamera() {
+  const video = document.getElementById('camera-preview');
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}});
+    video.srcObject = stream;
+    video.style.display = 'block';
+    document.getElementById('capture-btn').style.display = 'inline-block';
+  } catch {
+    alert('Camera access denied या supported नहीं!');
+  }
+}
+
+function capturePhoto() {
+  const video = document.getElementById('camera-preview');
+  const canvas = document.getElementById('photo-canvas');
+  const img = document.getElementById('captured-photo');
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
+  canvas.getContext('2d').drawImage(video, 0, 0);
+  img.src = canvas.toDataURL('image/png');
+  img.style.display = 'block';
+  // Stop camera
+  video.srcObject.getTracks().forEach(t => t.stop());
+  video.style.display = 'none';
+  document.getElementById('capture-btn').style.display = 'none';
+}
+
+// ==================== TOOLS ====================
+function shareApp() {
+  if(navigator.share) {
+    navigator.share({
+      title: 'Singh Ji AI',
+      text: '🤖 Singh Ji AI - Your Personal AI Assistant! Weather, News, Cricket, Horoscope, Stock, Invoice, Tasks, Finance, Guard - सब कुछ एक जगह!',
+      url: window.location.href
+    });
+  } else {
+    copyToClipboard(window.location.href);
+    alert('Link copied! 📋');
+  }
+}
+
+function copyToClipboard(text) {
+  if(!text) text = document.querySelector('.content.active .result')?.innerText || '';
+  navigator.clipboard.writeText(text).then(() => {
+    document.getElementById('tools-result').innerText = '✅ Copied to clipboard!';
+  });
+}
+
+function exportData() {
+  const data = {
+    history: JSON.parse(localStorage.getItem('history') || '[]'),
+    tasks: JSON.parse(localStorage.getItem('tasks') || '[]'),
+    theme: localStorage.getItem('theme'),
+    exportTime: new Date().toISOString()
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'singhji-data.json';
+  a.click();
+  document.getElementById('tools-result').innerText = '✅ Data exported!';
+}
+
+function clearAllHistory() {
+  if(confirm('सब history delete करनी है?')) {
+    localStorage.clear();
+    updateHistoryDisplay();
+    updateTaskDisplay();
+    document.getElementById('tools-result').innerText = '✅ सब clear हो गया!';
+  }
+}
+
+// ==================== PWA INSTALL ====================
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  document.getElementById('install-btn').style.display = 'block';
+});
+
+async function installPWA() {
+  if(!deferredPrompt) return;
+  deferredPrompt.prompt();
+  const {outcome} = await deferredPrompt.userChoice;
+  if(outcome === 'accepted') {
+    document.getElementById('install-btn').style.display = 'none';
+  }
+  deferredPrompt = null;
+}
+
+// ==================== SERVICE WORKER ====================
+if('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js').catch(() => {});
+}
+
+// ==================== INIT ====================
+updateHistoryDisplay();
+updateTaskDisplay();
 </script>
 </body>
 </html>
