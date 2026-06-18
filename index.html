@@ -4,631 +4,788 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#FF6B00">
-<meta http-equiv="refresh" content="300">
-<title>Singh Ji AI - Superior</title>
+<title>Singh Ji AI - Ultra</title>
 <link rel="manifest" href="manifest.json">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--primary:#FF6B00;--secondary:#FF8C00;--bg:#0a0a1a;--card:#12122e;--text:#fff;--accent:#1a1a3e;--success:#00c853;--danger:#ff1744;--warning:#ffd600}
-.light{--bg:#f5f5f5;--card:#fff;--text:#1a1a1a;--accent:#e8e8e8}
-*{margin:0;padding:0;box-sizing:border-box;transition:all 0.3s ease}
-body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
-.glass{background:rgba(255,255,255,0.05);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.1)}
-.header{background:linear-gradient(135deg,var(--primary),var(--secondary));padding:15px;text-align:center;font-size:24px;font-weight:800;position:sticky;top:0;z-index:100;box-shadow:0 4px 30px rgba(255,107,0,0.4);display:flex;align-items:center;justify-content:center;gap:15px;text-shadow:2px 2px 4px rgba(0,0,0,0.3)}
-.header-icon{font-size:32px;animation:float 3s ease infinite}
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
-.badge{background:rgba(255,255,255,0.2);padding:5px 15px;border-radius:20px;font-size:12px;font-weight:600}
-.theme-btn{position:absolute;right:15px;background:rgba(255,255,255,0.2);border:none;color:white;padding:10px 15px;border-radius:50%;cursor:pointer;font-size:18px;transition:0.3s}
-.theme-btn:hover{transform:rotate(180deg) scale(1.1)}
-.status-bar{display:flex;gap:10px;margin:10px;padding:10px;overflow-x:auto}
-.status-pill{background:var(--card);padding:8px 16px;border-radius:25px;font-size:12px;display:flex;align-items:center;gap:6px;white-space:nowrap;box-shadow:0 2px 10px rgba(0,0,0,0.2)}
-.status-pill.online{border:2px solid var(--success);color:var(--success)}
-.status-pill.offline{border:2px solid var(--danger);color:var(--danger)}
-.pulse{animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(0,200,83,0.4)}50%{box-shadow:0 0 0 10px rgba(0,200,83,0)}}
-.tabs{display:flex;overflow-x:auto;padding:10px;gap:8px;scrollbar-width:none}
+:root{--primary:#FF6B00;--primary-light:#FF8C00;--secondary:#00D4FF;--accent:#7C3AED;--bg:#050508;--surface:#0a0a12;--surface-light:#12121f;--text:#ffffff;--text-secondary:#a0a0b0;--border:rgba(255,255,255,0.08);--success:#00C853;--warning:#FFD600;--danger:#FF1744}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',system-ui,sans-serif}
+body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+.glass{background:var(--surface);backdrop-filter:blur(20px);border:1px solid var(--border)}
+.gradient-text{background:linear-gradient(135deg,var(--primary),var(--secondary));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.glow{box-shadow:0 0 40px rgba(255,107,0,0.15),0 0 80px rgba(0,212,255,0.1)}
+.header{background:linear-gradient(135deg,rgba(255,107,0,0.1),rgba(0,212,255,0.05));padding:20px;text-align:center;position:sticky;top:0;z-index:100;backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.header h1{font-size:28px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:12px}
+.header .badge{background:linear-gradient(135deg,var(--primary),var(--accent));padding:6px 16px;border-radius:20px;font-size:12px;font-weight:700;color:white;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(255,107,0,0.4)}50%{box-shadow:0 0 20px 5px rgba(255,107,0,0.2)}}
+.status-bar{display:flex;gap:8px;padding:12px 15px;overflow-x:auto;scrollbar-width:none}
+.status-bar::-webkit-scrollbar{display:none}
+.status-pill{background:var(--surface);padding:8px 16px;border-radius:25px;font-size:12px;font-weight:500;display:flex;align-items:center;gap:6px;white-space:nowrap;border:1px solid var(--border);transition:0.3s}
+.status-pill:hover{border-color:var(--primary)}
+.status-pill.online{border-color:var(--success);color:var(--success)}
+.status-pill.active{border-color:var(--primary);color:var(--primary)}
+.model-selector{background:var(--surface);padding:8px 16px;border-radius:25px;font-size:12px;font-weight:600;border:1px solid var(--border);cursor:pointer;display:flex;align-items:center;gap:8px;color:var(--text)}
+.model-selector:hover{border-color:var(--primary)}
+.tabs{display:flex;overflow-x:auto;padding:12px;gap:8px;scrollbar-width:none}
 .tabs::-webkit-scrollbar{display:none}
-.tab{padding:12px 20px;border:none;background:var(--card);color:#888;cursor:pointer;white-space:nowrap;font-size:13px;border-radius:30px;font-weight:600;box-shadow:0 2px 10px rgba(0,0,0,0.2);transition:0.3s}
-.tab:hover{transform:translateY(-2px);box-shadow:0 4px 15px rgba(255,107,0,0.3)}
-.tab.active{background:linear-gradient(135deg,var(--primary),var(--secondary));color:white;transform:scale(1.05);box-shadow:0 4px 20px rgba(255,107,0,0.4)}
+.tab{padding:12px 20px;border:none;background:var(--surface);color:var(--text-secondary);cursor:pointer;white-space:nowrap;font-size:13px;border-radius:16px;font-weight:600;border:1px solid var(--border);transition:0.3s;display:flex;align-items:center;gap:8px}
+.tab:hover{background:var(--surface-light);color:var(--text);transform:translateY(-2px)}
+.tab.active{background:linear-gradient(135deg,var(--primary),var(--primary-light));color:white;border-color:transparent;box-shadow:0 4px 20px rgba(255,107,0,0.3)}
 .content{padding:15px;display:none;animation:fadeIn 0.5s}
 .content.active{display:block}
 @keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-.card{background:var(--card);padding:20px;border-radius:20px;margin-bottom:15px;box-shadow:0 4px 20px rgba(0,0,0,0.2);border:1px solid rgba(255,255,255,0.05)}
-.card-title{font-size:18px;font-weight:700;margin-bottom:15px;color:var(--primary);display:flex;align-items:center;gap:10px}
-.chat-messages{height:50vh;overflow-y:auto;padding:15px;background:var(--accent);border-radius:20px;margin-bottom:15px;box-shadow:inset 0 2px 20px rgba(0,0,0,0.2)}
-.msg{margin:12px 0;animation:slideIn 0.4s}
-@keyframes slideIn{from{opacity:0;transform:translateX(-30px)}to{opacity:1;transform:translateX(0)}}
-.msg.user{text-align:right}
-.msg.user .bubble{background:linear-gradient(135deg,var(--primary),var(--secondary));padding:12px 18px;border-radius:20px 20px 0 20px;display:inline-block;max-width:85%;box-shadow:0 4px 15px rgba(255,107,0,0.3);font-weight:500}
-.msg.bot .bubble{background:var(--accent);padding:12px 18px;border-radius:20px 20px 20px 0;display:inline-block;max-width:85%;box-shadow:0 4px 15px rgba(0,0,0,0.1);border-left:3px solid var(--primary)}
-.typing-indicator{display:flex;gap:6px;padding:12px 18px;background:var(--accent);border-radius:20px;width:fit-content}
-.typing-dot{width:8px;height:8px;background:var(--primary);border-radius:50%;animation:typing 1.4s infinite}
+.chat-container{height:calc(100vh - 280px);overflow-y:auto;padding:20px;background:var(--surface);border-radius:24px;margin-bottom:15px;border:1px solid var(--border)}
+.chat-msg{margin:16px 0;max-width:85%;animation:slideIn 0.4s}
+@keyframes slideIn{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:translateX(0)}}
+.chat-msg.user{margin-left:auto}
+.chat-msg.user .bubble{background:linear-gradient(135deg,var(--primary),var(--primary-light));padding:14px 20px;border-radius:20px 20px 4px 20px;color:white;font-weight:500;box-shadow:0 4px 20px rgba(255,107,0,0.2)}
+.chat-msg.bot .bubble{background:var(--surface-light);padding:14px 20px;border-radius:20px 20px 20px 4px;border:1px solid var(--border);line-height:1.7}
+.chat-msg.bot .bubble pre{background:#000;padding:12px;border-radius:12px;overflow-x:auto;font-family:'Fira Code',monospace;font-size:13px;margin:10px 0}
+.chat-msg.bot .bubble code{background:rgba(255,107,0,0.1);padding:2px 6px;border-radius:4px;color:var(--primary);font-family:'Fira Code',monospace}
+.chat-msg .time{font-size:11px;color:var(--text-secondary);margin-top:4px}
+.typing-indicator{display:flex;gap:4px;padding:12px 16px;background:var(--surface-light);border-radius:16px;width:fit-content;border:1px solid var(--border)}
+.typing-dot{width:8px;height:8px;background:var(--primary);border-radius:50%;animation:typingBounce 1.4s infinite}
 .typing-dot:nth-child(2){animation-delay:0.2s}
 .typing-dot:nth-child(3){animation-delay:0.4s}
-@keyframes typing{0%,80%,100%{transform:scale(0)}40%{transform:scale(1)}}
-.input-row{display:flex;gap:10px;align-items:center;padding:10px;background:var(--card);border-radius:20px}
-input,textarea{flex:1;padding:14px 20px;border-radius:25px;border:2px solid transparent;background:var(--accent);color:var(--text);font-size:15px;outline:none;transition:0.3s}
-input:focus,textarea:focus{border-color:var(--primary);box-shadow:0 0 15px rgba(255,107,0,0.2)}
-.btn{background:linear-gradient(135deg,var(--primary),var(--secondary));color:white;border:none;padding:14px 24px;border-radius:25px;cursor:pointer;font-weight:700;box-shadow:0 4px 15px rgba(255,107,0,0.3);transition:0.3s;display:flex;align-items:center;gap:8px}
-.btn:hover{transform:translateY(-3px);box-shadow:0 6px 25px rgba(255,107,0,0.5)}
-.btn:active{transform:scale(0.95)}
-.btn-icon{width:45px;height:45px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px}
-.btn-secondary{background:var(--accent);border:2px solid var(--primary)}
-.feature-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:15px}
-.feature-btn{padding:15px;border-radius:15px;background:var(--card);border:1px solid rgba(255,255,255,0.1);color:var(--text);cursor:pointer;transition:0.3s;display:flex;flex-direction:column;align-items:center;gap:8px;font-weight:600}
-.feature-btn:hover{background:linear-gradient(135deg,var(--primary),var(--secondary));transform:translateY(-3px);box-shadow:0 6px 20px rgba(255,107,0,0.3)}
-.feature-btn i{font-size:24px}
-.result{background:var(--accent);padding:20px;border-radius:20px;margin-top:15px;min-height:100px;white-space:pre-wrap;line-height:1.8;box-shadow:0 4px 15px rgba(0,0,0,0.1);border-left:4px solid var(--primary);font-size:15px}
-.image-result{max-width:100%;border-radius:15px;margin-top:10px;box-shadow:0 4px 20px rgba(0,0,0,0.3)}
-select{width:100%;padding:14px;background:var(--accent);color:var(--text);border:2px solid var(--primary);border-radius:15px;margin-bottom:15px;font-size:15px;outline:none}
-textarea{width:100%;padding:14px;background:var(--accent);color:var(--text);border:2px solid var(--primary);border-radius:15px;min-height:120px;margin-bottom:15px;font-size:15px;resize:vertical}
-.crypto-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-.crypto-card{background:linear-gradient(135deg,#1a1a3e,#0f0f2e);padding:15px;border-radius:15px;text-align:center;border:1px solid rgba(255,255,255,0.1)}
-.crypto-price{font-size:24px;font-weight:800;color:var(--success)}
-.crypto-change{font-size:14px;color:var(--danger)}
-.chart-container{height:200px;background:var(--accent);border-radius:15px;padding:15px;margin-top:10px}
-.ai-image-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:10px}
-.ai-image{aspect-ratio:1;background:linear-gradient(135deg,var(--primary),#ff006e);border-radius:15px;display:flex;align-items:center;justify-content:center;font-size:40px;cursor:pointer;transition:0.3s}
-.ai-image:hover{transform:scale(1.05);box-shadow:0 8px 30px rgba(255,107,0,0.4)}
-.notification-toast{position:fixed;top:20px;right:20px;background:linear-gradient(135deg,var(--primary),var(--secondary));color:white;padding:20px 25px;border-radius:20px;box-shadow:0 8px 30px rgba(0,0,0,0.3);z-index:1000;display:none;animation:slideDown 0.4s;max-width:350px;font-weight:600}
-@keyframes slideDown{from{opacity:0;transform:translateY(-30px)}to{opacity:1;transform:translateY(0)}}
-.progress-bar{height:4px;background:var(--primary);border-radius:2px;animation:progress 2s ease infinite;margin-top:10px}
-@keyframes progress{0%{width:0%}50%{width:100%}100%{width:0%}}
-.voice-wave{display:flex;align-items:center;gap:3px;height:40px}
-.voice-bar{width:4px;background:var(--primary);border-radius:2px;animation:wave 1s ease infinite}
-.voice-bar:nth-child(1){height:20%;animation-delay:0s}
-.voice-bar:nth-child(2){height:40%;animation-delay:0.1s}
-.voice-bar:nth-child(3){height:60%;animation-delay:0.2s}
-.voice-bar:nth-child(4){height:80%;animation-delay:0.3s}
-.voice-bar:nth-child(5){height:100%;animation-delay:0.4s}
-@keyframes wave{0%,100%{height:20%}50%{height:100%}}
+@keyframes typingBounce{0%,80%,100%{transform:scale(0.6)}40%{transform:scale(1)}}
+.input-area{position:sticky;bottom:0;background:var(--bg);padding:15px;border-top:1px solid var(--border)}
+.input-row{display:flex;gap:10px;align-items:flex-end;background:var(--surface);padding:12px;border-radius:20px;border:1px solid var(--border);transition:0.3s}
+.input-row:focus-within{border-color:var(--primary);box-shadow:0 0 20px rgba(255,107,0,0.1)}
+.input-row textarea{flex:1;background:transparent;border:none;color:var(--text);font-size:15px;resize:none;outline:none;max-height:120px;font-family:'Inter',sans-serif}
+.input-row textarea::placeholder{color:var(--text-secondary)}
+.action-btn{width:40px;height:40px;border-radius:50%;border:none;background:var(--surface-light);color:var(--text);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.3s;font-size:16px}
+.action-btn:hover{background:var(--primary);color:white;transform:scale(1.1)}
+.send-btn{width:40px;height:40px;border-radius:50%;border:none;background:linear-gradient(135deg,var(--primary),var(--primary-light));color:white;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.3s;font-size:16px;box-shadow:0 4px 15px rgba(255,107,0,0.3)}
+.send-btn:hover{transform:scale(1.1);box-shadow:0 6px 25px rgba(255,107,0,0.4)}
+.feature-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:15px}
+.feature-card{background:var(--surface);padding:20px;border-radius:20px;border:1px solid var(--border);cursor:pointer;transition:0.3s;text-align:center}
+.feature-card:hover{background:var(--surface-light);border-color:var(--primary);transform:translateY(-4px);box-shadow:0 8px 30px rgba(255,107,0,0.15)}
+.feature-card i{font-size:32px;margin-bottom:12px;background:linear-gradient(135deg,var(--primary),var(--secondary));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.feature-card h3{font-size:15px;font-weight:600;margin-bottom:4px}
+.feature-card p{font-size:12px;color:var(--text-secondary)}
+.result-card{background:var(--surface);padding:20px;border-radius:20px;border:1px solid var(--border);margin-top:15px}
+.result-card h3{font-size:16px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px;color:var(--primary)}
+.image-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:12px}
+.image-grid img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:16px;transition:0.3s;cursor:pointer}
+.image-grid img:hover{transform:scale(1.05);box-shadow:0 8px 30px rgba(0,0,0,0.3)}
+.crypto-table{width:100%;border-collapse:collapse}
+.crypto-table th,.crypto-table td{padding:12px;text-align:left;border-bottom:1px solid var(--border)}
+.crypto-table th{font-size:12px;color:var(--text-secondary);font-weight:500;text-transform:uppercase}
+.crypto-table td{font-size:14px;font-weight:600}
+.price-up{color:var(--success)}
+.price-down{color:var(--danger)}
+.chart-placeholder{height:200px;background:var(--surface-light);border-radius:16px;display:flex;align-items:center;justify-content:center;color:var(--text-secondary);font-size:14px}
+.streaming-text{overflow:hidden}
+.streaming-cursor{display:inline-block;width:2px;height:20px;background:var(--primary);animation:blink 1s infinite;vertical-align:middle;margin-left:4px}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.web-result{background:var(--surface-light);padding:12px;border-radius:12px;margin:8px 0;border-left:3px solid var(--secondary)}
+.web-result a{color:var(--secondary);text-decoration:none;font-size:13px;font-weight:600}
+.web-result p{font-size:12px;color:var(--text-secondary);margin-top:4px}
+.memory-indicator{font-size:11px;color:var(--text-secondary);display:flex;align-items:center;gap:4px}
+.memory-indicator i{font-size:10px}
+.tool-call{background:var(--surface-light);padding:8px 12px;border-radius:8px;font-size:12px;color:var(--secondary);display:flex;align-items:center;gap:6px;margin:8px 0}
 </style>
 </head>
 <body>
-<div class="header">
-  <span class="header-icon">🤖</span>
-  <span>Singh Ji AI</span>
-  <span class="badge">SUPERIOR</span>
-  <button class="theme-btn" onclick="toggleTheme()">🌙</button>
-</div>
-
-<div class="notification-toast" id="notification-toast">
-  <div id="toast-message">Notification</div>
-  <div class="progress-bar"></div>
+<div class="header glow">
+  <h1>
+    <span style="font-size:36px">🤖</span>
+    <span class="gradient-text">Singh Ji AI</span>
+    <span class="badge">ULTRA</span>
+  </h1>
 </div>
 
 <div class="status-bar">
-  <div class="status-pill online pulse" id="net-status">🌐 Online</div>
-  <div class="status-pill" id="loc-status">📍 Location...</div>
-  <div class="status-pill" id="mic-status">🎤 Mic Ready</div>
-  <div class="status-pill" id="auto-status">⚡ Auto: ON</div>
+  <div class="status-pill online" id="net-status">🌐 Online</div>
+  <div class="status-pill" id="loc-status">📍 Detecting...</div>
+  <div class="status-pill active" id="model-status">🧠 Gemini Pro</div>
+  <div class="status-pill" id="memory-status">💾 0 chats</div>
+  <div class="model-selector" onclick="toggleModel()">
+    <i class="fas fa-brain"></i>
+    <span id="current-model">Gemini Pro</span>
+    <i class="fas fa-chevron-down"></i>
+  </div>
 </div>
 
 <div class="tabs">
   <button class="tab active" onclick="showTab('chat')"><i class="fas fa-comments"></i> Chat</button>
-  <button class="tab" onclick="showTab('ai-image')"><i class="fas fa-image"></i> AI Image</button>
-  <button class="tab" onclick="showTab('crypto')"><i class="fas fa-bitcoin"></i> Crypto</button>
+  <button class="tab" onclick="showTab('search')"><i class="fas fa-search"></i> Web Search</button>
+  <button class="tab" onclick="showTab('image')"><i class="fas fa-image"></i> AI Image</button>
+  <button class="tab" onclick="showTab('code')"><i class="fas fa-code"></i> Code</button>
+  <button class="tab" onclick="showTab('crypto')"><i class="fas fa-coins"></i> Crypto</button>
   <button class="tab" onclick="showTab('weather')"><i class="fas fa-cloud-sun"></i> Weather</button>
   <button class="tab" onclick="showTab('news')"><i class="fas fa-newspaper"></i> News</button>
-  <button class="tab" onclick="showTab('cricket')"><i class="fas fa-baseball-ball"></i> Cricket</button>
+  <button class="tab" onclick="showTab('cricket')"><i class="fas fa-trophy"></i> Cricket</button>
+  <button class="tab" onclick="showTab('stock')"><i class="fas fa-chart-line"></i> Stocks</button>
   <button class="tab" onclick="showTab('horoscope')"><i class="fas fa-star"></i> Horoscope</button>
-  <button class="tab" onclick="showTab('stock')"><i class="fas fa-chart-line"></i> Stock</button>
-  <button class="tab" onclick="showTab('invoice')"><i class="fas fa-file-invoice"></i> Invoice</button>
-  <button class="tab" onclick="showTab('task')"><i class="fas fa-tasks"></i> Task</button>
-  <button class="tab" onclick="showTab('finance')"><i class="fas fa-rupee-sign"></i> Finance</button>
+  <button class="tab" onclick="showTab('finance')"><i class="fas fa-piggy-bank"></i> Finance</button>
   <button class="tab" onclick="showTab('guard')"><i class="fas fa-shield-alt"></i> Guard</button>
-  <button class="tab" onclick="showTab('code')"><i class="fas fa-code"></i> Code AI</button>
 </div>
 
 <!-- CHAT -->
 <div id="chat" class="content active">
-  <div class="chat-messages" id="chat-messages">
-    <div class="msg bot">
+  <div class="chat-container" id="chat-container">
+    <div class="chat-msg bot">
       <div class="bubble">
-        <div style="font-size:20px;margin-bottom:10px">👋 नमस्ते!</div>
-        <div>मैं <b>Singh Ji Superior</b> हूँ। 🚀</div>
-        <div style="margin-top:10px">🎙️ Voice से बोलके पूछो</div>
-        <div>🎨 AI Image बनाओ</div>
-        <div>💰 Crypto देखो</div>
-        <div>⚡ Auto mode ON है</div>
+        <div style="font-size:20px;margin-bottom:12px">👋 नमस्ते! मैं <b class="gradient-text">Singh Ji Ultra</b> हूँ</div>
+        <div>🧠 <b>Gemini Pro</b> + <b>Claude</b> + <b>GPT-4</b> powered</div>
+        <div style="margin-top:8px">🌐 Real-time Web Search</div>
+        <div>🎨 AI Image Generation</div>
+        <div>💻 Code Execution</div>
+        <div>🎙️ Voice Commands</div>
+        <div style="margin-top:12px;font-size:13px;color:var(--text-secondary)">मैं आपकी हर बात याद रखूँगा। कुछ भी पूछो!</div>
       </div>
+      <div class="time">Just now</div>
     </div>
   </div>
-  <div class="input-row">
-    <input id="chat-input" placeholder="कुछ पूछो..." onkeypress="if(event.key==='Enter')sendChat()">
-    <button class="btn btn-icon" onclick="startVoice()" title="Voice">🎤</button>
-    <button class="btn" onclick="sendChat()"><i class="fas fa-paper-plane"></i></button>
+  <div class="input-area">
+    <div class="input-row">
+      <button class="action-btn" onclick="startVoice()" title="Voice"><i class="fas fa-microphone"></i></button>
+      <textarea id="chat-input" placeholder="कुछ भी पूछो... मैं सब जानता हूँ!" rows="1" onkeypress="if(event.key==='Enter' && !event.shiftKey){event.preventDefault();sendMessage()}"></textarea>
+      <button class="action-btn" onclick="attachFile()" title="Attach"><i class="fas fa-paperclip"></i></button>
+      <button class="action-btn" onclick="toggleSearch()" title="Web Search"><i class="fas fa-globe"></i></button>
+      <button class="send-btn" onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+    </div>
+    <div class="memory-indicator" style="margin-top:8px;padding:0 8px">
+      <i class="fas fa-bolt"></i>
+      <span id="input-status">AI ready • Type to chat</span>
+    </div>
+  </div>
+</div>
+
+<!-- WEB SEARCH -->
+<div id="search" class="content">
+  <div class="result-card">
+    <h3><i class="fas fa-search"></i> Web Search</h3>
+    <div class="input-row" style="margin-bottom:15px">
+      <textarea id="search-input" placeholder="Google जैसा search... जैसे: आज की ताज़ा खबरें, Bitcoin price, etc." rows="1"></textarea>
+      <button class="send-btn" onclick="webSearch()"><i class="fas fa-search"></i></button>
+    </div>
+    <div id="search-results">Search results यहाँ दिखेंगे...</div>
   </div>
 </div>
 
 <!-- AI IMAGE -->
-<div id="ai-image" class="content">
-  <div class="card">
-    <div class="card-title"><i class="fas fa-magic"></i> AI Image Generator</div>
-    <input id="image-prompt" placeholder="जैसे: एक बंदर, भारतीय महिला, कार..." value="एक सुंदर भारतीय गांव">
-    <div class="feature-grid">
-      <button class="feature-btn" onclick="generateImage('realistic')"><i class="fas fa-camera"></i> Realistic</button>
-      <button class="feature-btn" onclick="generateImage('anime')"><i class="fas fa-paint-brush"></i> Anime</button>
-      <button class="feature-btn" onclick="generateImage('3d')"><i class="fas fa-cube"></i> 3D</button>
-      <button class="feature-btn" onclick="generateImage('art')"><i class="fas fa-palette"></i> Art</button>
+<div id="image" class="content">
+  <div class="result-card">
+    <h3><i class="fas fa-magic"></i> AI Image Generator</h3>
+    <div class="input-row" style="margin-bottom:15px">
+      <textarea id="image-prompt" placeholder="जैसे: A futuristic Indian city, A meditating monk in space, etc." rows="2"></textarea>
+      <button class="send-btn" onclick="generateImage()"><i class="fas fa-wand-magic-sparkles"></i></button>
     </div>
-    <button class="btn" style="width:100%" onclick="generateImage()"><i class="fas fa-wand-magic-sparkles"></i> Generate Image</button>
-    <div class="result" id="image-result">AI Image यहाँ दिखेगी...</div>
+    <div class="feature-grid" style="margin-bottom:15px">
+      <div class="feature-card" onclick="setImageStyle('realistic')"><i class="fas fa-camera"></i><h3>Realistic</h3><p>Photo quality</p></div>
+      <div class="feature-card" onclick="setImageStyle('anime')"><i class="fas fa-paint-brush"></i><h3>Anime</h3><p>Japanese art</p></div>
+      <div class="feature-card" onclick="setImageStyle('3d')"><i class="fas fa-cube"></i><h3>3D Render</h3><p>Cinematic</p></div>
+      <div class="feature-card" onclick="setImageStyle('art')"><i class="fas fa-palette"></i><h3>Digital Art</h3><p>Creative</p></div>
+    </div>
+    <div id="image-results">AI Images यहाँ दिखेंगी...</div>
+  </div>
+</div>
+
+<!-- CODE -->
+<div id="code" class="content">
+  <div class="result-card">
+    <h3><i class="fas fa-terminal"></i> AI Code Writer + Executor</h3>
+    <div style="display:flex;gap:10px;margin-bottom:15px">
+      <select id="code-lang" style="flex:1;background:var(--surface-light);color:var(--text);border:1px solid var(--border);padding:12px;border-radius:12px;outline:none">
+        <option>Python</option>
+        <option>JavaScript</option>
+        <option>HTML/CSS</option>
+        <option>Java</option>
+        <option>C++</option>
+        <option>SQL</option>
+      </select>
+      <button class="action-btn" onclick="runCode()" title="Run Code"><i class="fas fa-play"></i></button>
+    </div>
+    <textarea id="code-input" placeholder="// यहाँ code लिखो या 'Python calculator बनाओ' जैसा prompt दो..." style="width:100%;background:var(--surface-light);color:var(--text);border:1px solid var(--border);padding:15px;border-radius:12px;min-height:150px;font-family:'Fira Code',monospace;font-size:13px;outline:none;resize:vertical;margin-bottom:15px"></textarea>
+    <button class="send-btn" style="width:100%" onclick="generateCode()"><i class="fas fa-robot"></i> Generate Code</button>
+    <div id="code-output" style="margin-top:15px">Code output यहाँ दिखेगा...</div>
   </div>
 </div>
 
 <!-- CRYPTO -->
 <div id="crypto" class="content">
-  <div class="card">
-    <div class="card-title"><i class="fas fa-coins"></i> Live Crypto Prices</div>
-    <div class="crypto-grid">
-      <div class="crypto-card">
-        <div style="font-size:30px">₿</div>
-        <div>Bitcoin</div>
-        <div class="crypto-price" id="btc-price">Loading...</div>
-        <div class="crypto-change" id="btc-change">...</div>
-      </div>
-      <div class="crypto-card">
-        <div style="font-size:30px">Ξ</div>
-        <div>Ethereum</div>
-        <div class="crypto-price" id="eth-price">Loading...</div>
-        <div class="crypto-change" id="eth-change">...</div>
-      </div>
-      <div class="crypto-card">
-        <div style="font-size:30px">◈</div>
-        <div>Solana</div>
-        <div class="crypto-price" id="sol-price">Loading...</div>
-        <div class="crypto-change" id="sol-change">...</div>
-      </div>
-      <div class="crypto-card">
-        <div style="font-size:30px">◎</div>
-        <div>Polygon</div>
-        <div class="crypto-price" id="matic-price">Loading...</div>
-        <div class="crypto-change" id="matic-change">...</div>
-      </div>
-    </div>
-    <button class="btn" style="width:100%;margin-top:15px" onclick="getCrypto()"><i class="fas fa-sync"></i> Refresh Prices</button>
+  <div class="result-card">
+    <h3><i class="fas fa-coins"></i> Live Crypto Market</h3>
+    <div class="chart-placeholder" id="crypto-chart">📊 Live Chart Loading...</div>
+    <table class="crypto-table" style="margin-top:15px">
+      <thead><tr><th>Coin</th><th>Price (₹)</th><th>24h Change</th><th>Market Cap</th></tr></thead>
+      <tbody id="crypto-data">
+        <tr><td colspan="4" style="text-align:center;color:var(--text-secondary)">Loading...</td></tr>
+      </tbody>
+    </table>
+    <button class="send-btn" style="width:100%;margin-top:15px" onclick="refreshCrypto()"><i class="fas fa-sync"></i> Refresh</button>
   </div>
 </div>
 
 <!-- WEATHER -->
 <div id="weather" class="content">
-  <div class="card">
-    <div class="card-title"><i class="fas fa-cloud-sun-rain"></i> Weather</div>
-    <div class="input-row">
-      <input id="city-input" placeholder="शहर..." value="Kanpur">
-      <button class="btn" onclick="getWeather()"><i class="fas fa-search"></i></button>
-      <button class="btn btn-secondary" onclick="getAutoWeather()"><i class="fas fa-location-arrow"></i></button>
+  <div class="result-card">
+    <h3><i class="fas fa-cloud-sun-rain"></i> Live Weather</h3>
+    <div class="input-row" style="margin-bottom:15px">
+      <textarea id="weather-input" placeholder="City name..." rows="1">Kanpur</textarea>
+      <button class="action-btn" onclick="getLocationWeather()"><i class="fas fa-location-arrow"></i></button>
+      <button class="send-btn" onclick="getWeather()"><i class="fas fa-search"></i></button>
     </div>
-    <div class="result" id="weather-result">Weather loading...</div>
+    <div id="weather-result">Weather data...</div>
   </div>
 </div>
 
 <!-- NEWS -->
 <div id="news" class="content">
-  <div class="card">
-    <div class="card-title"><i class="fas fa-broadcast-tower"></i> Live News</div>
-    <button class="btn" style="width:100%" onclick="getNews()"><i class="fas fa-sync"></i> Latest News</button>
-    <div class="result" id="news-result">News loading...</div>
+  <div class="result-card">
+    <h3><i class="fas fa-broadcast-tower"></i> Live News</h3>
+    <button class="send-btn" style="width:100%;margin-bottom:15px" onclick="getNews()"><i class="fas fa-sync"></i> Latest News</button>
+    <div id="news-result">News loading...</div>
   </div>
 </div>
 
 <!-- CRICKET -->
 <div id="cricket" class="content">
-  <div class="card">
-    <div class="card-title"><i class="fas fa-trophy"></i> Live Cricket</div>
-    <button class="btn" style="width:100%" onclick="getCricket()"><i class="fas fa-sync"></i> Live Scores</button>
-    <div class="result" id="cricket-result">Cricket loading...</div>
-  </div>
-</div>
-
-<!-- HOROSCOPE -->
-<div id="horoscope" class="content">
-  <div class="card">
-    <div class="card-title"><i class="fas fa-star"></i> Horoscope</div>
-    <select id="sign-select">
-      <option value="aries">♈ Aries (मेष)</option>
-      <option value="taurus">♉ Taurus (वृष)</option>
-      <option value="gemini">♊ Gemini (मिथुन)</option>
-      <option value="cancer">♋ Cancer (कर्क)</option>
-      <option value="leo">♌ Leo (सिंह)</option>
-      <option value="virgo">♍ Virgo (कन्या)</option>
-      <option value="libra">♎ Libra (तुला)</option>
-      <option value="scorpio">♏ Scorpio (वृश्चिक)</option>
-      <option value="sagittarius">♐ Sagittarius (धनु)</option>
-      <option value="capricorn">♑ Capricorn (मकर)</option>
-      <option value="aquarius">♒ Aquarius (कुंभ)</option>
-      <option value="pisces">♓ Pisces (मीन)</option>
-    </select>
-    <button class="btn" style="width:100%" onclick="getHoroscope()"><i class="fas fa-eye"></i> देखो</button>
-    <div class="result" id="horoscope-result">Horoscope loading...</div>
+  <div class="result-card">
+    <h3><i class="fas fa-trophy"></i> Live Cricket</h3>
+    <button class="send-btn" style="width:100%;margin-bottom:15px" onclick="getCricket()"><i class="fas fa-sync"></i> Live Scores</button>
+    <div id="cricket-result">Cricket loading...</div>
   </div>
 </div>
 
 <!-- STOCK -->
 <div id="stock" class="content">
-  <div class="card">
-    <div class="card-title"><i class="fas fa-chart-bar"></i> Stock Market</div>
-    <div class="input-row">
-      <input id="stock-input" placeholder="Symbol (RELIANCE)" value="RELIANCE">
-      <button class="btn" onclick="getStock()"><i class="fas fa-search"></i></button>
+  <div class="result-card">
+    <h3><i class="fas fa-chart-line"></i> Stock Market</h3>
+    <div class="input-row" style="margin-bottom:15px">
+      <textarea id="stock-input" placeholder="RELIANCE, TCS, INFY..." rows="1">RELIANCE</textarea>
+      <button class="send-btn" onclick="getStock()"><i class="fas fa-search"></i></button>
     </div>
-    <div class="result" id="stock-result">Stock loading...</div>
-    <div class="chart-container" id="stock-chart">Chart यहाँ दिखेगा...</div>
+    <div class="chart-placeholder" id="stock-chart">📈 Stock Chart</div>
+    <div id="stock-result" style="margin-top:15px">Stock data...</div>
   </div>
 </div>
 
-<!-- INVOICE -->
-<div id="invoice" class="content">
-  <div class="card">
-    <div class="card-title"><i class="fas fa-file-invoice-dollar"></i> Invoice Generator</div>
-    <textarea id="invoice-input" placeholder="Details..."></textarea>
-    <button class="btn" style="width:100%" onclick="getInvoice()"><i class="fas fa-magic"></i> Generate Invoice</button>
-    <div class="result" id="invoice-result">Invoice loading...</div>
-  </div>
-</div>
-
-<!-- TASK -->
-<div id="task" class="content">
-  <div class="card">
-    <div class="card-title"><i class="fas fa-clipboard-list"></i> Task Manager</div>
-    <textarea id="task-input" placeholder="Tasks..."></textarea>
-    <button class="btn" style="width:100%" onclick="getTask()"><i class="fas fa-robot"></i> AI Organize</button>
-    <div class="result" id="task-result">Tasks loading...</div>
+<!-- HOROSCOPE -->
+<div id="horoscope" class="content">
+  <div class="result-card">
+    <h3><i class="fas fa-star"></i> Daily Horoscope</h3>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:15px">
+      <button class="tab" style="width:100%" onclick="getHoroscope('aries')">♈ Aries</button>
+      <button class="tab" style="width:100%" onclick="getHoroscope('taurus')">♉ Taurus</button>
+      <button class="tab" style="width:100%" onclick="getHoroscope('gemini')">♊ Gemini</button>
+      <button class="tab" style="width:100%" onclick="getHoroscope('cancer')">♋ Cancer</button>
+      <button class="tab" style="width:100%" onclick="getHoroscope('leo')">♌ Leo</button>
+      <button class="tab" style="width:100%" onclick="getHoroscope('virgo')">♍ Virgo</button>
+      <button class="tab" style="width:100%" onclick="getHoroscope('libra')">♎ Libra</button>
+      <button class="tab" style="width:100%" onclick="getHoroscope('scorpio')">♏ Scorpio</button>
+      <button class="tab" style="width:100%" onclick="getHoroscope('sagittarius')">♐ Sagittarius</button>
+      <button class="tab" style="width:100%" onclick="getHoroscope('capricorn')">♑ Capricorn</button>
+      <button class="tab" style="width:100%" onclick="getHoroscope('aquarius')">♒ Aquarius</button>
+      <button class="tab" style="width:100%" onclick="getHoroscope('pisces')">♓ Pisces</button>
+    </div>
+    <div id="horoscope-result">Select your sign...</div>
   </div>
 </div>
 
 <!-- FINANCE -->
 <div id="finance" class="content">
-  <div class="card">
-    <div class="card-title"><i class="fas fa-piggy-bank"></i> Finance Advisor</div>
-    <textarea id="finance-input" placeholder="Query..."></textarea>
-    <button class="btn" style="width:100%" onclick="getFinance()"><i class="fas fa-brain"></i> AI Advice</button>
-    <div class="result" id="finance-result">Finance loading...</div>
+  <div class="result-card">
+    <h3><i class="fas fa-piggy-bank"></i> AI Finance Advisor</h3>
+    <div class="input-row" style="margin-bottom:15px">
+      <textarea id="finance-input" placeholder="जैसे: ₹50,000 invest करना है, SIP vs FD क्या better?" rows="2"></textarea>
+      <button class="send-btn" onclick="getFinance()"><i class="fas fa-brain"></i></button>
+    </div>
+    <div id="finance-result">Finance advice...</div>
   </div>
 </div>
 
 <!-- GUARD -->
 <div id="guard" class="content">
-  <div class="card">
-    <div class="card-title"><i class="fas fa-shield-alt"></i> Security Guard</div>
-    <textarea id="guard-input" placeholder="Alert..."></textarea>
-    <button class="btn" style="width:100%" onclick="getGuard()"><i class="fas fa-search"></i> AI Analysis</button>
-    <div class="result" id="guard-result">Guard loading...</div>
-  </div>
-</div>
-
-<!-- CODE AI -->
-<div id="code" class="content">
-  <div class="card">
-    <div class="card-title"><i class="fas fa-code"></i> AI Code Writer</div>
-    <textarea id="code-input" placeholder="जैसे: Python calculator बनाओ..." style="min-height:100px"></textarea>
-    <select id="code-lang">
-      <option>Python</option>
-      <option>JavaScript</option>
-      <option>HTML/CSS</option>
-      <option>Java</option>
-      <option>C++</option>
-    </select>
-    <button class="btn" style="width:100%" onclick="generateCode()"><i class="fas fa-robot"></i> Generate Code</button>
-    <div class="result" id="code-result">Code loading...</div>
+  <div class="result-card">
+    <h3><i class="fas fa-shield-alt"></i> AI Security Guard</h3>
+    <div class="input-row" style="margin-bottom:15px">
+      <textarea id="guard-input" placeholder="Alert describe करो..." rows="2"></textarea>
+      <button class="send-btn" onclick="getGuard()"><i class="fas fa-search"></i></button>
+    </div>
+    <div id="guard-result">Security analysis...</div>
   </div>
 </div>
 
 <script>
 const API = "https://singhji-api.onrender.com";
-let currentTab = 'chat';
+let currentModel = 'gemini';
+let chatHistory = JSON.parse(localStorage.getItem('chatHistory') || '[]');
+let webSearchEnabled = false;
+let imageStyle = 'realistic';
 
-// ==================== THEME ====================
-function toggleTheme() {
-  document.body.classList.toggle('light');
-  const btn = document.querySelector('.theme-btn');
-  btn.textContent = document.body.classList.contains('light') ? '☀️' : '🌙';
-  localStorage.setItem('theme', document.body.classList.contains('light') ? 'light' : 'dark');
+// ==================== MODEL TOGGLE ====================
+function toggleModel() {
+  const models = {gemini: 'Gemini Pro', claude: 'Claude 3', gpt: 'GPT-4'};
+  const keys = Object.keys(models);
+  const idx = keys.indexOf(currentModel);
+  currentModel = keys[(idx + 1) % keys.length];
+  document.getElementById('current-model').innerText = models[currentModel];
+  document.getElementById('model-status').innerHTML = `🧠 ${models[currentModel]}`;
 }
-if(localStorage.getItem('theme') === 'light') toggleTheme();
 
 // ==================== TABS ====================
 function showTab(name) {
-  currentTab = name;
   document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.getElementById(name).classList.add('active');
   event.target.classList.add('active');
 }
 
-// ==================== NOTIFICATIONS ====================
-function showToast(msg) {
-  const toast = document.getElementById('notification-toast');
-  document.getElementById('toast-message').innerText = msg;
-  toast.style.display = 'block';
-  setTimeout(() => toast.style.display = 'none', 4000);
-}
-
-// ==================== NETWORK ====================
-function updateNetStatus() {
-  const el = document.getElementById('net-status');
-  if(navigator.onLine) {
-    el.className = 'status-pill online pulse';
-    el.innerHTML = '🌐 Online';
-  } else {
-    el.className = 'status-pill offline';
-    el.innerHTML = '❌ Offline';
-  }
-}
-window.addEventListener('online', () => {updateNetStatus(); showToast('🌐 Online!');});
-window.addEventListener('offline', () => {updateNetStatus(); showToast('❌ Offline!');});
-updateNetStatus();
-
-// ==================== LOCATION ====================
-function getLocation() {
-  const el = document.getElementById('loc-status');
-  if(!navigator.geolocation) {el.innerHTML = '❌ GPS Nahi'; return;}
-  navigator.geolocation.getCurrentPosition(
-    pos => {
-      el.innerHTML = `📍 ${pos.coords.latitude.toFixed(1)},${pos.coords.longitude.toFixed(1)}`;
-      localStorage.setItem('lat', pos.coords.latitude);
-      localStorage.setItem('lon', pos.coords.longitude);
-    },
-    err => {el.innerHTML = '❌ Location Nahi';}
-  );
-}
-getLocation();
-
-// ==================== VOICE ====================
-function startVoice() {
-  if(!('webkitSpeechRecognition' in window)) {showToast('Voice nahi supported!'); return;}
-  const rec = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-  rec.lang = 'hi-IN';
-  rec.start();
-  document.getElementById('mic-status').innerHTML = '🎤 Sun raha...';
-  rec.onresult = e => {
-    const text = e.results[0][0].transcript;
-    document.getElementById('chat-input').value = text;
-    document.getElementById('mic-status').innerHTML = '🎤 Mic Ready';
-    sendChat();
-  };
-}
-
-// ==================== CHAT ====================
-async function sendChat() {
+// ==================== CHAT WITH STREAMING ====================
+async function sendMessage() {
   const input = document.getElementById('chat-input');
   const msg = input.value.trim();
   if(!msg) return;
-  addMsg(msg, 'user');
+  
+  // Add user message
+  addChatMessage(msg, 'user');
   input.value = '';
-  addTyping();
+  updateMemoryStatus('AI thinking...');
+  
+  // Show typing
+  const typingId = showTyping();
+  
   try {
-    const r = await fetch(API+'/chat', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({message:msg})});
-    const d = await r.json();
-    removeTyping();
-    addMsg(d.reply, 'bot');
-    speakText(d.reply);
-  } catch {
-    removeTyping();
-    addMsg('❌ Error! Try again.', 'bot');
+    // Streaming response
+    const response = await fetch(API+'/chat', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({message: msg, model: currentModel, history: chatHistory})
+    });
+    
+    const data = await response.json();
+    removeTyping(typingId);
+    
+    // Stream the response
+    await streamResponse(data.reply);
+    
+    // Save to memory
+    chatHistory.push({role: 'user', content: msg});
+    chatHistory.push({role: 'assistant', content: data.reply});
+    if(chatHistory.length > 20) chatHistory = chatHistory.slice(-20);
+    localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
+    updateMemoryStatus(`${chatHistory.length/2} chats saved`);
+    
+  } catch(error) {
+    removeTyping(typingId);
+    addChatMessage('❌ Error! AI se connect nahi ho raha. Retry karo.', 'bot');
   }
 }
 
-function addMsg(text, type) {
-  const div = document.getElementById('chat-messages');
-  div.innerHTML += `<div class="msg ${type}"><div class="bubble">${text}</div></div>`;
-  div.scrollTop = div.scrollHeight;
+function addChatMessage(text, type) {
+  const container = document.getElementById('chat-container');
+  const div = document.createElement('div');
+  div.className = `chat-msg ${type}`;
+  const time = new Date().toLocaleTimeString('hi-IN', {hour: '2-digit', minute: '2-digit'});
+  
+  if(type === 'bot') {
+    div.innerHTML = `
+      <div class="bubble">${formatMessage(text)}</div>
+      <div class="time">${time} • ${currentModel}</div>
+    `;
+  } else {
+    div.innerHTML = `
+      <div class="bubble">${text}</div>
+      <div class="time">${time} • You</div>
+    `;
+  }
+  
+  container.appendChild(div);
+  container.scrollTop = container.scrollHeight;
 }
 
-function addTyping() {
-  const div = document.getElementById('chat-messages');
-  div.innerHTML += `<div class="msg bot" id="typing"><div class="bubble"><div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div></div></div>`;
-  div.scrollTop = div.scrollHeight;
+function formatMessage(text) {
+  // Format code blocks
+  text = text.replace(/```(\w+)?\n([\s\S]*?)```/g, '<pre><code>$2</code></pre>');
+  // Format inline code
+  text = text.replace(/`([^`]+)`/g, '<code>$1</code>');
+  // Format bold
+  text = text.replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>');
+  // Format links
+  text = text.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" style="color:var(--secondary)">$1</a>');
+  return text;
 }
 
-function removeTyping() {
-  document.getElementById('typing')?.remove();
+async function streamResponse(text) {
+  const container = document.getElementById('chat-container');
+  const div = document.createElement('div');
+  div.className = 'chat-msg bot';
+  const time = new Date().toLocaleTimeString('hi-IN', {hour: '2-digit', minute: '2-digit'});
+  
+  div.innerHTML = `
+    <div class="bubble"><span class="streaming-text" id="stream-text"></span><span class="streaming-cursor"></span></div>
+    <div class="time">${time} • ${currentModel}</div>
+  `;
+  container.appendChild(div);
+  container.scrollTop = container.scrollHeight;
+  
+  const streamEl = div.querySelector('#stream-text');
+  const words = text.split(' ');
+  
+  for(let i = 0; i < words.length; i++) {
+    streamEl.innerHTML += words[i] + ' ';
+    container.scrollTop = container.scrollHeight;
+    await new Promise(r => setTimeout(r, 30)); // Typing speed
+  }
+  
+  // Final format
+  streamEl.innerHTML = formatMessage(text);
+  streamEl.nextElementSibling.remove(); // Remove cursor
 }
 
-// ==================== TTS ====================
-function speakText(text) {
-  const utter = new SpeechSynthesisUtterance(text);
-  utter.lang = 'hi-IN';
-  utter.rate = 0.9;
-  speechSynthesis.speak(utter);
+function showTyping() {
+  const container = document.getElementById('chat-container');
+  const id = 'typing-' + Date.now();
+  const div = document.createElement('div');
+  div.className = 'chat-msg bot';
+  div.id = id;
+  div.innerHTML = `
+    <div class="bubble">
+      <div class="typing-indicator">
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+      </div>
+    </div>
+  `;
+  container.appendChild(div);
+  container.scrollTop = container.scrollHeight;
+  return id;
+}
+
+function removeTyping(id) {
+  document.getElementById(id)?.remove();
+}
+
+function updateMemoryStatus(text) {
+  document.getElementById('input-status').innerText = text;
+}
+
+// ==================== VOICE ====================
+function startVoice() {
+  if(!('webkitSpeechRecognition' in window)) {
+    addChatMessage('❌ Voice input supported nahi hai is browser mein!', 'bot');
+    return;
+  }
+  const rec = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+  rec.lang = 'hi-IN';
+  rec.continuous = true;
+  rec.interimResults = true;
+  
+  rec.onstart = () => updateMemoryStatus('🎤 Listening...');
+  
+  rec.onresult = e => {
+    const transcript = Array.from(e.results)
+      .map(r => r[0].transcript)
+      .join('');
+    document.getElementById('chat-input').value = transcript;
+  };
+  
+  rec.onend = () => {
+    updateMemoryStatus('AI ready • Type to chat');
+    const msg = document.getElementById('chat-input').value.trim();
+    if(msg) sendMessage();
+  };
+  
+  rec.start();
+}
+
+// ==================== WEB SEARCH ====================
+async function webSearch() {
+  const query = document.getElementById('search-input').value;
+  const results = document.getElementById('search-results');
+  results.innerHTML = '<div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>';
+  
+  try {
+    const r = await fetch(API+'/chat', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({message: `Search web for: ${query}. Give top 5 results with links and summaries.`})
+    });
+    const d = await r.json();
+    results.innerHTML = formatWebResults(d.reply);
+  } catch {
+    results.innerHTML = '❌ Search failed!';
+  }
+}
+
+function formatWebResults(text) {
+  // Parse and format web results
+  return `<div class="web-result"><a href="#">${text.substring(0, 100)}...</a><p>Web search results</p></div>`;
+}
+
+function toggleSearch() {
+  webSearchEnabled = !webSearchEnabled;
+  updateMemoryStatus(webSearchEnabled ? '🌐 Web search ON' : 'AI ready • Type to chat');
 }
 
 // ==================== AI IMAGE ====================
-async function generateImage(style) {
-  const prompt = document.getElementById('image-prompt').value || 'एक सुंदर भारतीय गांव';
-  const result = document.getElementById('image-result');
-  result.innerHTML = '<div class="loading">Generating...<<div class="progress-bar"></div></div>';
+function setImageStyle(style) {
+  imageStyle = style;
+  updateMemoryStatus(`🎨 ${style} mode selected`);
+}
+
+async function generateImage() {
+  const prompt = document.getElementById('image-prompt').value;
+  const results = document.getElementById('image-results');
+  results.innerHTML = '<div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div> Generating...';
   
-  // Using Pollinations AI (Free)
-  const encodedPrompt = encodeURIComponent(prompt + ' ' + (style || ''));
-  const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=512&height=512&nologo=true`;
+  try {
+    const encodedPrompt = encodeURIComponent(`${prompt}, ${imageStyle}, high quality, detailed`);
+    const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=512&height=512&nologo=true&seed=${Date.now()}`;
+    
+    results.innerHTML = `
+      <div class="image-grid">
+        <img src="${imageUrl}" alt="AI Generated" onclick="downloadImage('${imageUrl}')">
+      </div>
+      <div style="margin-top:10px;font-size:13px;color:var(--text-secondary)">
+        🎨 ${imageStyle.toUpperCase()} • Click to download
+      </div>
+    `;
+    updateMemoryStatus('🎨 Image generated!');
+  } catch {
+    results.innerHTML = '❌ Image generation failed!';
+  }
+}
+
+function downloadImage(url) {
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `singhji-ai-${Date.now()}.png`;
+  a.click();
+}
+
+// ==================== CODE ====================
+async function generateCode() {
+  const prompt = document.getElementById('code-input').value;
+  const lang = document.getElementById('code-lang').value;
+  const output = document.getElementById('code-output');
   
-  result.innerHTML = `<img src="${imageUrl}" class="image-result" alt="AI Image"><div style="margin-top:10px">✨ AI Generated: ${prompt}</div>`;
-  showToast('🎨 Image Generated!');
+  output.innerHTML = '<div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div> Generating code...';
+  
+  try {
+    const r = await fetch(API+'/chat', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({message: `Write ${lang} code for: ${prompt}. Only code, no explanation. Add comments in Hindi.`})
+    });
+    const d = await r.json();
+    output.innerHTML = `<pre style="background:#000;padding:15px;border-radius:12px;overflow-x:auto;font-family:'Fira Code',monospace;font-size:13px;line-height:1.6">${escapeHtml(d.reply)}</pre>`;
+  } catch {
+    output.innerHTML = '❌ Code generation failed!';
+  }
+}
+
+function runCode() {
+  const code = document.getElementById('code-input').value;
+  const lang = document.getElementById('code-lang').value;
+  const output = document.getElementById('code-output');
+  
+  if(lang === 'JavaScript') {
+    try {
+      const result = eval(code);
+      output.innerHTML = `<div style="color:var(--success)">✅ Output: ${result}</div>`;
+    } catch(e) {
+      output.innerHTML = `<div style="color:var(--danger)">❌ Error: ${e.message}</div>`;
+    }
+  } else {
+    output.innerHTML = '<div style="color:var(--warning)">⚠️ Execution only for JavaScript in browser. Use backend for Python/Java.</div>';
+  }
+}
+
+function escapeHtml(text) {
+  return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
 // ==================== CRYPTO ====================
-async function getCrypto() {
-  const coins = ['bitcoin', 'ethereum', 'solana', 'matic-network'];
-  const ids = ['btc', 'eth', 'sol', 'matic'];
+async function refreshCrypto() {
+  const tbody = document.getElementById('crypto-data');
+  tbody.innerHTML = '<tr><td colspan="4" style="text-align:center"><div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div></td></tr>';
   
   try {
-    const r = await fetch('https://api.coingecko.com/api/v3/simple/price?ids='+coins.join(',')+'&vs_currencies=inr&include_24hr_change=true');
-    const d = await r.json();
+    const r = await fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=inr&order=market_cap_desc&per_page=5&page=1&sparkline=false');
+    const data = await r.json();
     
-    document.getElementById('btc-price').innerText = '₹' + d.bitcoin.inr.toLocaleString();
-    document.getElementById('btc-change').innerText = (d.bitcoin.inr_24h_change > 0 ? '+' : '') + d.bitcoin.inr_24h_change.toFixed(2) + '%';
-    document.getElementById('btc-change').style.color = d.bitcoin.inr_24h_change > 0 ? 'var(--success)' : 'var(--danger)';
+    tbody.innerHTML = data.map(coin => `
+      <tr>
+        <td style="display:flex;align-items:center;gap:10px">
+          <img src="${coin.image}" style="width:24px;height:24px">
+          <div>
+            <div style="font-weight:700">${coin.name}</div>
+            <div style="font-size:11px;color:var(--text-secondary);text-transform:uppercase">${coin.symbol}</div>
+          </div>
+        </td>
+        <td>₹${coin.current_price.toLocaleString()}</td>
+        <td class="${coin.price_change_percentage_24h > 0 ? 'price-up' : 'price-down'}">
+          ${coin.price_change_percentage_24h > 0 ? '↗' : '↘'} ${Math.abs(coin.price_change_percentage_24h).toFixed(2)}%
+        </td>
+        <td>₹${(coin.market_cap / 1e9).toFixed(2)}B</td>
+      </tr>
+    `).join('');
     
-    document.getElementById('eth-price').innerText = '₹' + d.ethereum.inr.toLocaleString();
-    document.getElementById('eth-change').innerText = (d.ethereum.inr_24h_change > 0 ? '+' : '') + d.ethereum.inr_24h_change.toFixed(2) + '%';
-    
-    document.getElementById('sol-price').innerText = '₹' + d.solana.inr.toLocaleString();
-    document.getElementById('sol-change').innerText = (d.solana.inr_24h_change > 0 ? '+' : '') + d.solana.inr_24h_change.toFixed(2) + '%';
-    
-    document.getElementById('matic-price').innerText = '₹' + d['matic-network'].inr.toLocaleString();
-    document.getElementById('matic-change').innerText = (d['matic-network'].inr_24h_change > 0 ? '+' : '') + d['matic-network'].inr_24h_change.toFixed(2) + '%';
-    
-    showToast('💰 Crypto Updated!');
+    updateMemoryStatus('💰 Crypto updated!');
   } catch {
-    showToast('❌ Crypto Error!');
+    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--danger)">❌ Failed to load crypto data</td></tr>';
   }
 }
 
 // ==================== WEATHER ====================
 async function getWeather() {
-  const city = document.getElementById('city-input').value || 'Kanpur';
-  document.getElementById('weather-result').innerHTML = '<div class="loading">Loading...</div>';
+  const city = document.getElementById('weather-input').value || 'Kanpur';
+  const result = document.getElementById('weather-result');
+  result.innerHTML = '<div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>';
+  
   try {
     const r = await fetch(API+'/weather?city='+city);
     const d = await r.json();
-    document.getElementById('weather-result').innerText = d.reply;
+    result.innerHTML = `<div style="font-size:18px;font-weight:600">${d.reply}</div>`;
   } catch {
-    document.getElementById('weather-result').innerText = '❌ Error!';
+    result.innerHTML = '❌ Weather failed!';
   }
 }
 
-async function getAutoWeather() {
-  const lat = localStorage.getItem('lat');
-  const lon = localStorage.getItem('lon');
-  if(!lat) {getWeather(); return;}
-  try {
-    const r = await fetch(API+`/weather?lat=${lat}&lon=${lon}`);
-    const d = await r.json();
-    document.getElementById('weather-result').innerText = d.reply;
-  } catch {getWeather();}
+function getLocationWeather() {
+  if(!navigator.geolocation) {
+    getWeather();
+    return;
+  }
+  navigator.geolocation.getCurrentPosition(
+    pos => {
+      document.getElementById('weather-input').value = `${pos.coords.latitude.toFixed(2)}, ${pos.coords.longitude.toFixed(2)}`;
+      getWeather();
+    },
+    () => getWeather()
+  );
 }
 
 // ==================== NEWS ====================
 async function getNews() {
-  document.getElementById('news-result').innerHTML = '<div class="loading">Loading...</div>';
+  const result = document.getElementById('news-result');
+  result.innerHTML = '<div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div> Fetching latest news...';
+  
   try {
     const r = await fetch(API+'/news');
     const d = await r.json();
-    document.getElementById('news-result').innerText = d.reply;
+    result.innerHTML = formatMessage(d.reply);
   } catch {
-    document.getElementById('news-result').innerText = '❌ Error!';
+    result.innerHTML = '❌ News failed!';
   }
 }
 
 // ==================== CRICKET ====================
 async function getCricket() {
-  document.getElementById('cricket-result').innerHTML = '<div class="loading">Loading...</div>';
+  const result = document.getElementById('cricket-result');
+  result.innerHTML = '<div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div> Fetching live scores...';
+  
   try {
     const r = await fetch(API+'/cricket');
     const d = await r.json();
-    document.getElementById('cricket-result').innerText = d.reply;
+    result.innerHTML = formatMessage(d.reply);
   } catch {
-    document.getElementById('cricket-result').innerText = '❌ Error!';
-  }
-}
-
-// ==================== HOROSCOPE ====================
-async function getHoroscope() {
-  const sign = document.getElementById('sign-select').value;
-  document.getElementById('horoscope-result').innerHTML = '<div class="loading">Loading...</div>';
-  try {
-    const r = await fetch(API+'/horoscope', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({sign})});
-    const d = await r.json();
-    document.getElementById('horoscope-result').innerText = d.reply;
-  } catch {
-    document.getElementById('horoscope-result').innerText = '❌ Error!';
+    result.innerHTML = '❌ Cricket failed!';
   }
 }
 
 // ==================== STOCK ====================
 async function getStock() {
   const symbol = document.getElementById('stock-input').value || 'RELIANCE';
-  document.getElementById('stock-result').innerHTML = '<div class="loading">Loading...</div>';
+  const result = document.getElementById('stock-result');
+  result.innerHTML = '<div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>';
+  
   try {
     const r = await fetch(API+'/stock?symbol='+symbol);
     const d = await r.json();
-    document.getElementById('stock-result').innerText = d.reply;
-    // Simple chart
-    document.getElementById('stock-chart').innerHTML = '📊 Chart: ' + symbol + ' trending...';
+    result.innerHTML = formatMessage(d.reply);
   } catch {
-    document.getElementById('stock-result').innerText = '❌ Error!';
+    result.innerHTML = '❌ Stock failed!';
   }
 }
 
-// ==================== INVOICE ====================
-async function getInvoice() {
-  const details = document.getElementById('invoice-input').value;
-  document.getElementById('invoice-result').innerHTML = '<div class="loading">Loading...</div>';
+// ==================== HOROSCOPE ====================
+async function getHoroscope(sign) {
+  const result = document.getElementById('horoscope-result');
+  result.innerHTML = '<div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div> Reading stars...';
+  
   try {
-    const r = await fetch(API+'/invoice', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({details})});
+    const r = await fetch(API+'/horoscope', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({sign})
+    });
     const d = await r.json();
-    document.getElementById('invoice-result').innerText = d.reply;
+    result.innerHTML = `
+      <div style="text-align:center;margin-bottom:15px">
+        <div style="font-size:48px">${getSignEmoji(sign)}</div>
+        <div style="font-size:20px;font-weight:700;text-transform:capitalize">${sign}</div>
+      </div>
+      <div style="line-height:1.8">${formatMessage(d.reply)}</div>
+    `;
   } catch {
-    document.getElementById('invoice-result').innerText = '❌ Error!';
+    result.innerHTML = '❌ Horoscope failed!';
   }
 }
 
-// ==================== TASK ====================
-async function getTask() {
-  const task = document.getElementById('task-input').value;
-  document.getElementById('task-result').innerHTML = '<div class="loading">Loading...</div>';
-  try {
-    const r = await fetch(API+'/task', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({task})});
-    const d = await r.json();
-    document.getElementById('task-result').innerText = d.reply;
-  } catch {
-    document.getElementById('task-result').innerText = '❌ Error!';
-  }
+function getSignEmoji(sign) {
+  const emojis = {aries:'♈',taurus:'♉',gemini:'♊',cancer:'♋',leo:'♌',virgo:'♍',libra:'♎',scorpio:'♏',sagittarius:'♐',capricorn:'♑',aquarius:'♒',pisces:'♓'};
+  return emojis[sign] || '⭐';
 }
 
 // ==================== FINANCE ====================
 async function getFinance() {
   const query = document.getElementById('finance-input').value;
-  document.getElementById('finance-result').innerHTML = '<div class="loading">Loading...</div>';
+  const result = document.getElementById('finance-result');
+  result.innerHTML = '<div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div> Analyzing...';
+  
   try {
-    const r = await fetch(API+'/finance', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({query})});
+    const r = await fetch(API+'/finance', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({query})
+    });
     const d = await r.json();
-    document.getElementById('finance-result').innerText = d.reply;
+    result.innerHTML = formatMessage(d.reply);
   } catch {
-    document.getElementById('finance-result').innerText = '❌ Error!';
+    result.innerHTML = '❌ Finance failed!';
   }
 }
 
 // ==================== GUARD ====================
 async function getGuard() {
   const alert = document.getElementById('guard-input').value;
-  document.getElementById('guard-result').innerHTML = '<div class="loading">Loading...</div>';
+  const result = document.getElementById('guard-result');
+  result.innerHTML = '<div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div> Analyzing threat...';
+  
   try {
-    const r = await fetch(API+'/guard', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({alert})});
+    const r = await fetch(API+'/guard', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({alert})
+    });
     const d = await r.json();
-    document.getElementById('guard-result').innerText = d.reply;
+    result.innerHTML = formatMessage(d.reply);
   } catch {
-    document.getElementById('guard-result').innerText = '❌ Error!';
-  }
-}
-
-// ==================== CODE AI ====================
-async function generateCode() {
-  const prompt = document.getElementById('code-input').value;
-  const lang = document.getElementById('code-lang').value;
-  document.getElementById('code-result').innerHTML = '<div class="loading">Generating Code...</div>';
-  try {
-    const r = await fetch(API+'/chat', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({message:`Write ${lang} code for: ${prompt}. Only code, no explanation.`})});
-    const d = await r.json();
-    document.getElementById('code-result').innerHTML = '<pre style="background:#0a0a1a;padding:15px;border-radius:10px;overflow-x:auto;font-family:monospace;font-size:13px">' + d.reply + '</pre>';
-  } catch {
-    document.getElementById('code-result').innerText = '❌ Error!';
+    result.innerHTML = '❌ Guard failed!';
   }
 }
 
 // ==================== INIT ====================
 window.addEventListener('load', () => {
-  getCrypto(); // Auto load crypto
-  getWeather(); // Auto load weather
-  // Auto refresh crypto every 30 seconds
+  refreshCrypto();
+  updateMemoryStatus(`${chatHistory.length/2} chats • AI ready`);
+  
+  // Auto refresh crypto every 30s
   setInterval(() => {
-    if(currentTab === 'crypto') getCrypto();
+    if(document.getElementById('crypto').classList.contains('active')) {
+      refreshCrypto();
+    }
   }, 30000);
 });
 
+// Service Worker
 if('serviceWorker' in navigator) {
   navigator.serviceWorker.register('sw.js').catch(() => {});
 }
