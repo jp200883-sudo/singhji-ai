@@ -5,291 +5,320 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#FF6B00">
 <meta http-equiv="refresh" content="300">
-<title>Singh Ji AI</title>
+<title>Singh Ji AI - Superior</title>
 <link rel="manifest" href="manifest.json">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-:root{--primary:#FF6B00;--bg:#1a1a2e;--card:#16213e;--text:#fff;--accent:#0f3460}
-.light{--bg:#f0f0f0;--card:#fff;--text:#333;--accent:#e0e0e0}
-*{margin:0;padding:0;box-sizing:border-box;transition:background 0.3s,color 0.3s}
-body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
-.header{background:var(--primary);padding:15px;text-align:center;font-size:22px;font-weight:bold;position:sticky;top:0;z-index:100;box-shadow:0 2px 10px rgba(0,0,0,0.3);display:flex;align-items:center;justify-content:center;gap:10px}
-.theme-btn{position:absolute;right:15px;background:rgba(255,255,255,0.2);border:none;color:white;padding:8px 12px;border-radius:20px;cursor:pointer;font-size:12px}
-.tabs{display:flex;overflow-x:auto;background:var(--card);padding:8px;gap:5px;position:sticky;top:58px;z-index:99;scrollbar-width:none}
+:root{--primary:#FF6B00;--secondary:#FF8C00;--bg:#0a0a1a;--card:#12122e;--text:#fff;--accent:#1a1a3e;--success:#00c853;--danger:#ff1744;--warning:#ffd600}
+.light{--bg:#f5f5f5;--card:#fff;--text:#1a1a1a;--accent:#e8e8e8}
+*{margin:0;padding:0;box-sizing:border-box;transition:all 0.3s ease}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+.glass{background:rgba(255,255,255,0.05);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.1)}
+.header{background:linear-gradient(135deg,var(--primary),var(--secondary));padding:15px;text-align:center;font-size:24px;font-weight:800;position:sticky;top:0;z-index:100;box-shadow:0 4px 30px rgba(255,107,0,0.4);display:flex;align-items:center;justify-content:center;gap:15px;text-shadow:2px 2px 4px rgba(0,0,0,0.3)}
+.header-icon{font-size:32px;animation:float 3s ease infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.badge{background:rgba(255,255,255,0.2);padding:5px 15px;border-radius:20px;font-size:12px;font-weight:600}
+.theme-btn{position:absolute;right:15px;background:rgba(255,255,255,0.2);border:none;color:white;padding:10px 15px;border-radius:50%;cursor:pointer;font-size:18px;transition:0.3s}
+.theme-btn:hover{transform:rotate(180deg) scale(1.1)}
+.status-bar{display:flex;gap:10px;margin:10px;padding:10px;overflow-x:auto}
+.status-pill{background:var(--card);padding:8px 16px;border-radius:25px;font-size:12px;display:flex;align-items:center;gap:6px;white-space:nowrap;box-shadow:0 2px 10px rgba(0,0,0,0.2)}
+.status-pill.online{border:2px solid var(--success);color:var(--success)}
+.status-pill.offline{border:2px solid var(--danger);color:var(--danger)}
+.pulse{animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(0,200,83,0.4)}50%{box-shadow:0 0 0 10px rgba(0,200,83,0)}}
+.tabs{display:flex;overflow-x:auto;padding:10px;gap:8px;scrollbar-width:none}
 .tabs::-webkit-scrollbar{display:none}
-.tab{padding:10px 18px;border:none;background:transparent;color:#888;cursor:pointer;white-space:nowrap;font-size:13px;border-radius:25px;font-weight:500;transition:all 0.3s}
-.tab.active{background:var(--primary);color:white;transform:scale(1.05);box-shadow:0 2px 8px rgba(255,107,0,0.4)}
-.content{padding:15px;display:none;animation:fadeIn 0.4s}
+.tab{padding:12px 20px;border:none;background:var(--card);color:#888;cursor:pointer;white-space:nowrap;font-size:13px;border-radius:30px;font-weight:600;box-shadow:0 2px 10px rgba(0,0,0,0.2);transition:0.3s}
+.tab:hover{transform:translateY(-2px);box-shadow:0 4px 15px rgba(255,107,0,0.3)}
+.tab.active{background:linear-gradient(135deg,var(--primary),var(--secondary));color:white;transform:scale(1.05);box-shadow:0 4px 20px rgba(255,107,0,0.4)}
+.content{padding:15px;display:none;animation:fadeIn 0.5s}
 .content.active{display:block}
-@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-.chat-messages{height:45vh;overflow-y:auto;padding:15px;background:var(--card);border-radius:15px;margin-bottom:12px;box-shadow:inset 0 2px 10px rgba(0,0,0,0.1)}
-.msg{margin:10px 0;animation:slideIn 0.3s}
-@keyframes slideIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.card{background:var(--card);padding:20px;border-radius:20px;margin-bottom:15px;box-shadow:0 4px 20px rgba(0,0,0,0.2);border:1px solid rgba(255,255,255,0.05)}
+.card-title{font-size:18px;font-weight:700;margin-bottom:15px;color:var(--primary);display:flex;align-items:center;gap:10px}
+.chat-messages{height:50vh;overflow-y:auto;padding:15px;background:var(--accent);border-radius:20px;margin-bottom:15px;box-shadow:inset 0 2px 20px rgba(0,0,0,0.2)}
+.msg{margin:12px 0;animation:slideIn 0.4s}
+@keyframes slideIn{from{opacity:0;transform:translateX(-30px)}to{opacity:1;transform:translateX(0)}}
 .msg.user{text-align:right}
-.msg.user span{background:var(--primary);padding:10px 15px;border-radius:18px 18px 0 18px;display:inline-block;max-width:85%;box-shadow:0 2px 8px rgba(255,107,0,0.3)}
-.msg.bot span{background:var(--accent);padding:10px 15px;border-radius:18px 18px 18px 0;display:inline-block;max-width:85%;box-shadow:0 2px 8px rgba(0,0,0,0.1)}
-.input-row{display:flex;gap:10px;align-items:center}
-input,textarea{flex:1;padding:12px 18px;border-radius:25px;border:2px solid transparent;background:var(--card);color:var(--text);font-size:14px;outline:none;transition:border 0.3s}
-input:focus,textarea:focus{border-color:var(--primary)}
-button{background:var(--primary);color:white;border:none;padding:12px 20px;border-radius:25px;cursor:pointer;font-weight:600;transition:all 0.3s;box-shadow:0 2px 10px rgba(255,107,0,0.3)}
-button:hover{transform:translateY(-2px);box-shadow:0 4px 15px rgba(255,107,0,0.5)}
-button:active{transform:scale(0.95)}
-.feature-btn{width:100%;margin:8px 0;padding:14px;font-size:15px;border-radius:12px;display:flex;align-items:center;gap:10px;justify-content:center}
-.result{background:var(--card);padding:15px;border-radius:15px;margin-top:12px;min-height:100px;white-space:pre-wrap;line-height:1.7;box-shadow:0 2px 10px rgba(0,0,0,0.1);border-left:4px solid var(--primary)}
-select{width:100%;padding:12px;background:var(--card);color:var(--text);border:2px solid var(--primary);border-radius:12px;margin-bottom:12px;font-size:14px;outline:none}
-textarea{width:100%;padding:12px;background:var(--card);color:var(--text);border:2px solid var(--primary);border-radius:12px;min-height:100px;margin-bottom:12px;font-size:14px;resize:vertical}
-.voice-btn{background:linear-gradient(135deg,#FF6B00,#FF8C00);border-radius:50%;width:50px;height:50px;display:flex;align-items:center;justify-content:center;font-size:20px;animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(255,107,0,0.7)}50%{box-shadow:0 0 0 15px rgba(255,107,0,0)}}
-.auto-badge{background:#00c853;color:white;padding:4px 10px;border-radius:12px;font-size:11px;margin-left:8px}
-.status-bar{display:flex;gap:10px;margin-bottom:15px;flex-wrap:wrap}
-.status-pill{background:var(--card);padding:8px 15px;border-radius:20px;font-size:12px;display:flex;align-items:center;gap:5px}
-.status-pill.online{border:1px solid #00c853;color:#00c853}
-.status-pill.offline{border:1px solid #ff1744;color:#ff1744}
-.auto-panel{background:var(--card);padding:15px;border-radius:15px;margin-bottom:15px}
-.auto-panel h4{margin-bottom:10px;color:var(--primary)}
-.auto-toggle{display:flex;align-items:center;gap:10px;margin:8px 0}
-.toggle-switch{position:relative;width:50px;height:26px;background:#444;border-radius:13px;cursor:pointer;transition:0.3s}
-.toggle-switch.active{background:var(--primary)}
-.toggle-switch::after{content:'';position:absolute;width:22px;height:22px;background:white;border-radius:50%;top:2px;left:2px;transition:0.3s}
-.toggle-switch.active::after{left:26px}
-.notification-toast{position:fixed;top:80px;right:15px;background:var(--primary);color:white;padding:15px 20px;border-radius:15px;box-shadow:0 4px 20px rgba(0,0,0,0.3);z-index:1000;display:none;animation:slideDown 0.3s;max-width:300px}
-@keyframes slideDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
-.camera-preview{width:100%;max-width:400px;height:300px;background:#000;border-radius:15px;margin:10px auto;display:none;object-fit:cover}
-.loading{display:flex;align-items:center;gap:8px;color:#888;font-size:14px}
-.dot{animation:blink 1.4s infinite both}
-.dot:nth-child(2){animation-delay:0.2s}
-.dot:nth-child(3){animation-delay:0.4s}
-@keyframes blink{0%,80%,100%{opacity:0}40%{opacity:1}}
+.msg.user .bubble{background:linear-gradient(135deg,var(--primary),var(--secondary));padding:12px 18px;border-radius:20px 20px 0 20px;display:inline-block;max-width:85%;box-shadow:0 4px 15px rgba(255,107,0,0.3);font-weight:500}
+.msg.bot .bubble{background:var(--accent);padding:12px 18px;border-radius:20px 20px 20px 0;display:inline-block;max-width:85%;box-shadow:0 4px 15px rgba(0,0,0,0.1);border-left:3px solid var(--primary)}
+.typing-indicator{display:flex;gap:6px;padding:12px 18px;background:var(--accent);border-radius:20px;width:fit-content}
+.typing-dot{width:8px;height:8px;background:var(--primary);border-radius:50%;animation:typing 1.4s infinite}
+.typing-dot:nth-child(2){animation-delay:0.2s}
+.typing-dot:nth-child(3){animation-delay:0.4s}
+@keyframes typing{0%,80%,100%{transform:scale(0)}40%{transform:scale(1)}}
+.input-row{display:flex;gap:10px;align-items:center;padding:10px;background:var(--card);border-radius:20px}
+input,textarea{flex:1;padding:14px 20px;border-radius:25px;border:2px solid transparent;background:var(--accent);color:var(--text);font-size:15px;outline:none;transition:0.3s}
+input:focus,textarea:focus{border-color:var(--primary);box-shadow:0 0 15px rgba(255,107,0,0.2)}
+.btn{background:linear-gradient(135deg,var(--primary),var(--secondary));color:white;border:none;padding:14px 24px;border-radius:25px;cursor:pointer;font-weight:700;box-shadow:0 4px 15px rgba(255,107,0,0.3);transition:0.3s;display:flex;align-items:center;gap:8px}
+.btn:hover{transform:translateY(-3px);box-shadow:0 6px 25px rgba(255,107,0,0.5)}
+.btn:active{transform:scale(0.95)}
+.btn-icon{width:45px;height:45px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px}
+.btn-secondary{background:var(--accent);border:2px solid var(--primary)}
+.feature-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:15px}
+.feature-btn{padding:15px;border-radius:15px;background:var(--card);border:1px solid rgba(255,255,255,0.1);color:var(--text);cursor:pointer;transition:0.3s;display:flex;flex-direction:column;align-items:center;gap:8px;font-weight:600}
+.feature-btn:hover{background:linear-gradient(135deg,var(--primary),var(--secondary));transform:translateY(-3px);box-shadow:0 6px 20px rgba(255,107,0,0.3)}
+.feature-btn i{font-size:24px}
+.result{background:var(--accent);padding:20px;border-radius:20px;margin-top:15px;min-height:100px;white-space:pre-wrap;line-height:1.8;box-shadow:0 4px 15px rgba(0,0,0,0.1);border-left:4px solid var(--primary);font-size:15px}
+.image-result{max-width:100%;border-radius:15px;margin-top:10px;box-shadow:0 4px 20px rgba(0,0,0,0.3)}
+select{width:100%;padding:14px;background:var(--accent);color:var(--text);border:2px solid var(--primary);border-radius:15px;margin-bottom:15px;font-size:15px;outline:none}
+textarea{width:100%;padding:14px;background:var(--accent);color:var(--text);border:2px solid var(--primary);border-radius:15px;min-height:120px;margin-bottom:15px;font-size:15px;resize:vertical}
+.crypto-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.crypto-card{background:linear-gradient(135deg,#1a1a3e,#0f0f2e);padding:15px;border-radius:15px;text-align:center;border:1px solid rgba(255,255,255,0.1)}
+.crypto-price{font-size:24px;font-weight:800;color:var(--success)}
+.crypto-change{font-size:14px;color:var(--danger)}
+.chart-container{height:200px;background:var(--accent);border-radius:15px;padding:15px;margin-top:10px}
+.ai-image-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:10px}
+.ai-image{aspect-ratio:1;background:linear-gradient(135deg,var(--primary),#ff006e);border-radius:15px;display:flex;align-items:center;justify-content:center;font-size:40px;cursor:pointer;transition:0.3s}
+.ai-image:hover{transform:scale(1.05);box-shadow:0 8px 30px rgba(255,107,0,0.4)}
+.notification-toast{position:fixed;top:20px;right:20px;background:linear-gradient(135deg,var(--primary),var(--secondary));color:white;padding:20px 25px;border-radius:20px;box-shadow:0 8px 30px rgba(0,0,0,0.3);z-index:1000;display:none;animation:slideDown 0.4s;max-width:350px;font-weight:600}
+@keyframes slideDown{from{opacity:0;transform:translateY(-30px)}to{opacity:1;transform:translateY(0)}}
+.progress-bar{height:4px;background:var(--primary);border-radius:2px;animation:progress 2s ease infinite;margin-top:10px}
+@keyframes progress{0%{width:0%}50%{width:100%}100%{width:0%}}
+.voice-wave{display:flex;align-items:center;gap:3px;height:40px}
+.voice-bar{width:4px;background:var(--primary);border-radius:2px;animation:wave 1s ease infinite}
+.voice-bar:nth-child(1){height:20%;animation-delay:0s}
+.voice-bar:nth-child(2){height:40%;animation-delay:0.1s}
+.voice-bar:nth-child(3){height:60%;animation-delay:0.2s}
+.voice-bar:nth-child(4){height:80%;animation-delay:0.3s}
+.voice-bar:nth-child(5){height:100%;animation-delay:0.4s}
+@keyframes wave{0%,100%{height:20%}50%{height:100%}}
 </style>
 </head>
 <body>
 <div class="header">
-  🤖 Singh Ji AI
-  <span class="auto-badge">AUTO</span>
+  <span class="header-icon">🤖</span>
+  <span>Singh Ji AI</span>
+  <span class="badge">SUPERIOR</span>
   <button class="theme-btn" onclick="toggleTheme()">🌙</button>
 </div>
 
 <div class="notification-toast" id="notification-toast">
   <div id="toast-message">Notification</div>
+  <div class="progress-bar"></div>
 </div>
 
 <div class="status-bar">
-  <div class="status-pill online" id="net-status">🌐 Online</div>
+  <div class="status-pill online pulse" id="net-status">🌐 Online</div>
   <div class="status-pill" id="loc-status">📍 Location...</div>
   <div class="status-pill" id="mic-status">🎤 Mic Ready</div>
   <div class="status-pill" id="auto-status">⚡ Auto: ON</div>
 </div>
 
-<!-- AUTO CONTROL PANEL -->
-<div class="auto-panel">
-  <h4>⚙️ Auto Settings</h4>
-  <div class="auto-toggle">
-    <div class="toggle-switch active" id="auto-weather-toggle" onclick="toggleAuto('weather')"></div>
-    <span>Auto Weather (Har 5 min)</span>
-  </div>
-  <div class="auto-toggle">
-    <div class="toggle-switch active" id="auto-news-toggle" onclick="toggleAuto('news')"></div>
-    <span>Auto News (Har 30 min)</span>
-  </div>
-  <div class="auto-toggle">
-    <div class="toggle-switch active" id="auto-cricket-toggle" onclick="toggleAuto('cricket')"></div>
-    <span>Auto Cricket (Har 10 min)</span>
-  </div>
-  <div class="auto-toggle">
-    <div class="toggle-switch active" id="auto-notify-toggle" onclick="toggleAuto('notify')"></div>
-    <span>Push Notifications</span>
-  </div>
-  <div class="auto-toggle">
-    <div class="toggle-switch active" id="auto-voice-toggle" onclick="toggleAuto('voice')"></div>
-    <span>Voice Wake ("Hey Singh")</span>
-  </div>
-</div>
-
 <div class="tabs">
-  <button class="tab active" onclick="showTab('chat')">💬 Chat</button>
-  <button class="tab" onclick="showTab('weather')">🌤️ Weather</button>
-  <button class="tab" onclick="showTab('news')">📰 News</button>
-  <button class="tab" onclick="showTab('cricket')">🏏 Cricket</button>
-  <button class="tab" onclick="showTab('horoscope')">⭐ Horoscope</button>
-  <button class="tab" onclick="showTab('stock')">📈 Stock</button>
-  <button class="tab" onclick="showTab('invoice')">🧾 Invoice</button>
-  <button class="tab" onclick="showTab('task')">✅ Task</button>
-  <button class="tab" onclick="showTab('finance')">💰 Finance</button>
-  <button class="tab" onclick="showTab('guard')">🛡️ Guard</button>
-  <button class="tab" onclick="showTab('tools')">🛠️ Tools</button>
+  <button class="tab active" onclick="showTab('chat')"><i class="fas fa-comments"></i> Chat</button>
+  <button class="tab" onclick="showTab('ai-image')"><i class="fas fa-image"></i> AI Image</button>
+  <button class="tab" onclick="showTab('crypto')"><i class="fas fa-bitcoin"></i> Crypto</button>
+  <button class="tab" onclick="showTab('weather')"><i class="fas fa-cloud-sun"></i> Weather</button>
+  <button class="tab" onclick="showTab('news')"><i class="fas fa-newspaper"></i> News</button>
+  <button class="tab" onclick="showTab('cricket')"><i class="fas fa-baseball-ball"></i> Cricket</button>
+  <button class="tab" onclick="showTab('horoscope')"><i class="fas fa-star"></i> Horoscope</button>
+  <button class="tab" onclick="showTab('stock')"><i class="fas fa-chart-line"></i> Stock</button>
+  <button class="tab" onclick="showTab('invoice')"><i class="fas fa-file-invoice"></i> Invoice</button>
+  <button class="tab" onclick="showTab('task')"><i class="fas fa-tasks"></i> Task</button>
+  <button class="tab" onclick="showTab('finance')"><i class="fas fa-rupee-sign"></i> Finance</button>
+  <button class="tab" onclick="showTab('guard')"><i class="fas fa-shield-alt"></i> Guard</button>
+  <button class="tab" onclick="showTab('code')"><i class="fas fa-code"></i> Code AI</button>
 </div>
 
 <!-- CHAT -->
 <div id="chat" class="content active">
   <div class="chat-messages" id="chat-messages">
-    <div class="msg bot"><span>नमस्ते! मैं Singh Ji हूँ। कैसे मदद करूं? 🙏<br><br>🎤 Voice से बोलके भी पूछ सकते हो!<br>⚡ Auto mode ON है — मैं खुद updates लाता रहूँगा!</span></div>
+    <div class="msg bot">
+      <div class="bubble">
+        <div style="font-size:20px;margin-bottom:10px">👋 नमस्ते!</div>
+        <div>मैं <b>Singh Ji Superior</b> हूँ। 🚀</div>
+        <div style="margin-top:10px">🎙️ Voice से बोलके पूछो</div>
+        <div>🎨 AI Image बनाओ</div>
+        <div>💰 Crypto देखो</div>
+        <div>⚡ Auto mode ON है</div>
+      </div>
+    </div>
   </div>
   <div class="input-row">
-    <input id="chat-input" placeholder="कुछ पूछो या 🎤 दबाओ..." onkeypress="if(event.key==='Enter')sendChat()">
-    <button class="voice-btn" onclick="startVoice()" title="Voice Input">🎤</button>
-    <button onclick="sendChat()">➤</button>
+    <input id="chat-input" placeholder="कुछ पूछो..." onkeypress="if(event.key==='Enter')sendChat()">
+    <button class="btn btn-icon" onclick="startVoice()" title="Voice">🎤</button>
+    <button class="btn" onclick="sendChat()"><i class="fas fa-paper-plane"></i></button>
+  </div>
+</div>
+
+<!-- AI IMAGE -->
+<div id="ai-image" class="content">
+  <div class="card">
+    <div class="card-title"><i class="fas fa-magic"></i> AI Image Generator</div>
+    <input id="image-prompt" placeholder="जैसे: एक बंदर, भारतीय महिला, कार..." value="एक सुंदर भारतीय गांव">
+    <div class="feature-grid">
+      <button class="feature-btn" onclick="generateImage('realistic')"><i class="fas fa-camera"></i> Realistic</button>
+      <button class="feature-btn" onclick="generateImage('anime')"><i class="fas fa-paint-brush"></i> Anime</button>
+      <button class="feature-btn" onclick="generateImage('3d')"><i class="fas fa-cube"></i> 3D</button>
+      <button class="feature-btn" onclick="generateImage('art')"><i class="fas fa-palette"></i> Art</button>
+    </div>
+    <button class="btn" style="width:100%" onclick="generateImage()"><i class="fas fa-wand-magic-sparkles"></i> Generate Image</button>
+    <div class="result" id="image-result">AI Image यहाँ दिखेगी...</div>
+  </div>
+</div>
+
+<!-- CRYPTO -->
+<div id="crypto" class="content">
+  <div class="card">
+    <div class="card-title"><i class="fas fa-coins"></i> Live Crypto Prices</div>
+    <div class="crypto-grid">
+      <div class="crypto-card">
+        <div style="font-size:30px">₿</div>
+        <div>Bitcoin</div>
+        <div class="crypto-price" id="btc-price">Loading...</div>
+        <div class="crypto-change" id="btc-change">...</div>
+      </div>
+      <div class="crypto-card">
+        <div style="font-size:30px">Ξ</div>
+        <div>Ethereum</div>
+        <div class="crypto-price" id="eth-price">Loading...</div>
+        <div class="crypto-change" id="eth-change">...</div>
+      </div>
+      <div class="crypto-card">
+        <div style="font-size:30px">◈</div>
+        <div>Solana</div>
+        <div class="crypto-price" id="sol-price">Loading...</div>
+        <div class="crypto-change" id="sol-change">...</div>
+      </div>
+      <div class="crypto-card">
+        <div style="font-size:30px">◎</div>
+        <div>Polygon</div>
+        <div class="crypto-price" id="matic-price">Loading...</div>
+        <div class="crypto-change" id="matic-change">...</div>
+      </div>
+    </div>
+    <button class="btn" style="width:100%;margin-top:15px" onclick="getCrypto()"><i class="fas fa-sync"></i> Refresh Prices</button>
   </div>
 </div>
 
 <!-- WEATHER -->
 <div id="weather" class="content">
-  <div class="input-row">
-    <input id="city-input" placeholder="शहर का नाम..." value="Kanpur">
-    <button onclick="getWeather()">🌤️ देखो</button>
-    <button onclick="getAutoWeather()" title="Auto Location">📍</button>
+  <div class="card">
+    <div class="card-title"><i class="fas fa-cloud-sun-rain"></i> Weather</div>
+    <div class="input-row">
+      <input id="city-input" placeholder="शहर..." value="Kanpur">
+      <button class="btn" onclick="getWeather()"><i class="fas fa-search"></i></button>
+      <button class="btn btn-secondary" onclick="getAutoWeather()"><i class="fas fa-location-arrow"></i></button>
+    </div>
+    <div class="result" id="weather-result">Weather loading...</div>
   </div>
-  <div class="result" id="weather-result">Auto mode में weather हर 5 मिनट में update होगा...</div>
 </div>
 
 <!-- NEWS -->
 <div id="news" class="content">
-  <button class="feature-btn" onclick="getNews()">📰 आज की खबरें लाओ</button>
-  <div class="result" id="news-result">Auto mode में news हर 30 मिनट में update होगी...</div>
+  <div class="card">
+    <div class="card-title"><i class="fas fa-broadcast-tower"></i> Live News</div>
+    <button class="btn" style="width:100%" onclick="getNews()"><i class="fas fa-sync"></i> Latest News</button>
+    <div class="result" id="news-result">News loading...</div>
+  </div>
 </div>
 
 <!-- CRICKET -->
 <div id="cricket" class="content">
-  <button class="feature-btn" onclick="getCricket()">🏏 Live Cricket Scores</button>
-  <div class="result" id="cricket-result">Auto mode में cricket हर 10 मिनट में update होगा...</div>
+  <div class="card">
+    <div class="card-title"><i class="fas fa-trophy"></i> Live Cricket</div>
+    <button class="btn" style="width:100%" onclick="getCricket()"><i class="fas fa-sync"></i> Live Scores</button>
+    <div class="result" id="cricket-result">Cricket loading...</div>
+  </div>
 </div>
 
 <!-- HOROSCOPE -->
 <div id="horoscope" class="content">
-  <select id="sign-select">
-    <option value="aries">♈ Aries (मेष)</option>
-    <option value="taurus">♉ Taurus (वृष)</option>
-    <option value="gemini">♊ Gemini (मिथुन)</option>
-    <option value="cancer">♋ Cancer (कर्क)</option>
-    <option value="leo">♌ Leo (सिंह)</option>
-    <option value="virgo">♍ Virgo (कन्या)</option>
-    <option value="libra">♎ Libra (तुला)</option>
-    <option value="scorpio">♏ Scorpio (वृश्चिक)</option>
-    <option value="sagittarius">♐ Sagittarius (धनु)</option>
-    <option value="capricorn">♑ Capricorn (मकर)</option>
-    <option value="aquarius">♒ Aquarius (कुंभ)</option>
-    <option value="pisces">♓ Pisces (मीन)</option>
-  </select>
-  <button class="feature-btn" onclick="getHoroscope()">⭐ राशिफल देखो</button>
-  <div class="result" id="horoscope-result">राशिफल यहाँ दिखेगा...</div>
+  <div class="card">
+    <div class="card-title"><i class="fas fa-star"></i> Horoscope</div>
+    <select id="sign-select">
+      <option value="aries">♈ Aries (मेष)</option>
+      <option value="taurus">♉ Taurus (वृष)</option>
+      <option value="gemini">♊ Gemini (मिथुन)</option>
+      <option value="cancer">♋ Cancer (कर्क)</option>
+      <option value="leo">♌ Leo (सिंह)</option>
+      <option value="virgo">♍ Virgo (कन्या)</option>
+      <option value="libra">♎ Libra (तुला)</option>
+      <option value="scorpio">♏ Scorpio (वृश्चिक)</option>
+      <option value="sagittarius">♐ Sagittarius (धनु)</option>
+      <option value="capricorn">♑ Capricorn (मकर)</option>
+      <option value="aquarius">♒ Aquarius (कुंभ)</option>
+      <option value="pisces">♓ Pisces (मीन)</option>
+    </select>
+    <button class="btn" style="width:100%" onclick="getHoroscope()"><i class="fas fa-eye"></i> देखो</button>
+    <div class="result" id="horoscope-result">Horoscope loading...</div>
+  </div>
 </div>
 
 <!-- STOCK -->
 <div id="stock" class="content">
-  <div class="input-row">
-    <input id="stock-input" placeholder="Stock symbol... (RELIANCE)" value="RELIANCE">
-    <button onclick="getStock()">📈 देखो</button>
+  <div class="card">
+    <div class="card-title"><i class="fas fa-chart-bar"></i> Stock Market</div>
+    <div class="input-row">
+      <input id="stock-input" placeholder="Symbol (RELIANCE)" value="RELIANCE">
+      <button class="btn" onclick="getStock()"><i class="fas fa-search"></i></button>
+    </div>
+    <div class="result" id="stock-result">Stock loading...</div>
+    <div class="chart-container" id="stock-chart">Chart यहाँ दिखेगा...</div>
   </div>
-  <div class="result" id="stock-result">Stock info यहाँ दिखेगी...</div>
 </div>
 
 <!-- INVOICE -->
 <div id="invoice" class="content">
-  <textarea id="invoice-input" placeholder="Invoice details लिखो..."></textarea>
-  <button class="feature-btn" onclick="getInvoice()">🧾 Invoice बनाओ</button>
-  <div class="result" id="invoice-result">Invoice यहाँ दिखेगा...</div>
+  <div class="card">
+    <div class="card-title"><i class="fas fa-file-invoice-dollar"></i> Invoice Generator</div>
+    <textarea id="invoice-input" placeholder="Details..."></textarea>
+    <button class="btn" style="width:100%" onclick="getInvoice()"><i class="fas fa-magic"></i> Generate Invoice</button>
+    <div class="result" id="invoice-result">Invoice loading...</div>
+  </div>
 </div>
 
 <!-- TASK -->
 <div id="task" class="content">
-  <textarea id="task-input" placeholder="Task लिखो..."></textarea>
-  <button class="feature-btn" onclick="getTask()">✅ Tasks Organize करो</button>
-  <div class="result" id="task-result">Tasks यहाँ दिखेंगे...</div>
+  <div class="card">
+    <div class="card-title"><i class="fas fa-clipboard-list"></i> Task Manager</div>
+    <textarea id="task-input" placeholder="Tasks..."></textarea>
+    <button class="btn" style="width:100%" onclick="getTask()"><i class="fas fa-robot"></i> AI Organize</button>
+    <div class="result" id="task-result">Tasks loading...</div>
+  </div>
 </div>
 
 <!-- FINANCE -->
 <div id="finance" class="content">
-  <textarea id="finance-input" placeholder="Financial query लिखो..."></textarea>
-  <button class="feature-btn" onclick="getFinance()">💰 Finance Advice लो</button>
-  <div class="result" id="finance-result">Advice यहाँ दिखेगी...</div>
+  <div class="card">
+    <div class="card-title"><i class="fas fa-piggy-bank"></i> Finance Advisor</div>
+    <textarea id="finance-input" placeholder="Query..."></textarea>
+    <button class="btn" style="width:100%" onclick="getFinance()"><i class="fas fa-brain"></i> AI Advice</button>
+    <div class="result" id="finance-result">Finance loading...</div>
+  </div>
 </div>
 
 <!-- GUARD -->
 <div id="guard" class="content">
-  <textarea id="guard-input" placeholder="Alert describe करो..."></textarea>
-  <button class="feature-btn" onclick="getGuard()">🛡️ Security Analysis</button>
-  <div class="result" id="guard-result">Analysis यहाँ दिखेगा...</div>
-  <button class="feature-btn" onclick="startCamera()">📷 Camera Open करो</button>
-  <video class="camera-preview" id="camera-preview" autoplay playsinline></video>
-  <button onclick="capturePhoto()" id="capture-btn" style="display:none;margin-top:10px">📸 Photo लो</button>
-  <canvas id="photo-canvas" style="display:none"></canvas>
-  <img id="captured-photo" style="max-width:100%;border-radius:15px;margin-top:10px;display:none">
+  <div class="card">
+    <div class="card-title"><i class="fas fa-shield-alt"></i> Security Guard</div>
+    <textarea id="guard-input" placeholder="Alert..."></textarea>
+    <button class="btn" style="width:100%" onclick="getGuard()"><i class="fas fa-search"></i> AI Analysis</button>
+    <div class="result" id="guard-result">Guard loading...</div>
+  </div>
 </div>
 
-<!-- TOOLS -->
-<div id="tools" class="content">
-  <button class="feature-btn" onclick="speakText()">🔊 Text को बोलो</button>
-  <button class="feature-btn" onclick="shareApp()">📤 App Share करो</button>
-  <button class="feature-btn" onclick="copyToClipboard()">📋 Copy Result</button>
-  <button class="feature-btn" onclick="clearAllHistory()">🗑️ सब Clear करो</button>
-  <div class="result" id="tools-result">Tools यहाँ काम करेंगे...</div>
+<!-- CODE AI -->
+<div id="code" class="content">
+  <div class="card">
+    <div class="card-title"><i class="fas fa-code"></i> AI Code Writer</div>
+    <textarea id="code-input" placeholder="जैसे: Python calculator बनाओ..." style="min-height:100px"></textarea>
+    <select id="code-lang">
+      <option>Python</option>
+      <option>JavaScript</option>
+      <option>HTML/CSS</option>
+      <option>Java</option>
+      <option>C++</option>
+    </select>
+    <button class="btn" style="width:100%" onclick="generateCode()"><i class="fas fa-robot"></i> Generate Code</button>
+    <div class="result" id="code-result">Code loading...</div>
+  </div>
 </div>
 
 <script>
 const API = "https://singhji-api.onrender.com";
 let currentTab = 'chat';
-let autoIntervals = {};
-let autoSettings = JSON.parse(localStorage.getItem('autoSettings') || '{"weather":true,"news":true,"cricket":true,"notify":true,"voice":true}');
-
-// ==================== AUTO TOGGLES ====================
-function toggleAuto(type) {
-  autoSettings[type] = !autoSettings[type];
-  localStorage.setItem('autoSettings', JSON.stringify(autoSettings));
-  document.getElementById('auto-'+type+'-toggle').classList.toggle('active');
-  showToast(autoSettings[type] ? type + ' Auto ON' : type + ' Auto OFF');
-  if(autoSettings[type]) startAuto(type);
-  else stopAuto(type);
-}
-
-function initToggles() {
-  Object.keys(autoSettings).forEach(type => {
-    if(!autoSettings[type]) document.getElementById('auto-'+type+'-toggle').classList.remove('active');
-  });
-}
-
-// ==================== AUTO FUNCTIONS ====================
-function startAuto(type) {
-  stopAuto(type);
-  if(type === 'weather' && autoSettings.weather) {
-    getAutoWeather();
-    autoIntervals.weather = setInterval(() => {
-      if(autoSettings.weather) getAutoWeather();
-    }, 300000); // 5 min
-  }
-  if(type === 'news' && autoSettings.news) {
-    getNews();
-    autoIntervals.news = setInterval(() => {
-      if(autoSettings.news) getNews();
-    }, 1800000); // 30 min
-  }
-  if(type === 'cricket' && autoSettings.cricket) {
-    getCricket();
-    autoIntervals.cricket = setInterval(() => {
-      if(autoSettings.cricket) getCricket();
-    }, 600000); // 10 min
-  }
-}
-
-function stopAuto(type) {
-  if(autoIntervals[type]) {
-    clearInterval(autoIntervals[type]);
-    delete autoIntervals[type];
-  }
-}
-
-// ==================== NOTIFICATIONS ====================
-function showToast(msg) {
-  const toast = document.getElementById('notification-toast');
-  document.getElementById('toast-message').innerText = msg;
-  toast.style.display = 'block';
-  setTimeout(() => toast.style.display = 'none', 3000);
-}
-
-function sendNotification(title, body) {
-  if(!autoSettings.notify) return;
-  if('Notification' in window && Notification.permission === 'granted') {
-    new Notification(title, {body, icon: 'icon-192.png'});
-  }
-  showToast(title + ': ' + body);
-}
 
 // ==================== THEME ====================
 function toggleTheme() {
@@ -309,19 +338,27 @@ function showTab(name) {
   event.target.classList.add('active');
 }
 
+// ==================== NOTIFICATIONS ====================
+function showToast(msg) {
+  const toast = document.getElementById('notification-toast');
+  document.getElementById('toast-message').innerText = msg;
+  toast.style.display = 'block';
+  setTimeout(() => toast.style.display = 'none', 4000);
+}
+
 // ==================== NETWORK ====================
 function updateNetStatus() {
   const el = document.getElementById('net-status');
   if(navigator.onLine) {
-    el.className = 'status-pill online';
+    el.className = 'status-pill online pulse';
     el.innerHTML = '🌐 Online';
   } else {
     el.className = 'status-pill offline';
     el.innerHTML = '❌ Offline';
   }
 }
-window.addEventListener('online', () => {updateNetStatus(); showToast('🌐 Online ho gaye!');});
-window.addEventListener('offline', () => {updateNetStatus(); showToast('❌ Offline ho gaye!');});
+window.addEventListener('online', () => {updateNetStatus(); showToast('🌐 Online!');});
+window.addEventListener('offline', () => {updateNetStatus(); showToast('❌ Offline!');});
 updateNetStatus();
 
 // ==================== LOCATION ====================
@@ -330,7 +367,7 @@ function getLocation() {
   if(!navigator.geolocation) {el.innerHTML = '❌ GPS Nahi'; return;}
   navigator.geolocation.getCurrentPosition(
     pos => {
-      el.innerHTML = `📍 ${pos.coords.latitude.toFixed(1)}, ${pos.coords.longitude.toFixed(1)}`;
+      el.innerHTML = `📍 ${pos.coords.latitude.toFixed(1)},${pos.coords.longitude.toFixed(1)}`;
       localStorage.setItem('lat', pos.coords.latitude);
       localStorage.setItem('lon', pos.coords.longitude);
     },
@@ -341,41 +378,17 @@ getLocation();
 
 // ==================== VOICE ====================
 function startVoice() {
-  if(!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-    showToast('Voice input supported nahi hai!');
-    return;
-  }
-  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-  const rec = new SpeechRecognition();
+  if(!('webkitSpeechRecognition' in window)) {showToast('Voice nahi supported!'); return;}
+  const rec = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
   rec.lang = 'hi-IN';
   rec.start();
-  document.getElementById('mic-status').innerHTML = '🎤 Sun raha hoon...';
-  
+  document.getElementById('mic-status').innerHTML = '🎤 Sun raha...';
   rec.onresult = e => {
     const text = e.results[0][0].transcript;
     document.getElementById('chat-input').value = text;
     document.getElementById('mic-status').innerHTML = '🎤 Mic Ready';
     sendChat();
   };
-  rec.onerror = () => {
-    document.getElementById('mic-status').innerHTML = '❌ Mic Error';
-  };
-}
-
-// Voice Wake
-if(autoSettings.voice) {
-  // "Hey Singh" detection
-  const wakeRec = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-  wakeRec.lang = 'hi-IN';
-  wakeRec.continuous = true;
-  wakeRec.onresult = e => {
-    const text = e.results[e.results.length-1][0].transcript.toLowerCase();
-    if(text.includes('hey singh') || text.includes('singh ji') || text.includes('हे सिंह')) {
-      showToast('🎤 Singh Ji sun raha hai...');
-      startVoice();
-    }
-  };
-  // wakeRec.start(); // Uncomment when needed
 }
 
 // ==================== CHAT ====================
@@ -385,43 +398,93 @@ async function sendChat() {
   if(!msg) return;
   addMsg(msg, 'user');
   input.value = '';
-  addMsg('<span class="loading">टाइप हो रहा है<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></span>', 'bot', 'typing');
+  addTyping();
   try {
     const r = await fetch(API+'/chat', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({message:msg})});
     const d = await r.json();
-    document.getElementById('typing')?.remove();
+    removeTyping();
     addMsg(d.reply, 'bot');
     speakText(d.reply);
   } catch {
-    document.getElementById('typing')?.remove();
+    removeTyping();
     addMsg('❌ Error! Try again.', 'bot');
   }
 }
 
-function addMsg(text, type, id) {
+function addMsg(text, type) {
   const div = document.getElementById('chat-messages');
-  div.innerHTML += `<div class="msg ${type}" ${id?'id='+id:''}><span>${text}</span></div>`;
+  div.innerHTML += `<div class="msg ${type}"><div class="bubble">${text}</div></div>`;
   div.scrollTop = div.scrollHeight;
+}
+
+function addTyping() {
+  const div = document.getElementById('chat-messages');
+  div.innerHTML += `<div class="msg bot" id="typing"><div class="bubble"><div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div></div></div>`;
+  div.scrollTop = div.scrollHeight;
+}
+
+function removeTyping() {
+  document.getElementById('typing')?.remove();
 }
 
 // ==================== TTS ====================
 function speakText(text) {
-  if(!text) text = document.querySelector('.content.active .result')?.innerText || '';
   const utter = new SpeechSynthesisUtterance(text);
   utter.lang = 'hi-IN';
   utter.rate = 0.9;
   speechSynthesis.speak(utter);
 }
 
+// ==================== AI IMAGE ====================
+async function generateImage(style) {
+  const prompt = document.getElementById('image-prompt').value || 'एक सुंदर भारतीय गांव';
+  const result = document.getElementById('image-result');
+  result.innerHTML = '<div class="loading">Generating...<<div class="progress-bar"></div></div>';
+  
+  // Using Pollinations AI (Free)
+  const encodedPrompt = encodeURIComponent(prompt + ' ' + (style || ''));
+  const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=512&height=512&nologo=true`;
+  
+  result.innerHTML = `<img src="${imageUrl}" class="image-result" alt="AI Image"><div style="margin-top:10px">✨ AI Generated: ${prompt}</div>`;
+  showToast('🎨 Image Generated!');
+}
+
+// ==================== CRYPTO ====================
+async function getCrypto() {
+  const coins = ['bitcoin', 'ethereum', 'solana', 'matic-network'];
+  const ids = ['btc', 'eth', 'sol', 'matic'];
+  
+  try {
+    const r = await fetch('https://api.coingecko.com/api/v3/simple/price?ids='+coins.join(',')+'&vs_currencies=inr&include_24hr_change=true');
+    const d = await r.json();
+    
+    document.getElementById('btc-price').innerText = '₹' + d.bitcoin.inr.toLocaleString();
+    document.getElementById('btc-change').innerText = (d.bitcoin.inr_24h_change > 0 ? '+' : '') + d.bitcoin.inr_24h_change.toFixed(2) + '%';
+    document.getElementById('btc-change').style.color = d.bitcoin.inr_24h_change > 0 ? 'var(--success)' : 'var(--danger)';
+    
+    document.getElementById('eth-price').innerText = '₹' + d.ethereum.inr.toLocaleString();
+    document.getElementById('eth-change').innerText = (d.ethereum.inr_24h_change > 0 ? '+' : '') + d.ethereum.inr_24h_change.toFixed(2) + '%';
+    
+    document.getElementById('sol-price').innerText = '₹' + d.solana.inr.toLocaleString();
+    document.getElementById('sol-change').innerText = (d.solana.inr_24h_change > 0 ? '+' : '') + d.solana.inr_24h_change.toFixed(2) + '%';
+    
+    document.getElementById('matic-price').innerText = '₹' + d['matic-network'].inr.toLocaleString();
+    document.getElementById('matic-change').innerText = (d['matic-network'].inr_24h_change > 0 ? '+' : '') + d['matic-network'].inr_24h_change.toFixed(2) + '%';
+    
+    showToast('💰 Crypto Updated!');
+  } catch {
+    showToast('❌ Crypto Error!');
+  }
+}
+
 // ==================== WEATHER ====================
 async function getWeather() {
   const city = document.getElementById('city-input').value || 'Kanpur';
-  document.getElementById('weather-result').innerHTML = '<span class="loading">Loading<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></span>';
+  document.getElementById('weather-result').innerHTML = '<div class="loading">Loading...</div>';
   try {
     const r = await fetch(API+'/weather?city='+city);
     const d = await r.json();
     document.getElementById('weather-result').innerText = d.reply;
-    sendNotification('Weather Update', d.reply.substring(0, 50) + '...');
   } catch {
     document.getElementById('weather-result').innerText = '❌ Error!';
   }
@@ -435,18 +498,16 @@ async function getAutoWeather() {
     const r = await fetch(API+`/weather?lat=${lat}&lon=${lon}`);
     const d = await r.json();
     document.getElementById('weather-result').innerText = d.reply;
-    if(currentTab !== 'weather') showToast('🌤️ Weather update ho gaya!');
   } catch {getWeather();}
 }
 
 // ==================== NEWS ====================
 async function getNews() {
-  document.getElementById('news-result').innerHTML = '<span class="loading">Loading<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></span>';
+  document.getElementById('news-result').innerHTML = '<div class="loading">Loading...</div>';
   try {
     const r = await fetch(API+'/news');
     const d = await r.json();
     document.getElementById('news-result').innerText = d.reply;
-    sendNotification('News Update', 'Nayi khabren aa gayi hain!');
   } catch {
     document.getElementById('news-result').innerText = '❌ Error!';
   }
@@ -454,12 +515,11 @@ async function getNews() {
 
 // ==================== CRICKET ====================
 async function getCricket() {
-  document.getElementById('cricket-result').innerHTML = '<span class="loading">Loading<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></span>';
+  document.getElementById('cricket-result').innerHTML = '<div class="loading">Loading...</div>';
   try {
     const r = await fetch(API+'/cricket');
     const d = await r.json();
     document.getElementById('cricket-result').innerText = d.reply;
-    sendNotification('Cricket Update', 'Live scores update ho gaye!');
   } catch {
     document.getElementById('cricket-result').innerText = '❌ Error!';
   }
@@ -468,7 +528,7 @@ async function getCricket() {
 // ==================== HOROSCOPE ====================
 async function getHoroscope() {
   const sign = document.getElementById('sign-select').value;
-  document.getElementById('horoscope-result').innerHTML = '<span class="loading">Loading<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></span>';
+  document.getElementById('horoscope-result').innerHTML = '<div class="loading">Loading...</div>';
   try {
     const r = await fetch(API+'/horoscope', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({sign})});
     const d = await r.json();
@@ -481,11 +541,13 @@ async function getHoroscope() {
 // ==================== STOCK ====================
 async function getStock() {
   const symbol = document.getElementById('stock-input').value || 'RELIANCE';
-  document.getElementById('stock-result').innerHTML = '<span class="loading">Loading<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></span>';
+  document.getElementById('stock-result').innerHTML = '<div class="loading">Loading...</div>';
   try {
     const r = await fetch(API+'/stock?symbol='+symbol);
     const d = await r.json();
     document.getElementById('stock-result').innerText = d.reply;
+    // Simple chart
+    document.getElementById('stock-chart').innerHTML = '📊 Chart: ' + symbol + ' trending...';
   } catch {
     document.getElementById('stock-result').innerText = '❌ Error!';
   }
@@ -494,7 +556,7 @@ async function getStock() {
 // ==================== INVOICE ====================
 async function getInvoice() {
   const details = document.getElementById('invoice-input').value;
-  document.getElementById('invoice-result').innerHTML = '<span class="loading">Loading<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></span>';
+  document.getElementById('invoice-result').innerHTML = '<div class="loading">Loading...</div>';
   try {
     const r = await fetch(API+'/invoice', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({details})});
     const d = await r.json();
@@ -507,7 +569,7 @@ async function getInvoice() {
 // ==================== TASK ====================
 async function getTask() {
   const task = document.getElementById('task-input').value;
-  document.getElementById('task-result').innerHTML = '<span class="loading">Loading<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></span>';
+  document.getElementById('task-result').innerHTML = '<div class="loading">Loading...</div>';
   try {
     const r = await fetch(API+'/task', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({task})});
     const d = await r.json();
@@ -520,7 +582,7 @@ async function getTask() {
 // ==================== FINANCE ====================
 async function getFinance() {
   const query = document.getElementById('finance-input').value;
-  document.getElementById('finance-result').innerHTML = '<span class="loading">Loading<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></span>';
+  document.getElementById('finance-result').innerHTML = '<div class="loading">Loading...</div>';
   try {
     const r = await fetch(API+'/finance', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({query})});
     const d = await r.json();
@@ -533,7 +595,7 @@ async function getFinance() {
 // ==================== GUARD ====================
 async function getGuard() {
   const alert = document.getElementById('guard-input').value;
-  document.getElementById('guard-result').innerHTML = '<span class="loading">Loading<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></span>';
+  document.getElementById('guard-result').innerHTML = '<div class="loading">Loading...</div>';
   try {
     const r = await fetch(API+'/guard', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({alert})});
     const d = await r.json();
@@ -543,71 +605,30 @@ async function getGuard() {
   }
 }
 
-async function startCamera() {
-  const video = document.getElementById('camera-preview');
+// ==================== CODE AI ====================
+async function generateCode() {
+  const prompt = document.getElementById('code-input').value;
+  const lang = document.getElementById('code-lang').value;
+  document.getElementById('code-result').innerHTML = '<div class="loading">Generating Code...</div>';
   try {
-    const stream = await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}});
-    video.srcObject = stream;
-    video.style.display = 'block';
-    document.getElementById('capture-btn').style.display = 'inline-block';
+    const r = await fetch(API+'/chat', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({message:`Write ${lang} code for: ${prompt}. Only code, no explanation.`})});
+    const d = await r.json();
+    document.getElementById('code-result').innerHTML = '<pre style="background:#0a0a1a;padding:15px;border-radius:10px;overflow-x:auto;font-family:monospace;font-size:13px">' + d.reply + '</pre>';
   } catch {
-    showToast('Camera access nahi mila!');
-  }
-}
-
-function capturePhoto() {
-  const video = document.getElementById('camera-preview');
-  const canvas = document.getElementById('photo-canvas');
-  const img = document.getElementById('captured-photo');
-  canvas.width = video.videoWidth;
-  canvas.height = video.videoHeight;
-  canvas.getContext('2d').drawImage(video, 0, 0);
-  img.src = canvas.toDataURL('image/png');
-  img.style.display = 'block';
-  video.srcObject.getTracks().forEach(t => t.stop());
-  video.style.display = 'none';
-  document.getElementById('capture-btn').style.display = 'none';
-}
-
-// ==================== TOOLS ====================
-function shareApp() {
-  if(navigator.share) {
-    navigator.share({title:'Singh Ji AI', text:'🤖 Singh Ji AI - Your Personal AI Assistant!', url:window.location.href});
-  } else {
-    copyToClipboard(window.location.href);
-    showToast('Link copied!');
-  }
-}
-
-function copyToClipboard(text) {
-  if(!text) text = document.querySelector('.content.active .result')?.innerText || '';
-  navigator.clipboard.writeText(text).then(() => showToast('✅ Copied!'));
-}
-
-function clearAllHistory() {
-  if(confirm('Sab kuch delete karna hai?')) {
-    localStorage.clear();
-    showToast('✅ Sab clear ho gaya!');
+    document.getElementById('code-result').innerText = '❌ Error!';
   }
 }
 
 // ==================== INIT ====================
 window.addEventListener('load', () => {
-  initToggles();
-  // Start auto features
-  setTimeout(() => {
-    if(autoSettings.weather) startAuto('weather');
-    if(autoSettings.news) startAuto('news');
-    if(autoSettings.cricket) startAuto('cricket');
-  }, 2000);
-  
-  // Request notification permission
-  if('Notification' in window && Notification.permission === 'default') {
-    Notification.requestPermission();
-  }
+  getCrypto(); // Auto load crypto
+  getWeather(); // Auto load weather
+  // Auto refresh crypto every 30 seconds
+  setInterval(() => {
+    if(currentTab === 'crypto') getCrypto();
+  }, 30000);
 });
 
-// Service Worker
 if('serviceWorker' in navigator) {
   navigator.serviceWorker.register('sw.js').catch(() => {});
 }
