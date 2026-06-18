@@ -1,133 +1,230 @@
-from flask import Flask, request, jsonify
-from flask_cors import CORS
-import google.generativeai as genai
-import os
-import threading
-import time
-import requests
-from groq import Groq
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#FF6B00">
+<title>Singh Ji AI</title>
+<link rel="manifest" href="manifest.json">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Arial,sans-serif;background:#1a1a2e;color:white;min-height:100vh}
+.header{background:#FF6B00;padding:15px;text-align:center;font-size:22px;font-weight:bold}
+.tabs{display:flex;overflow-x:auto;background:#16213e;padding:5px}
+.tab{padding:8px 16px;border:none;background:transparent;color:#aaa;cursor:pointer;white-space:nowrap;font-size:14px;border-radius:20px}
+.tab.active{background:#FF6B00;color:white}
+.content{padding:15px;display:none}
+.content.active{display:block}
+.chat-messages{height:55vh;overflow-y:auto;padding:10px;background:#16213e;border-radius:10px;margin-bottom:10px}
+.msg{margin:8px 0}
+.msg.user{text-align:right}
+.msg.user span{background:#FF6B00;padding:8px 12px;border-radius:12px 12px 0 12px;display:inline-block;max-width:80%}
+.msg.bot span{background:#0f3460;padding:8px 12px;border-radius:12px 12px 12px 0;display:inline-block;max-width:80%}
+.input-row{display:flex;gap:8px}
+input{flex:1;padding:10px;border-radius:20px;border:none;background:#16213e;color:white;font-size:14px}
+button{background:#FF6B00;color:white;border:none;padding:10px 16px;border-radius:20px;cursor:pointer}
+.feature-btn{width:100%;margin:5px 0;padding:12px;font-size:15px;border-radius:10px}
+.result{background:#16213e;padding:12px;border-radius:10px;margin-top:10px;min-height:80px;white-space:pre-wrap;line-height:1.6}
+select{width:100%;padding:10px;background:#16213e;color:white;border:1px solid #FF6B00;border-radius:10px;margin-bottom:10px}
+textarea{width:100%;padding:10px;background:#16213e;color:white;border:1px solid #FF6B00;border-radius:10px;min-height:80px;margin-bottom:10px}
+</style>
+</head>
+<body>
+<div class="header">🤖 Singh Ji AI</div>
+<div class="tabs">
+  <button class="tab active" onclick="showTab('chat')">💬 Chat</button>
+  <button class="tab" onclick="showTab('weather')">🌤️ Weather</button>
+  <button class="tab" onclick="showTab('news')">📰 News</button>
+  <button class="tab" onclick="showTab('cricket')">🏏 Cricket</button>
+  <button class="tab" onclick="showTab('horoscope')">⭐ Horoscope</button>
+  <button class="tab" onclick="showTab('stock')">📈 Stock</button>
+  <button class="tab" onclick="showTab('invoice')">🧾 Invoice</button>
+  <button class="tab" onclick="showTab('task')">✅ Task</button>
+  <button class="tab" onclick="showTab('finance')">💰 Finance</button>
+  <button class="tab" onclick="showTab('guard')">🛡️ Guard</button>
+</div>
 
-app = Flask(__name__)
-CORS(app)
+<!-- CHAT -->
+<div id="chat" class="content active">
+  <div class="chat-messages" id="chat-messages">
+    <div class="msg bot"><span>नमस्ते! मैं Singh Ji हूँ। कैसे मदद करूं? 🙏</span></div>
+  </div>
+  <div class="input-row">
+    <input id="chat-input" placeholder="कुछ पूछो..." onkeypress="if(event.key==='Enter')sendChat()">
+    <button onclick="sendChat()">➤</button>
+  </div>
+</div>
 
-GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
-GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
-WEATHER_API_KEY = os.environ.get("CF_API_KEY", "")
+<!-- WEATHER -->
+<div id="weather" class="content">
+  <div class="input-row">
+    <input id="city-input" placeholder="शहर का नाम... (Kanpur)" value="Kanpur">
+    <button onclick="getWeather()">देखो</button>
+  </div>
+  <div class="result" id="weather-result">यहाँ weather दिखेगा...</div>
+</div>
 
-genai.configure(api_key=GEMINI_API_KEY)
+<!-- NEWS -->
+<div id="news" class="content">
+  <button class="feature-btn" onclick="getNews()">📰 आज की खबरें लाओ</button>
+  <div class="result" id="news-result">यहाँ news दिखेगी...</div>
+</div>
 
-SYSTEM_PROMPT = "You are Singh Ji, a smart AI assistant from Kanpur. Be helpful, friendly and reply in the same language as user."
+<!-- CRICKET -->
+<div id="cricket" class="content">
+  <button class="feature-btn" onclick="getCricket()">🏏 Latest Cricket Scores</button>
+  <div class="result" id="cricket-result">यहाँ cricket scores दिखेंगे...</div>
+</div>
 
-def ai_response(message, system=SYSTEM_PROMPT):
-    try:
-        model = genai.GenerativeModel("gemini-2.5-flash")
-        response = model.generate_content(system + "\n\nUser: " + message)
-        return response.text
-    except:
-        try:
-            client = Groq(api_key=GROQ_API_KEY)
-            response = client.chat.completions.create(
-                model="llama-3.3-70b-versatile",
-                messages=[{"role": "system", "content": system}, {"role": "user", "content": message}]
-            )
-            return response.choices[0].message.content
-        except:
-            return "Server busy. Try again."
+<!-- HOROSCOPE -->
+<div id="horoscope" class="content">
+  <select id="sign-select">
+    <option>Aries</option><option>Taurus</option><option>Gemini</option>
+    <option>Cancer</option><option>Leo</option><option>Virgo</option>
+    <option>Libra</option><option>Scorpio</option><option>Sagittarius</option>
+    <option>Capricorn</option><option>Aquarius</option><option>Pisces</option>
+  </select>
+  <button class="feature-btn" onclick="getHoroscope()">⭐ राशिफल देखो</button>
+  <div class="result" id="horoscope-result">यहाँ राशिफल दिखेगा...</div>
+</div>
 
-def keep_alive():
-    while True:
-        time.sleep(600)
-        try:
-            requests.get("https://singhji-api.onrender.com/")
-        except:
-            pass
+<!-- STOCK -->
+<div id="stock" class="content">
+  <div class="input-row">
+    <input id="stock-input" placeholder="Stock symbol... (RELIANCE)" value="RELIANCE">
+    <button onclick="getStock()">देखो</button>
+  </div>
+  <div class="result" id="stock-result">यहाँ stock info दिखेगी...</div>
+</div>
 
-@app.route("/chat", methods=["POST"])
-def chat():
-    data = request.json
-    message = data.get("message", "")
-    if not message:
-        return jsonify({"error": "Message required"}), 400
-    reply = ai_response(message)
-    return jsonify({"reply": reply})
+<!-- INVOICE -->
+<div id="invoice" class="content">
+  <textarea id="invoice-input" placeholder="Invoice details लिखो... जैसे: 5 kg चावल @ ₹50, 2 kg दाल @ ₹100"></textarea>
+  <button class="feature-btn" onclick="getInvoice()">🧾 Invoice बनाओ</button>
+  <div class="result" id="invoice-result">यहाँ invoice दिखेगा...</div>
+</div>
 
-@app.route("/weather", methods=["GET"])
-def weather():
-    city = request.args.get("city", "Kanpur")
-    try:
-        url = f"https://wttr.in/{city}?format=3"
-        r = requests.get(url, timeout=5)
-        return jsonify({"reply": r.text})
-    except:
-        return jsonify({"reply": "Weather service unavailable."})
+<!-- TASK -->
+<div id="task" class="content">
+  <textarea id="task-input" placeholder="Task लिखो... जैसे: आज का काम - meeting, report, client call"></textarea>
+  <button class="feature-btn" onclick="getTask()">✅ Tasks Organize करो</button>
+  <div class="result" id="task-result">यहाँ tasks दिखेंगे...</div>
+</div>
 
-@app.route("/news", methods=["GET"])
-def news():
-    try:
-        prompt = "Give me 5 latest important news headlines from India today in Hindi. Format: numbered list."
-        reply = ai_response(prompt)
-        return jsonify({"reply": reply})
-    except:
-        return jsonify({"reply": "News unavailable."})
+<!-- FINANCE -->
+<div id="finance" class="content">
+  <textarea id="finance-input" placeholder="Financial query लिखो... जैसे: ₹50000 invest करना है, कहाँ करूं?"></textarea>
+  <button class="feature-btn" onclick="getFinance()">💰 Finance Advice लो</button>
+  <div class="result" id="finance-result">यहाँ advice दिखेगी...</div>
+</div>
 
-@app.route("/horoscope", methods=["POST"])
-def horoscope():
-    data = request.json
-    sign = data.get("sign", "Aries")
-    prompt = f"Give today's horoscope for {sign} in Hindi. Keep it short and positive."
-    reply = ai_response(prompt)
-    return jsonify({"reply": reply})
+<!-- GUARD -->
+<div id="guard" class="content">
+  <textarea id="guard-input" placeholder="Alert describe करो... जैसे: रात 2 बजे दरवाजे पर आवाज आई"></textarea>
+  <button class="feature-btn" onclick="getGuard()">🛡️ Security Analysis करो</button>
+  <div class="result" id="guard-result">यहाँ analysis दिखेगा...</div>
+</div>
 
-@app.route("/stock", methods=["GET"])
-def stock():
-    symbol = request.args.get("symbol", "RELIANCE")
-    prompt = f"Give current stock analysis for {symbol} NSE India. Include price trend and recommendation in Hindi."
-    reply = ai_response(prompt)
-    return jsonify({"reply": reply})
+<script>
+const API = "https://singhji-api.onrender.com";
 
-@app.route("/cricket", methods=["GET"])
-def cricket():
-    prompt = "Give latest cricket match scores and news in Hindi. Focus on India matches."
-    reply = ai_response(prompt)
-    return jsonify({"reply": reply})
+function showTab(name) {
+  document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(name).classList.add('active');
+  event.target.classList.add('active');
+}
 
-@app.route("/invoice", methods=["POST"])
-def invoice():
-    data = request.json
-    details = data.get("details", "")
-    prompt = f"Create a professional invoice in Hindi/English for: {details}. Include item, quantity, price, total."
-    reply = ai_response(prompt)
-    return jsonify({"reply": reply})
+async function sendChat() {
+  const input = document.getElementById('chat-input');
+  const msg = input.value.trim();
+  if (!msg) return;
+  addMsg(msg, 'user');
+  input.value = '';
+  addMsg('टाइप हो रहा है...', 'bot', 'typing');
+  try {
+    const r = await fetch(API+'/chat', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({message:msg})});
+    const d = await r.json();
+    document.getElementById('typing')?.remove();
+    addMsg(d.reply, 'bot');
+  } catch { document.getElementById('typing')?.remove(); addMsg('Error! Try again.', 'bot'); }
+}
 
-@app.route("/task", methods=["POST"])
-def task():
-    data = request.json
-    task_text = data.get("task", "")
-    prompt = f"Help organize and prioritize this task in Hindi: {task_text}"
-    reply = ai_response(prompt)
-    return jsonify({"reply": reply})
+function addMsg(text, type, id) {
+  const div = document.getElementById('chat-messages');
+  div.innerHTML += `<div class="msg ${type}" ${id?'id='+id:''}><span>${text}</span></div>`;
+  div.scrollTop = div.scrollHeight;
+}
 
-@app.route("/finance", methods=["POST"])
-def finance():
-    data = request.json
-    query = data.get("query", "")
-    prompt = f"Financial advice in Hindi for: {query}. Be practical and helpful."
-    reply = ai_response(prompt)
-    return jsonify({"reply": reply})
+async function getWeather() {
+  const city = document.getElementById('city-input').value || 'Kanpur';
+  document.getElementById('weather-result').innerText = 'Loading...';
+  const r = await fetch(API+'/weather?city='+city);
+  const d = await r.json();
+  document.getElementById('weather-result').innerText = d.reply;
+}
 
-@app.route("/guard", methods=["POST"])
-def guard():
-    data = request.json
-    alert = data.get("alert", "")
-    prompt = f"Security analysis in Hindi for this alert: {alert}. Give threat level and recommendation."
-    reply = ai_response(prompt)
-    return jsonify({"reply": reply})
+async function getNews() {
+  document.getElementById('news-result').innerText = 'खबरें आ रही हैं...';
+  const r = await fetch(API+'/news');
+  const d = await r.json();
+  document.getElementById('news-result').innerText = d.reply;
+}
 
-@app.route("/", methods=["GET"])
-def home():
-    return jsonify({"status": "Singh Ji API Live!", "version": "2.0", "features": ["chat", "weather", "news", "horoscope", "stock", "cricket", "invoice", "task", "finance", "guard"]})
+async function getCricket() {
+  document.getElementById('cricket-result').innerText = 'Scores आ रहे हैं...';
+  const r = await fetch(API+'/cricket');
+  const d = await r.json();
+  document.getElementById('cricket-result').innerText = d.reply;
+}
 
-threading.Thread(target=keep_alive, daemon=True).start()
+async function getHoroscope() {
+  const sign = document.getElementById('sign-select').value;
+  document.getElementById('horoscope-result').innerText = 'राशिफल आ रहा है...';
+  const r = await fetch(API+'/horoscope', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({sign:sign})});
+  const d = await r.json();
+  document.getElementById('horoscope-result').innerText = d.reply;
+}
 
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
+async function getStock() {
+  const symbol = document.getElementById('stock-input').value || 'RELIANCE';
+  document.getElementById('stock-result').innerText = 'Stock info आ रही है...';
+  const r = await fetch(API+'/stock?symbol='+symbol);
+  const d = await r.json();
+  document.getElementById('stock-result').innerText = d.reply;
+}
+
+async function getInvoice() {
+  const details = document.getElementById('invoice-input').value;
+  document.getElementById('invoice-result').innerText = 'Invoice बन रहा है...';
+  const r = await fetch(API+'/invoice', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({details:details})});
+  const d = await r.json();
+  document.getElementById('invoice-result').innerText = d.reply;
+}
+
+async function getTask() {
+  const task = document.getElementById('task-input').value;
+  document.getElementById('task-result').innerText = 'Tasks organize हो रहे हैं...';
+  const r = await fetch(API+'/task', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({task:task})});
+  const d = await r.json();
+  document.getElementById('task-result').innerText = d.reply;
+}
+
+async function getFinance() {
+  const query = document.getElementById('finance-input').value;
+  document.getElementById('finance-result').innerText = 'Advice आ रही है...';
+  const r = await fetch(API+'/finance', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({query:query})});
+  const d = await r.json();
+  document.getElementById('finance-result').innerText = d.reply;
+}
+
+async function getGuard() {
+  const alert = document.getElementById('guard-input').value;
+  document.getElementById('guard-result').innerText = 'Analysis हो रहा है...';
+  const r = await fetch(API+'/guard', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({alert:alert})});
+  const d = await r.json();
+  document.getElementById('guard-result').innerText = d.reply;
+}
+</script>
+</body>
+</html>
