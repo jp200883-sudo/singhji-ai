@@ -11,16 +11,13 @@
     <meta name="theme-color" content="#1a1a2e">
     <meta name="description" content="Singh Ji AI Ultra - ChatGPT से बेहतर, Hindi + English, Voice + Image + Code, Live Crypto + Stocks, Free AI Image Generator">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
             --primary: #feca57;
             --secondary: #ff6b6b;
             --accent: #4cd137;
+            --purple: #a29bfe;
             --bg-dark: #0a0a1a;
             --bg-card: rgba(255,255,255,0.05);
             --text: #ffffff;
@@ -45,7 +42,8 @@
             background: 
                 radial-gradient(ellipse at 20% 80%, rgba(254,202,87,0.1) 0%, transparent 50%),
                 radial-gradient(ellipse at 80% 20%, rgba(255,107,107,0.1) 0%, transparent 50%),
-                radial-gradient(ellipse at 50% 50%, rgba(76,209,55,0.05) 0%, transparent 50%);
+                radial-gradient(ellipse at 50% 50%, rgba(76,209,55,0.05) 0%, transparent 50%),
+                radial-gradient(ellipse at 30% 30%, rgba(162,155,254,0.05) 0%, transparent 50%);
         }
 
         .floating-shapes {
@@ -67,7 +65,7 @@
         .shape:nth-child(1) { width: 300px; height: 300px; background: var(--primary); top: 10%; left: -5%; animation-delay: 0s; }
         .shape:nth-child(2) { width: 200px; height: 200px; background: var(--secondary); top: 60%; right: -5%; animation-delay: 5s; }
         .shape:nth-child(3) { width: 150px; height: 150px; background: var(--accent); top: 30%; right: 20%; animation-delay: 10s; }
-        .shape:nth-child(4) { width: 250px; height: 250px; background: var(--primary); bottom: 10%; left: 20%; animation-delay: 15s; }
+        .shape:nth-child(4) { width: 250px; height: 250px; background: var(--purple); bottom: 10%; left: 20%; animation-delay: 15s; }
 
         @keyframes float {
             0%, 100% { transform: translate(0, 0) rotate(0deg); }
@@ -102,9 +100,7 @@
             -webkit-text-fill-color: transparent;
         }
 
-        .logo-icon {
-            font-size: 2rem;
-        }
+        .logo-icon { font-size: 2rem; }
 
         nav {
             display: flex;
@@ -119,9 +115,7 @@
             transition: color 0.3s;
         }
 
-        nav a:hover {
-            color: var(--primary);
-        }
+        nav a:hover { color: var(--primary); }
 
         .lang-toggle {
             background: var(--bg-card);
@@ -139,7 +133,7 @@
             color: var(--bg-dark);
         }
 
-        /* Hero Section */
+        /* Hero */
         .hero {
             min-height: 100vh;
             display: flex;
@@ -148,7 +142,6 @@
             align-items: center;
             text-align: center;
             padding: 120px 20px 60px;
-            position: relative;
         }
 
         .hero-badge {
@@ -177,7 +170,7 @@
         }
 
         .hero h1 .gradient-text {
-            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent), var(--purple));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-size: 200% auto;
@@ -215,12 +208,12 @@
             display: inline-flex;
             align-items: center;
             gap: 10px;
+            border: none;
         }
 
         .btn-primary {
             background: linear-gradient(90deg, var(--primary), var(--secondary));
             color: var(--bg-dark);
-            border: none;
             box-shadow: 0 10px 30px rgba(254,202,87,0.3);
         }
 
@@ -248,9 +241,7 @@
             justify-content: center;
         }
 
-        .stat {
-            text-align: center;
-        }
+        .stat { text-align: center; }
 
         .stat-number {
             font-size: 2.5rem;
@@ -260,12 +251,9 @@
             -webkit-text-fill-color: transparent;
         }
 
-        .stat-label {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
+        .stat-label { color: var(--text-muted); font-size: 0.9rem; }
 
-        /* Features Section */
+        /* Features */
         .features-section {
             padding: 80px 20px;
             max-width: 1200px;
@@ -310,9 +298,7 @@
             transition: transform 0.3s;
         }
 
-        .feature-card:hover::before {
-            transform: scaleX(1);
-        }
+        .feature-card:hover::before { transform: scaleX(1); }
 
         .feature-card:hover {
             transform: translateY(-10px);
@@ -320,25 +306,16 @@
             box-shadow: 0 20px 40px rgba(0,0,0,0.3);
         }
 
-        .feature-icon {
-            font-size: 3rem;
-            margin-bottom: 20px;
-        }
+        .feature-icon { font-size: 3rem; margin-bottom: 20px; }
 
-        .feature-card h3 {
-            font-size: 1.3rem;
-            margin-bottom: 10px;
-        }
+        .feature-card h3 { font-size: 1.3rem; margin-bottom: 10px; }
 
-        .feature-card p {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-        }
+        .feature-card p { color: var(--text-muted); font-size: 0.95rem; }
 
         /* Pricing Section */
         .pricing-section {
             padding: 80px 20px;
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
         }
 
@@ -354,17 +331,10 @@
             margin-right: auto;
         }
 
-        .country-detected .flag {
-            font-size: 2rem;
-            margin-right: 10px;
-        }
+        .country-detected .flag { font-size: 2rem; margin-right: 10px; }
+        .country-detected .name { font-size: 1.2rem; font-weight: 600; }
 
-        .country-detected .name {
-            font-size: 1.2rem;
-            font-weight: 600;
-        }
-
-        .country-detected .tier-badge {
+        .tier-badge {
             display: inline-block;
             margin-left: 10px;
             padding: 4px 12px;
@@ -394,20 +364,25 @@
             color: var(--primary);
         }
 
+        /* 5 Pricing Cards */
         .pricing-cards {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            flex-wrap: wrap;
-            align-items: flex-start;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+            align-items: start;
+        }
+
+        @media (min-width: 1200px) {
+            .pricing-cards {
+                grid-template-columns: repeat(5, 1fr);
+            }
         }
 
         .pricing-card {
             background: var(--bg-card);
             border: 1px solid var(--border);
-            border-radius: 25px;
-            padding: 40px 30px;
-            width: 320px;
+            border-radius: 20px;
+            padding: 30px 20px;
             position: relative;
             transition: all 0.3s;
         }
@@ -420,46 +395,51 @@
             border: 2px solid var(--primary);
             transform: scale(1.05);
             box-shadow: 0 20px 60px rgba(254,202,87,0.2);
+            z-index: 2;
         }
 
         .pricing-card.popular:hover {
             transform: scale(1.05) translateY(-10px);
         }
 
+        .pricing-card.ultraMax {
+            border: 2px solid var(--purple);
+            box-shadow: 0 10px 30px rgba(162,155,254,0.15);
+        }
+
+        .pricing-card.ultraMax:hover {
+            box-shadow: 0 20px 50px rgba(162,155,254,0.25);
+        }
+
         .popular-badge {
             position: absolute;
-            top: -15px;
+            top: -12px;
             left: 50%;
             transform: translateX(-50%);
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            color: var(--bg-dark);
-            padding: 8px 25px;
+            padding: 6px 20px;
             border-radius: 20px;
             font-weight: bold;
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             white-space: nowrap;
         }
 
         .card-header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
 
         .card-header h3 {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
         }
 
         .price {
-            font-size: 3.5rem;
+            font-size: 2.5rem;
             font-weight: 900;
             line-height: 1;
         }
 
-        .price .currency {
-            font-size: 1.8rem;
-            vertical-align: super;
-        }
+        .price .currency { font-size: 1.3rem; vertical-align: super; }
 
         .price .amount {
             background: linear-gradient(90deg, var(--primary), var(--secondary));
@@ -467,98 +447,86 @@
             -webkit-text-fill-color: transparent;
         }
 
+        .pricing-card.ultra .price .amount {
+            background: linear-gradient(90deg, var(--secondary), #ee5a24);
+            -webkit-background-clip: text;
+        }
+
+        .pricing-card.ultraMax .price .amount {
+            background: linear-gradient(90deg, var(--purple), #6c5ce7);
+            -webkit-background-clip: text;
+        }
+
         .price .period {
-            font-size: 1rem;
+            font-size: 0.9rem;
             color: var(--text-muted);
             font-weight: normal;
         }
 
         .annual-price {
-            margin-top: 15px;
-            padding: 10px;
+            margin-top: 10px;
+            padding: 8px;
             background: rgba(76,209,55,0.1);
-            border-radius: 10px;
+            border-radius: 8px;
+            font-size: 0.85rem;
         }
 
         .annual-price .strikethrough {
             text-decoration: line-through;
             color: var(--text-muted);
-            font-size: 0.9rem;
         }
 
         .annual-price .final {
             color: var(--accent);
             font-weight: bold;
-            font-size: 1.1rem;
         }
 
         .annual-price .save {
             display: inline-block;
-            margin-left: 8px;
+            margin-left: 5px;
             background: var(--accent);
             color: var(--bg-dark);
-            padding: 2px 8px;
-            border-radius: 10px;
-            font-size: 0.75rem;
+            padding: 2px 6px;
+            border-radius: 8px;
+            font-size: 0.7rem;
             font-weight: bold;
         }
 
         .features-list {
             list-style: none;
             padding: 0;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
+            font-size: 0.85rem;
         }
 
         .features-list li {
-            padding: 12px 0;
+            padding: 8px 0;
             border-bottom: 1px solid var(--border);
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
-        .features-list li:last-child {
-            border-bottom: none;
-        }
+        .features-list li:last-child { border-bottom: none; }
 
-        .features-list .check {
-            color: var(--accent);
-            font-weight: bold;
-        }
-
-        .features-list .cross {
-            color: var(--secondary);
-        }
-
-        .features-list .coming-soon {
-            margin-left: auto;
-            font-size: 0.7rem;
-            background: var(--bg-card);
-            padding: 2px 8px;
-            border-radius: 10px;
-            color: var(--text-muted);
-        }
+        .features-list .check { color: var(--accent); }
+        .features-list .cross { color: var(--secondary); opacity: 0.5; }
 
         .pricing-card .btn {
             width: 100%;
             justify-content: center;
+            padding: 12px;
+            font-size: 1rem;
         }
 
         .gateway-info {
             text-align: center;
-            margin-top: 15px;
-            font-size: 0.8rem;
+            margin-top: 10px;
+            font-size: 0.75rem;
             color: var(--text-muted);
         }
 
-        .gateway-info img {
-            height: 20px;
-            margin: 0 5px;
-            vertical-align: middle;
-            opacity: 0.7;
-        }
-
-        /* Country Modal */
+        /* Modal */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -571,9 +539,7 @@
             padding: 20px;
         }
 
-        .modal-overlay.active {
-            display: flex;
-        }
+        .modal-overlay.active { display: flex; }
 
         .modal-content {
             background: linear-gradient(135deg, #1a1a2e, #16213e);
@@ -593,9 +559,7 @@
             margin-bottom: 25px;
         }
 
-        .modal-header h3 {
-            font-size: 1.5rem;
-        }
+        .modal-header h3 { font-size: 1.5rem; }
 
         .close-btn {
             background: none;
@@ -606,9 +570,7 @@
             transition: color 0.3s;
         }
 
-        .close-btn:hover {
-            color: var(--secondary);
-        }
+        .close-btn:hover { color: var(--secondary); }
 
         .country-search {
             width: 100%;
@@ -651,10 +613,7 @@
             border-color: var(--primary);
         }
 
-        .country-btn .flag {
-            font-size: 1.5rem;
-        }
-
+        .country-btn .flag { font-size: 1.5rem; }
         .country-btn .price-tag {
             margin-left: auto;
             font-weight: bold;
@@ -662,9 +621,7 @@
         }
 
         /* Payment Modal */
-        .payment-modal .modal-content {
-            max-width: 500px;
-        }
+        .payment-modal .modal-content { max-width: 500px; }
 
         .payment-form {
             display: flex;
@@ -718,16 +675,8 @@
             background: rgba(254,202,87,0.1);
         }
 
-        .plan-option .plan-name {
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .plan-option .plan-price {
-            color: var(--primary);
-            font-size: 1.2rem;
-            font-weight: bold;
-        }
+        .plan-option .plan-name { font-weight: bold; margin-bottom: 5px; }
+        .plan-option .plan-price { color: var(--primary); font-size: 1.2rem; font-weight: bold; }
 
         /* Footer */
         footer {
@@ -759,51 +708,25 @@
             transition: color 0.3s;
         }
 
-        .footer-links a:hover {
-            color: var(--primary);
-        }
+        .footer-links a:hover { color: var(--primary); }
 
-        .copyright {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
+        .copyright { color: var(--text-muted); font-size: 0.9rem; }
 
         /* Responsive */
         @media (max-width: 768px) {
-            header {
-                padding: 10px 15px;
-            }
-
-            nav {
-                display: none;
-            }
-
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-
-            .pricing-card.popular {
-                transform: none;
-            }
-
-            .pricing-card.popular:hover {
-                transform: translateY(-10px);
-            }
-
-            .stats-bar {
-                gap: 20px;
-            }
-
-            .stat-number {
-                font-size: 1.8rem;
-            }
+            header { padding: 10px 15px; }
+            nav { display: none; }
+            .hero h1 { font-size: 2.5rem; }
+            .pricing-card.popular { transform: none; }
+            .pricing-card.popular:hover { transform: translateY(-10px); }
+            .stats-bar { gap: 20px; }
+            .stat-number { font-size: 1.8rem; }
         }
 
-        /* Loading Spinner */
+        /* Spinner */
         .spinner {
             display: none;
-            width: 20px;
-            height: 20px;
+            width: 20px; height: 20px;
             border: 2px solid var(--bg-dark);
             border-top: 2px solid var(--primary);
             border-radius: 50%;
@@ -815,15 +738,10 @@
             100% { transform: rotate(360deg); }
         }
 
-        .btn.loading .spinner {
-            display: inline-block;
-        }
+        .btn.loading .spinner { display: inline-block; }
+        .btn.loading .btn-text { display: none; }
 
-        .btn.loading .btn-text {
-            display: none;
-        }
-
-        /* Toast Notification */
+        /* Toast */
         .toast {
             position: fixed;
             bottom: 30px;
@@ -843,13 +761,8 @@
             opacity: 1;
         }
 
-        .toast.success {
-            border-color: var(--accent);
-        }
-
-        .toast.error {
-            border-color: var(--secondary);
-        }
+        .toast.success { border-color: var(--accent); }
+        .toast.error { border-color: var(--secondary); }
     </style>
 <base target="_blank">
 </head>
@@ -966,103 +879,14 @@
         <div class="country-detected" id="country-detected">
             <span class="flag" id="country-flag">🇮🇳</span>
             <span class="name" id="country-name">India</span>
-            <span class="tier-badge tier2" id="tier-badge">Tier 2</span>
+            <span class="tier-badge tier2" id="tier-badge">India Pricing</span>
             <br><br>
             <button class="change-country-btn" onclick="openCountryModal()" data-en="🌍 Change Country" data-hi="🌍 देश बदलें">🌍 Change Country</button>
         </div>
 
-        <div class="pricing-cards">
-            <!-- Free Plan -->
-            <div class="pricing-card free">
-                <div class="card-header">
-                    <h3 data-en="🆓 Free" data-hi="🆓 Free">🆓 Free</h3>
-                    <div class="price">
-                        <span class="currency" id="free-currency">₹</span>
-                        <span class="amount" id="free-price">0</span>
-                        <span class="period" data-en="/month" data-hi="/महीना">/month</span>
-                    </div>
-                </div>
-                <ul class="features-list">
-                    <li><span class="check">✅</span> <span data-en="Basic Chat" data-hi="Basic Chat">Basic Chat</span></li>
-                    <li><span class="check">✅</span> <span data-en="Hindi + English" data-hi="Hindi + English">Hindi + English</span></li>
-                    <li><span class="cross">❌</span> <span data-en="Voice Chat" data-hi="Voice Chat">Voice Chat</span></li>
-                    <li><span class="cross">❌</span> <span data-en="Image Analysis" data-hi="Image Analysis">Image Analysis</span></li>
-                    <li><span class="cross">❌</span> <span data-en="Code Generation" data-hi="Code Generation">Code Generation</span></li>
-                    <li><span class="cross">❌</span> <span data-en="Live Crypto/Stocks" data-hi="Live Crypto/Stocks">Live Crypto/Stocks</span></li>
-                    <li><span class="check">✅</span> <span data-en="AI Image Generator (Limited)" data-hi="AI Image Generator (Limited)">AI Image Generator (Limited)</span></li>
-                </ul>
-                <button class="btn btn-secondary" onclick="startFree()">
-                    <span data-en="Get Started" data-hi="शुरू करें">Get Started</span>
-                </button>
-            </div>
-
-            <!-- Pro Plan -->
-            <div class="pricing-card pro popular">
-                <div class="popular-badge" data-en="🔥 Most Popular" data-hi="🔥 सबसे लोकप्रिय">🔥 Most Popular</div>
-                <div class="card-header">
-                    <h3 data-en="⚡ Ultra Pro" data-hi="⚡ अल्ट्रा प्रो">⚡ Ultra Pro</h3>
-                    <div class="price">
-                        <span class="currency" id="pro-currency">₹</span>
-                        <span class="amount" id="pro-price">99</span>
-                        <span class="period" data-en="/month" data-hi="/महीना">/month</span>
-                    </div>
-                    <div class="annual-price">
-                        <span class="strikethrough" id="pro-strikethrough">₹1,188</span>
-                        <span class="final" id="pro-annual">₹999</span>
-                        <span class="save" data-en="Save 16%" data-hi="16% बचाएं">Save 16%</span>
-                        <span data-en="/year" data-hi="/साल">/year</span>
-                    </div>
-                </div>
-                <ul class="features-list">
-                    <li><span class="check">✅</span> <span data-en="Everything in Free" data-hi="Free में जो सब कुछ है">Everything in Free</span></li>
-                    <li><span class="check">✅</span> <span data-en="Voice Chat" data-hi="Voice Chat">Voice Chat</span></li>
-                    <li><span class="check">✅</span> <span data-en="Image Analysis" data-hi="Image Analysis">Image Analysis</span></li>
-                    <li><span class="check">✅</span> <span data-en="Code Generation" data-hi="Code Generation">Code Generation</span></li>
-                    <li><span class="check">✅</span> <span data-en="Live Crypto + Stocks" data-hi="Live Crypto + Stocks">Live Crypto + Stocks</span></li>
-                    <li><span class="check">✅</span> <span data-en="AI Image Generator (Unlimited)" data-hi="AI Image Generator (Unlimited)">AI Image Generator (Unlimited)</span></li>
-                    <li><span class="check">✅</span> <span data-en="Priority Support" data-hi="Priority Support">Priority Support</span></li>
-                </ul>
-                <button class="btn btn-primary" onclick="openPaymentModal('pro')">
-                    <span class="spinner"></span>
-                    <span class="btn-text" data-en="Upgrade Now" data-hi="अभी Upgrade करें">Upgrade Now</span>
-                </button>
-                <div class="gateway-info" id="pro-gateway">
-                    💳 UPI, Cards, Netbanking
-                </div>
-            </div>
-
-            <!-- Ultra Plan -->
-            <div class="pricing-card ultra">
-                <div class="card-header">
-                    <h3 data-en="👑 Ultra Max" data-hi="👑 अल्ट्रा मैक्स">👑 Ultra Max</h3>
-                    <div class="price">
-                        <span class="currency" id="ultra-currency">₹</span>
-                        <span class="amount" id="ultra-price">199</span>
-                        <span class="period" data-en="/month" data-hi="/महीना">/month</span>
-                    </div>
-                    <div class="annual-price">
-                        <span class="strikethrough" id="ultra-strikethrough">₹2,388</span>
-                        <span class="final" id="ultra-annual">₹1,999</span>
-                        <span class="save" data-en="Save 16%" data-hi="16% बचाएं">Save 16%</span>
-                        <span data-en="/year" data-hi="/साल">/year</span>
-                    </div>
-                </div>
-                <ul class="features-list">
-                    <li><span class="check">✅</span> <span data-en="Everything in Pro" data-hi="Pro में जो सब कुछ है">Everything in Pro</span></li>
-                    <li><span class="check">✅</span> <span data-en="Guard Agent (CCTV)" data-hi="Guard Agent (CCTV)">Guard Agent (CCTV)</span></li>
-                    <li><span class="check">✅</span> <span data-en="WhatsApp Alerts" data-hi="WhatsApp Alerts">WhatsApp Alerts</span></li>
-                    <li><span class="check">✅</span> <span data-en="Custom AI Training" data-hi="Custom AI Training">Custom AI Training</span></li>
-                    <li><span class="check">✅</span> <span data-en="API Access" data-hi="API Access">API Access</span></li>
-                    <li><span class="check">✅</span> <span data-en="24/7 Dedicated Support" data-hi="24/7 Dedicated Support">24/7 Dedicated Support</span></li>
-                </ul>
-                <button class="btn btn-primary" onclick="openPaymentModal('ultra')" style="background: linear-gradient(90deg, var(--secondary), #ee5a24);">
-                    <span class="spinner"></span>
-                    <span class="btn-text" data-en="Go Ultra" data-hi="Ultra बनें">Go Ultra</span>
-                </button>
-                <div class="gateway-info" id="ultra-gateway">
-                    💳 UPI, Cards, Netbanking
-                </div>
-            </div>
+        <!-- 5 Pricing Cards - Rendered by JS -->
+        <div class="pricing-cards" id="pricing-cards-container">
+            <!-- Cards will be inserted here by JavaScript -->
         </div>
     </section>
 
@@ -1085,9 +909,7 @@
                 <button class="close-btn" onclick="closeCountryModal()">✕</button>
             </div>
             <input type="text" class="country-search" id="country-search" placeholder="Search country..." onkeyup="filterCountries()">
-            <div class="country-grid" id="country-grid">
-                <!-- Populated by JS -->
-            </div>
+            <div class="country-grid" id="country-grid"></div>
         </div>
     </div>
 
@@ -1104,13 +926,13 @@
                     <input type="email" id="payment-email" placeholder="your@email.com">
                 </div>
                 <div class="form-group">
-                    <label data-en="Select Plan" data-hi="प्लान चुनें">Select Plan</label>
+                    <label data-en="Billing Period" data-hi="बिलिंग पीरियड">Billing Period</label>
                     <div class="plan-selector">
-                        <div class="plan-option selected" onclick="selectPlan('monthly')" id="plan-monthly">
+                        <div class="plan-option selected" onclick="selectBilling('monthly')" id="billing-monthly">
                             <div class="plan-name" data-en="Monthly" data-hi="महीने का">Monthly</div>
                             <div class="plan-price" id="monthly-price">₹99</div>
                         </div>
-                        <div class="plan-option" onclick="selectPlan('annual')" id="plan-annual">
+                        <div class="plan-option" onclick="selectBilling('annual')" id="billing-annual">
                             <div class="plan-name" data-en="Annual" data-hi="सालाना">Annual</div>
                             <div class="plan-price" id="annual-price-display">₹999</div>
                         </div>
