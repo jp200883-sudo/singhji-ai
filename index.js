@@ -3,25 +3,37 @@
 
 const API_BASE_URL = 'https://singhji-api.onrender.com';
 
-// ==================== FREE TRIAL CONFIG ====================
-const TRIAL_CONFIG = {
-    tier1: {  // Rich countries: USA, UK, Germany, etc.
-        duration: 30,  // 1 month
-        label: "1 Month Free",
-        badge: "🎁 30 Days Free"
-    },
-    tier2: {  // India + Upper-mid
-        duration: 90,  // 3 months
-        label: "3 Months Free",
-        badge: "🎁 3 Months Free"
-    },
-    tier3: {  // Poor countries: Bangladesh, Pakistan, etc.
-        duration: 180, // 6 months
-        label: "6 Months Free",
-        badge: "🎁 6 Months Free"
+function startTrial(planType = 'pro') {
+    // Email check karo
+    const email = document.getElementById('trial-email')?.value;
+    
+    if (!email || !email.includes('@')) {
+        showToast('Please enter valid email!', 'error');
+        return; // Yahan stop karo agar email nahi hai
     }
-};
-
+    
+    // Ab trial start karo
+    const info = COUNTRY_INFO[currentCountry] || COUNTRY_INFO["IN"];
+    const trialConfig = TRIAL_CONFIG[info.tier];
+    
+    const trialData = {
+        active: true,
+        email: email, // Email save karo
+        startDate: new Date().toISOString(),
+        endDate: new Date(Date.now() + trialConfig.duration * 24 * 60 * 60 * 1000).toISOString(),
+        daysLeft: trialConfig.duration,
+        plan: planType,
+        country: currentCountry
+    };
+    
+    localStorage.setItem('singhji_trial', JSON.stringify(trialData));
+    userTrialStatus = trialData;
+    
+    showToast(`🎉 ${trialConfig.label} activated!`, 'success');
+    renderPricingCards();
+    showTrialBanner();
+    registerTrialOnServer(trialData);
+}
 // ==================== 5 TIER PRICING ====================
 const PRICING_DATA = {
     tier1: {
