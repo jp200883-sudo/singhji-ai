@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Singh Ji AI Ultra - भारत का अपना AI</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0a0a1a">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
@@ -139,6 +141,7 @@
             font-weight: 500;
             transition: color 0.3s;
             position: relative;
+            cursor: pointer;
         }
 
         .nav-links a:hover {
@@ -287,6 +290,7 @@
             cursor: pointer;
             transition: all 0.3s;
             box-shadow: 0 10px 40px rgba(255, 140, 66, 0.3);
+            text-decoration: none;
         }
 
         .btn-primary:hover {
@@ -345,6 +349,159 @@
             margin-top: 5px;
             text-transform: uppercase;
             letter-spacing: 1px;
+        }
+
+        /* ========== FEATURES SECTION ========== */
+        .features-section {
+            position: relative;
+            z-index: 1;
+            padding: 100px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .features-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .features-header h2 {
+            font-size: 42px;
+            font-weight: 800;
+            margin-bottom: 15px;
+        }
+
+        .features-header h2 span {
+            background: linear-gradient(135deg, var(--accent-orange), var(--accent-gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .features-header p {
+            font-size: 18px;
+            color: var(--text-secondary);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+        @media (max-width: 768px) {
+            .features-grid { grid-template-columns: 1fr; }
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(var(--glass-blur));
+            border: 1px solid var(--bg-card-border);
+            border-radius: 20px;
+            padding: 35px 25px;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--accent-orange);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 30px rgba(255, 140, 66, 0.1);
+        }
+
+        .feature-icon-box {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .feature-card p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* ========== INSTALL APP SECTION ========== */
+        .install-section {
+            position: relative;
+            z-index: 1;
+            padding: 100px 20px;
+            text-align: center;
+        }
+
+        .install-card {
+            max-width: 600px;
+            margin: 0 auto;
+            background: var(--bg-card);
+            backdrop-filter: blur(var(--glass-blur));
+            border: 1px solid var(--bg-card-border);
+            border-radius: 24px;
+            padding: 50px 40px;
+        }
+
+        .install-card h2 {
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 15px;
+        }
+
+        .install-card h2 span {
+            background: linear-gradient(135deg, var(--accent-orange), var(--accent-gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .install-card p {
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .qr-placeholder {
+            width: 180px;
+            height: 180px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px dashed var(--bg-card-border);
+            border-radius: 16px;
+            margin: 0 auto 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+        }
+
+        .install-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .install-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--bg-card-border);
+            color: var(--text-primary);
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .install-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: var(--accent-orange);
         }
 
         /* ========== PRICING SECTION ========== */
@@ -792,10 +949,10 @@
             <span>Singh Ji AI</span>
         </a>
         <div class="nav-links">
-            <a href="#features">Features</a>
-            <a href="#pricing">Pricing</a>
-            <a href="#install">Install App</a>
-            <button class="btn-primary" style="padding: 10px 24px; font-size: 14px;">🚀 Get Started</button>
+            <a onclick="scrollToSection('features')">Features</a>
+            <a onclick="scrollToSection('pricing')">Pricing</a>
+            <a onclick="scrollToSection('install')">Install App</a>
+            <button class="btn-primary" style="padding: 10px 24px; font-size: 14px;" onclick="scrollToSection('pricing')">🚀 Get Started</button>
         </div>
     </nav>
 
@@ -828,7 +985,7 @@
 
         <!-- CTA Buttons -->
         <div class="hero-cta">
-            <button class="btn-primary" onclick="document.getElementById('pricing').scrollIntoView({behavior: 'smooth'})">
+            <button class="btn-primary" onclick="scrollToSection('pricing')">
                 ⚡ Get Ultra Pro
             </button>
             <a href="https://t.me/singhjiai" class="btn-secondary" target="_blank">
@@ -856,6 +1013,77 @@
             </div>
         </div>
 
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section" id="features">
+        <div class="features-header">
+            <h2>Powerful <span>AI Features</span></h2>
+            <p>Everything you need, all in one AI assistant</p>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card fade-in card-1">
+                <div class="feature-icon-box">💬</div>
+                <h3>AI Chat</h3>
+                <p>Smart conversations in Hindi & English. Ask anything, get instant answers.</p>
+            </div>
+            <div class="feature-card fade-in card-2">
+                <div class="feature-icon-box">🎙️</div>
+                <h3>Voice Chat</h3>
+                <p>Talk to AI naturally. Speak in Hindi or English, get voice responses.</p>
+            </div>
+            <div class="feature-card fade-in card-3">
+                <div class="feature-icon-box">🎨</div>
+                <h3>AI Image Generator</h3>
+                <p>Create stunning images from text prompts. Unlimited creativity at your fingertips.</p>
+            </div>
+            <div class="feature-card fade-in card-4">
+                <div class="feature-icon-box">👁️</div>
+                <h3>Image Analysis</h3>
+                <p>Upload any image and get detailed analysis, descriptions, and insights.</p>
+            </div>
+            <div class="feature-card fade-in card-5">
+                <div class="feature-icon-box">💻</div>
+                <h3>Code Generation</h3>
+                <p>Write code in any programming language. Debug, explain, and optimize instantly.</p>
+            </div>
+            <div class="feature-card fade-in card-1">
+                <div class="feature-icon-box">📈</div>
+                <h3>Live Crypto + Stocks</h3>
+                <p>Real-time market data, price tracking, and AI-powered investment insights.</p>
+            </div>
+            <div class="feature-card fade-in card-2">
+                <div class="feature-icon-box">🛡️</div>
+                <h3>Guard Agent (CCTV)</h3>
+                <p>AI-powered security monitoring. Detect threats and anomalies automatically.</p>
+            </div>
+            <div class="feature-card fade-in card-3">
+                <div class="feature-icon-box">🔌</div>
+                <h3>API Access</h3>
+                <p>Integrate Singh Ji AI into your own apps and services with our powerful API.</p>
+            </div>
+            <div class="feature-card fade-in card-4">
+                <div class="feature-icon-box">⚡</div>
+                <h3>Priority Support</h3>
+                <p>Get help instantly with 24/7 priority support. We're always here for you.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Install App Section -->
+    <section class="install-section" id="install">
+        <div class="install-card">
+            <h2>Install <span>Singh Ji AI</span></h2>
+            <p>Get the app on your device for the best experience. Available on all platforms.</p>
+            <div class="qr-placeholder">📱</div>
+            <div class="install-buttons">
+                <a href="#" class="install-btn">🤖 Android App</a>
+                <a href="#" class="install-btn">🍎 iOS App</a>
+                <a href="#" class="install-btn">💻 Web App</a>
+                <a href="https://t.me/singhjiai" class="install-btn" target="_blank">✈️ Telegram Bot</a>
+            </div>
+        </div>
     </section>
 
     <!-- Pricing Section -->
@@ -994,11 +1222,11 @@
             <button class="modal-close" onclick="closeTrialModal()">&times;</button>
 
             <div class="modal-icon">🎁</div>
-            <h2>Claim Your Free Trial!</h2>
-            <p>Experience the full power of Singh Ji AI Ultra before upgrading to a paid plan.</p>
+            <h2 id="modalTitle">Claim Your Free Trial!</h2>
+            <p id="modalDesc">Experience the full power of Singh Ji AI Ultra before upgrading to a paid plan.</p>
 
             <div class="country-select">
-                <label>🌍 Select Your Country</label>
+                <label id="countryLabel">🌍 Select Your Country</label>
                 <select id="countrySelect" onchange="updateTrialDuration()">
                     <option value="india">🇮🇳 India — 3 Months Free</option>
                     <option value="poor">🌍 Developing Country — 6 Months Free</option>
@@ -1009,8 +1237,8 @@
             <div class="modal-trial-badge" id="modalTrialBadge">🇮🇳 3 Months Free Trial</div>
 
             <div class="modal-features">
-                <h3>✨ What's Included in Trial:</h3>
-                <ul>
+                <h3 id="includedTitle">✨ What's Included in Trial:</h3>
+                <ul id="trialFeaturesList">
                     <li><span class="check">✓</span> Unlimited AI conversations</li>
                     <li><span class="check">✓</span> Priority response speed</li>
                     <li><span class="check">✓</span> All premium features unlocked</li>
@@ -1019,12 +1247,56 @@
                 </ul>
             </div>
 
-            <button class="modal-btn" onclick="startTrial()">🚀 Start Free Trial Now</button>
-            <button class="modal-btn modal-btn-secondary" onclick="closeTrialModal()">Maybe Later</button>
+            <button class="modal-btn" id="startTrialBtn" onclick="startTrial()">🚀 Start Free Trial Now</button>
+            <button class="modal-btn modal-btn-secondary" id="maybeLaterBtn" onclick="closeTrialModal()">Maybe Later</button>
         </div>
     </div>
 
     <script>
+        // ========== LANGUAGE CONFIG ==========
+        let currentLanguage = 'en';
+
+        const translations = {
+            en: {
+                modalTitle: 'Claim Your Free Trial!',
+                modalDesc: 'Experience the full power of Singh Ji AI Ultra before upgrading to a paid plan.',
+                countryLabel: '🌍 Select Your Country',
+                includedTitle: '✨ What\'s Included in Trial:',
+                startTrialBtn: '🚀 Start Free Trial Now',
+                maybeLaterBtn: 'Maybe Later',
+                trialFeatures: [
+                    'Unlimited AI conversations',
+                    'Priority response speed',
+                    'All premium features unlocked',
+                    '24/7 customer support',
+                    'No credit card required'
+                ],
+                alertCongrats: 'Congratulations!',
+                alertTrialStarted: 'Your {duration} FREE trial of Singh Ji AI Ultra has started!',
+                alertFeatures: '✅ All premium features unlocked\n✅ No credit card required\n✅ Cancel anytime',
+                alertEnjoy: 'Enjoy the full power of AI!'
+            },
+            hi: {
+                modalTitle: 'अपना Free Trial लें!',
+                modalDesc: 'Paid plan में upgrade करने से पहले Singh Ji AI Ultra की पूरी ताकत experience करें।',
+                countryLabel: '🌍 अपना देश चुनें',
+                includedTitle: '✨ Trial में क्या मिलेगा:',
+                startTrialBtn: '🚀 Free Trial शुरू करें',
+                maybeLaterBtn: 'बाद में',
+                trialFeatures: [
+                    'Unlimited AI बातचीत',
+                    'Priority response speed',
+                    'सभी premium features unlocked',
+                    '24/7 customer support',
+                    'कोई credit card नहीं चाहिए'
+                ],
+                alertCongrats: 'बधाई हो!',
+                alertTrialStarted: 'आपका Singh Ji AI Ultra का {duration} FREE trial शुरू हो गया है!',
+                alertFeatures: '✅ सभी premium features unlocked\n✅ कोई credit card नहीं चाहिए\n✅ कभी भी cancel कर सकते हैं',
+                alertEnjoy: 'AI की पूरी ताकत का आनंद लें!'
+            }
+        };
+
         // ========== MODAL FUNCTIONS ==========
         function showTrialModal() {
             document.getElementById('trialModal').classList.add('active');
@@ -1050,32 +1322,46 @@
             const badge = document.getElementById('modalTrialBadge');
             const bannerText = document.getElementById('bannerText');
 
-            let duration = '', flag = '';
+            let duration = '', flag = '', days = 0;
 
             if (country === 'india') {
-                duration = '3 Months'; flag = '🇮🇳';
+                duration = currentLanguage === 'hi' ? '3 महीने' : '3 Months';
+                flag = '🇮🇳'; days = 90;
                 badge.style.background = 'linear-gradient(135deg, #ff9933, #138808)';
             } else if (country === 'poor') {
-                duration = '6 Months'; flag = '🌍';
+                duration = currentLanguage === 'hi' ? '6 महीने' : '6 Months';
+                flag = '🌍'; days = 180;
                 badge.style.background = 'linear-gradient(135deg, #11998e, #38ef7d)';
             } else if (country === 'rich') {
-                duration = '1 Month'; flag = '💰';
+                duration = currentLanguage === 'hi' ? '1 महीना' : '1 Month';
+                flag = '💰'; days = 30;
                 badge.style.background = 'linear-gradient(135deg, #f093fb, #f5576c)';
             }
 
-            badge.textContent = flag + ' ' + duration + ' Free Trial';
+            badge.textContent = flag + ' ' + duration + (currentLanguage === 'hi' ? ' Free Trial' : ' Free Trial');
             bannerText.textContent = duration + ' Free';
         }
 
         function startTrial() {
             const country = document.getElementById('countrySelect').value;
+            const t = translations[currentLanguage];
             let duration = '';
-            if (country === 'india') duration = '3 months';
-            else if (country === 'poor') duration = '6 months';
-            else if (country === 'rich') duration = '1 month';
 
-            alert('🎉 Congratulations!\n\nYour ' + duration + ' FREE trial of Singh Ji AI Ultra has started!\n\n✅ All premium features unlocked\n✅ No credit card required\n✅ Cancel anytime\n\nEnjoy the full power of AI! 🔥');
+            if (country === 'india') duration = currentLanguage === 'hi' ? '3 महीनों का' : '3 months';
+            else if (country === 'poor') duration = currentLanguage === 'hi' ? '6 महीनों का' : '6 months';
+            else if (country === 'rich') duration = currentLanguage === 'hi' ? '1 महीने का' : '1 month';
+
+            const msg = `🎉 ${t.alertCongrats}\n\n${t.alertTrialStarted.replace('{duration}', duration)}\n\n${t.alertFeatures}\n\n${t.alertEnjoy} 🔥`;
+            alert(msg);
             closeTrialModal();
+        }
+
+        // ========== SCROLL TO SECTION ==========
+        function scrollToSection(id) {
+            const element = document.getElementById(id);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+            }
         }
 
         // ========== NAVBAR SCROLL EFFECT ==========
@@ -1088,6 +1374,28 @@
                 navbar.style.background = 'rgba(10, 10, 26, 0.7)';
                 navbar.style.boxShadow = 'none';
             }
+        });
+
+        // ========== INTERSECTION OBSERVER FOR ANIMATIONS ==========
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
         });
     </script>
 
