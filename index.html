@@ -1,794 +1,1135 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#FF6B00">
-<title>Singh Ji AI - Ultra</title>
-<link rel="manifest" href="manifest.json">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<style>
-:root{--primary:#FF6B00;--primary-light:#FF8C00;--secondary:#00D4FF;--accent:#7C3AED;--bg:#050508;--surface:#0a0a12;--surface-light:#12121f;--text:#ffffff;--text-secondary:#a0a0b0;--border:rgba(255,255,255,0.08);--success:#00C853;--warning:#FFD600;--danger:#FF1744}
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',system-ui,sans-serif}
-body{background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
-.glass{background:var(--surface);backdrop-filter:blur(20px);border:1px solid var(--border)}
-.gradient-text{background:linear-gradient(135deg,var(--primary),var(--secondary));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.glow{box-shadow:0 0 40px rgba(255,107,0,0.15),0 0 80px rgba(0,212,255,0.1)}
-.header{background:linear-gradient(135deg,rgba(255,107,0,0.1),rgba(0,212,255,0.05));padding:20px;text-align:center;position:sticky;top:0;z-index:100;backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
-.header h1{font-size:28px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:12px}
-.header .badge{background:linear-gradient(135deg,var(--primary),var(--accent));padding:6px 16px;border-radius:20px;font-size:12px;font-weight:700;color:white;animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(255,107,0,0.4)}50%{box-shadow:0 0 20px 5px rgba(255,107,0,0.2)}}
-.status-bar{display:flex;gap:8px;padding:12px 15px;overflow-x:auto;scrollbar-width:none}
-.status-bar::-webkit-scrollbar{display:none}
-.status-pill{background:var(--surface);padding:8px 16px;border-radius:25px;font-size:12px;font-weight:500;display:flex;align-items:center;gap:6px;white-space:nowrap;border:1px solid var(--border);transition:0.3s}
-.status-pill:hover{border-color:var(--primary)}
-.status-pill.online{border-color:var(--success);color:var(--success)}
-.status-pill.active{border-color:var(--primary);color:var(--primary)}
-.model-selector{background:var(--surface);padding:8px 16px;border-radius:25px;font-size:12px;font-weight:600;border:1px solid var(--border);cursor:pointer;display:flex;align-items:center;gap:8px;color:var(--text)}
-.model-selector:hover{border-color:var(--primary)}
-.tabs{display:flex;overflow-x:auto;padding:12px;gap:8px;scrollbar-width:none}
-.tabs::-webkit-scrollbar{display:none}
-.tab{padding:12px 20px;border:none;background:var(--surface);color:var(--text-secondary);cursor:pointer;white-space:nowrap;font-size:13px;border-radius:16px;font-weight:600;border:1px solid var(--border);transition:0.3s;display:flex;align-items:center;gap:8px}
-.tab:hover{background:var(--surface-light);color:var(--text);transform:translateY(-2px)}
-.tab.active{background:linear-gradient(135deg,var(--primary),var(--primary-light));color:white;border-color:transparent;box-shadow:0 4px 20px rgba(255,107,0,0.3)}
-.content{padding:15px;display:none;animation:fadeIn 0.5s}
-.content.active{display:block}
-@keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-.chat-container{height:calc(100vh - 280px);overflow-y:auto;padding:20px;background:var(--surface);border-radius:24px;margin-bottom:15px;border:1px solid var(--border)}
-.chat-msg{margin:16px 0;max-width:85%;animation:slideIn 0.4s}
-@keyframes slideIn{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:translateX(0)}}
-.chat-msg.user{margin-left:auto}
-.chat-msg.user .bubble{background:linear-gradient(135deg,var(--primary),var(--primary-light));padding:14px 20px;border-radius:20px 20px 4px 20px;color:white;font-weight:500;box-shadow:0 4px 20px rgba(255,107,0,0.2)}
-.chat-msg.bot .bubble{background:var(--surface-light);padding:14px 20px;border-radius:20px 20px 20px 4px;border:1px solid var(--border);line-height:1.7}
-.chat-msg.bot .bubble pre{background:#000;padding:12px;border-radius:12px;overflow-x:auto;font-family:'Fira Code',monospace;font-size:13px;margin:10px 0}
-.chat-msg.bot .bubble code{background:rgba(255,107,0,0.1);padding:2px 6px;border-radius:4px;color:var(--primary);font-family:'Fira Code',monospace}
-.chat-msg .time{font-size:11px;color:var(--text-secondary);margin-top:4px}
-.typing-indicator{display:flex;gap:4px;padding:12px 16px;background:var(--surface-light);border-radius:16px;width:fit-content;border:1px solid var(--border)}
-.typing-dot{width:8px;height:8px;background:var(--primary);border-radius:50%;animation:typingBounce 1.4s infinite}
-.typing-dot:nth-child(2){animation-delay:0.2s}
-.typing-dot:nth-child(3){animation-delay:0.4s}
-@keyframes typingBounce{0%,80%,100%{transform:scale(0.6)}40%{transform:scale(1)}}
-.input-area{position:sticky;bottom:0;background:var(--bg);padding:15px;border-top:1px solid var(--border)}
-.input-row{display:flex;gap:10px;align-items:flex-end;background:var(--surface);padding:12px;border-radius:20px;border:1px solid var(--border);transition:0.3s}
-.input-row:focus-within{border-color:var(--primary);box-shadow:0 0 20px rgba(255,107,0,0.1)}
-.input-row textarea{flex:1;background:transparent;border:none;color:var(--text);font-size:15px;resize:none;outline:none;max-height:120px;font-family:'Inter',sans-serif}
-.input-row textarea::placeholder{color:var(--text-secondary)}
-.action-btn{width:40px;height:40px;border-radius:50%;border:none;background:var(--surface-light);color:var(--text);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.3s;font-size:16px}
-.action-btn:hover{background:var(--primary);color:white;transform:scale(1.1)}
-.send-btn{width:40px;height:40px;border-radius:50%;border:none;background:linear-gradient(135deg,var(--primary),var(--primary-light));color:white;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:0.3s;font-size:16px;box-shadow:0 4px 15px rgba(255,107,0,0.3)}
-.send-btn:hover{transform:scale(1.1);box-shadow:0 6px 25px rgba(255,107,0,0.4)}
-.feature-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:15px}
-.feature-card{background:var(--surface);padding:20px;border-radius:20px;border:1px solid var(--border);cursor:pointer;transition:0.3s;text-align:center}
-.feature-card:hover{background:var(--surface-light);border-color:var(--primary);transform:translateY(-4px);box-shadow:0 8px 30px rgba(255,107,0,0.15)}
-.feature-card i{font-size:32px;margin-bottom:12px;background:linear-gradient(135deg,var(--primary),var(--secondary));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.feature-card h3{font-size:15px;font-weight:600;margin-bottom:4px}
-.feature-card p{font-size:12px;color:var(--text-secondary)}
-.result-card{background:var(--surface);padding:20px;border-radius:20px;border:1px solid var(--border);margin-top:15px}
-.result-card h3{font-size:16px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px;color:var(--primary)}
-.image-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:12px}
-.image-grid img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:16px;transition:0.3s;cursor:pointer}
-.image-grid img:hover{transform:scale(1.05);box-shadow:0 8px 30px rgba(0,0,0,0.3)}
-.crypto-table{width:100%;border-collapse:collapse}
-.crypto-table th,.crypto-table td{padding:12px;text-align:left;border-bottom:1px solid var(--border)}
-.crypto-table th{font-size:12px;color:var(--text-secondary);font-weight:500;text-transform:uppercase}
-.crypto-table td{font-size:14px;font-weight:600}
-.price-up{color:var(--success)}
-.price-down{color:var(--danger)}
-.chart-placeholder{height:200px;background:var(--surface-light);border-radius:16px;display:flex;align-items:center;justify-content:center;color:var(--text-secondary);font-size:14px}
-.streaming-text{overflow:hidden}
-.streaming-cursor{display:inline-block;width:2px;height:20px;background:var(--primary);animation:blink 1s infinite;vertical-align:middle;margin-left:4px}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
-.web-result{background:var(--surface-light);padding:12px;border-radius:12px;margin:8px 0;border-left:3px solid var(--secondary)}
-.web-result a{color:var(--secondary);text-decoration:none;font-size:13px;font-weight:600}
-.web-result p{font-size:12px;color:var(--text-secondary);margin-top:4px}
-.memory-indicator{font-size:11px;color:var(--text-secondary);display:flex;align-items:center;gap:4px}
-.memory-indicator i{font-size:10px}
-.tool-call{background:var(--surface-light);padding:8px 12px;border-radius:8px;font-size:12px;color:var(--secondary);display:flex;align-items:center;gap:6px;margin:8px 0}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Singh Ji AI Ultra - भारत का अपना AI!</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <meta name="theme-color" content="#1a1a2e">
+    <meta name="description" content="Singh Ji AI Ultra - ChatGPT से बेहतर, Hindi + English, Voice + Image + Code, Live Crypto + Stocks, Free AI Image Generator">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #feca57;
+            --secondary: #ff6b6b;
+            --accent: #4cd137;
+            --bg-dark: #0a0a1a;
+            --bg-card: rgba(255,255,255,0.05);
+            --text: #ffffff;
+            --text-muted: #888888;
+            --border: rgba(255,255,255,0.1);
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -1;
+            background: 
+                radial-gradient(ellipse at 20% 80%, rgba(254,202,87,0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(255,107,107,0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(76,209,55,0.05) 0%, transparent 50%);
+        }
+
+        .floating-shapes {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.1;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .shape:nth-child(1) { width: 300px; height: 300px; background: var(--primary); top: 10%; left: -5%; animation-delay: 0s; }
+        .shape:nth-child(2) { width: 200px; height: 200px; background: var(--secondary); top: 60%; right: -5%; animation-delay: 5s; }
+        .shape:nth-child(3) { width: 150px; height: 150px; background: var(--accent); top: 30%; right: 20%; animation-delay: 10s; }
+        .shape:nth-child(4) { width: 250px; height: 250px; background: var(--primary); bottom: 10%; left: 20%; animation-delay: 15s; }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(30px, -30px) rotate(90deg); }
+            50% { transform: translate(-20px, 20px) rotate(180deg); }
+            75% { transform: translate(20px, 30px) rotate(270deg); }
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 15px 30px;
+            background: rgba(10,10,26,0.9);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo-icon {
+            font-size: 2rem;
+        }
+
+        nav {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--primary);
+        }
+
+        .lang-toggle {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .lang-toggle:hover {
+            background: var(--primary);
+            color: var(--bg-dark);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 120px 20px 60px;
+            position: relative;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(90deg, rgba(254,202,87,0.2), rgba(255,107,107,0.2));
+            border: 1px solid var(--primary);
+            padding: 10px 25px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            margin-bottom: 30px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(254,202,87,0.4); }
+            50% { box-shadow: 0 0 20px 10px rgba(254,202,87,0); }
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 .gradient-text {
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% auto;
+            animation: gradient-shift 3s ease infinite;
+        }
+
+        @keyframes gradient-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1rem, 2.5vw, 1.5rem);
+            color: var(--text-muted);
+            max-width: 700px;
+            margin-bottom: 40px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: var(--bg-dark);
+            border: none;
+            box-shadow: 0 10px 30px rgba(254,202,87,0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(254,202,87,0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text);
+            border: 2px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .stats-bar {
+            display: flex;
+            gap: 40px;
+            margin-top: 60px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Features Section */
+        .features-section {
+            padding: 80px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            margin-bottom: 60px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 30px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+
+        .feature-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+
+        .feature-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* Pricing Section */
+        .pricing-section {
+            padding: 80px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .country-detected {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: var(--bg-card);
+            border-radius: 15px;
+            border: 1px solid var(--border);
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .country-detected .flag {
+            font-size: 2rem;
+            margin-right: 10px;
+        }
+
+        .country-detected .name {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .country-detected .tier-badge {
+            display: inline-block;
+            margin-left: 10px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .tier-badge.tier1 { background: linear-gradient(90deg, #ff6b6b, #ee5a24); }
+        .tier-badge.tier2 { background: linear-gradient(90deg, #feca57, #ff9f43); color: #1a1a2e; }
+        .tier-badge.tier3 { background: linear-gradient(90deg, #4cd137, #44bd32); }
+
+        .change-country-btn {
+            margin-top: 10px;
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .change-country-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .pricing-cards {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            align-items: flex-start;
+        }
+
+        .pricing-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 25px;
+            padding: 40px 30px;
+            width: 320px;
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .pricing-card.popular {
+            border: 2px solid var(--primary);
+            transform: scale(1.05);
+            box-shadow: 0 20px 60px rgba(254,202,87,0.2);
+        }
+
+        .pricing-card.popular:hover {
+            transform: scale(1.05) translateY(-10px);
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: var(--bg-dark);
+            padding: 8px 25px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.85rem;
+            white-space: nowrap;
+        }
+
+        .card-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .card-header h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .price {
+            font-size: 3.5rem;
+            font-weight: 900;
+            line-height: 1;
+        }
+
+        .price .currency {
+            font-size: 1.8rem;
+            vertical-align: super;
+        }
+
+        .price .amount {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .price .period {
+            font-size: 1rem;
+            color: var(--text-muted);
+            font-weight: normal;
+        }
+
+        .annual-price {
+            margin-top: 15px;
+            padding: 10px;
+            background: rgba(76,209,55,0.1);
+            border-radius: 10px;
+        }
+
+        .annual-price .strikethrough {
+            text-decoration: line-through;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .annual-price .final {
+            color: var(--accent);
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .annual-price .save {
+            display: inline-block;
+            margin-left: 8px;
+            background: var(--accent);
+            color: var(--bg-dark);
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        .features-list {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 30px;
+        }
+
+        .features-list li {
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .features-list li:last-child {
+            border-bottom: none;
+        }
+
+        .features-list .check {
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        .features-list .cross {
+            color: var(--secondary);
+        }
+
+        .features-list .coming-soon {
+            margin-left: auto;
+            font-size: 0.7rem;
+            background: var(--bg-card);
+            padding: 2px 8px;
+            border-radius: 10px;
+            color: var(--text-muted);
+        }
+
+        .pricing-card .btn {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .gateway-info {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .gateway-info img {
+            height: 20px;
+            margin: 0 5px;
+            vertical-align: middle;
+            opacity: 0.7;
+        }
+
+        /* Country Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            border: 1px solid var(--border);
+            border-radius: 25px;
+            padding: 30px;
+            max-width: 700px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .modal-header h3 {
+            font-size: 1.5rem;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .close-btn:hover {
+            color: var(--secondary);
+        }
+
+        .country-search {
+            width: 100%;
+            padding: 12px 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            color: var(--text);
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+
+        .country-search:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .country-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+        }
+
+        .country-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 15px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.95rem;
+        }
+
+        .country-btn:hover {
+            background: linear-gradient(90deg, rgba(254,202,87,0.2), rgba(255,107,107,0.2));
+            border-color: var(--primary);
+        }
+
+        .country-btn .flag {
+            font-size: 1.5rem;
+        }
+
+        .country-btn .price-tag {
+            margin-left: auto;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        /* Payment Modal */
+        .payment-modal .modal-content {
+            max-width: 500px;
+        }
+
+        .payment-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .form-group input {
+            padding: 12px 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--text);
+            font-size: 1rem;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .plan-selector {
+            display: flex;
+            gap: 10px;
+        }
+
+        .plan-option {
+            flex: 1;
+            padding: 15px;
+            background: var(--bg-card);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .plan-option.selected {
+            border-color: var(--primary);
+            background: rgba(254,202,87,0.1);
+        }
+
+        .plan-option .plan-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .plan-option .plan-price {
+            color: var(--primary);
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        /* Footer */
+        footer {
+            padding: 60px 20px 30px;
+            border-top: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .footer-tagline {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+
+        .copyright {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header {
+                padding: 10px 15px;
+            }
+
+            nav {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .pricing-card.popular {
+                transform: none;
+            }
+
+            .pricing-card.popular:hover {
+                transform: translateY(-10px);
+            }
+
+            .stats-bar {
+                gap: 20px;
+            }
+
+            .stat-number {
+                font-size: 1.8rem;
+            }
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--bg-dark);
+            border-top: 2px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .btn.loading .spinner {
+            display: inline-block;
+        }
+
+        .btn.loading .btn-text {
+            display: none;
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--bg-card);
+            border: 1px solid var(--primary);
+            padding: 15px 30px;
+            border-radius: 15px;
+            z-index: 3000;
+            opacity: 0;
+            transition: all 0.3s;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        .toast.success {
+            border-color: var(--accent);
+        }
+
+        .toast.error {
+            border-color: var(--secondary);
+        }
+    </style>
+<base target="_blank">
 </head>
 <body>
-<div class="header glow">
-  <h1>
-    <span style="font-size:36px">🤖</span>
-    <span class="gradient-text">Singh Ji AI</span>
-    <span class="badge">ULTRA</span>
-  </h1>
-</div>
-
-<div class="status-bar">
-  <div class="status-pill online" id="net-status">🌐 Online</div>
-  <div class="status-pill" id="loc-status">📍 Detecting...</div>
-  <div class="status-pill active" id="model-status">🧠 Gemini Pro</div>
-  <div class="status-pill" id="memory-status">💾 0 chats</div>
-  <div class="model-selector" onclick="toggleModel()">
-    <i class="fas fa-brain"></i>
-    <span id="current-model">Gemini Pro</span>
-    <i class="fas fa-chevron-down"></i>
-  </div>
-</div>
-
-<div class="tabs">
-  <button class="tab active" onclick="showTab('chat')"><i class="fas fa-comments"></i> Chat</button>
-  <button class="tab" onclick="showTab('search')"><i class="fas fa-search"></i> Web Search</button>
-  <button class="tab" onclick="showTab('image')"><i class="fas fa-image"></i> AI Image</button>
-  <button class="tab" onclick="showTab('code')"><i class="fas fa-code"></i> Code</button>
-  <button class="tab" onclick="showTab('crypto')"><i class="fas fa-coins"></i> Crypto</button>
-  <button class="tab" onclick="showTab('weather')"><i class="fas fa-cloud-sun"></i> Weather</button>
-  <button class="tab" onclick="showTab('news')"><i class="fas fa-newspaper"></i> News</button>
-  <button class="tab" onclick="showTab('cricket')"><i class="fas fa-trophy"></i> Cricket</button>
-  <button class="tab" onclick="showTab('stock')"><i class="fas fa-chart-line"></i> Stocks</button>
-  <button class="tab" onclick="showTab('horoscope')"><i class="fas fa-star"></i> Horoscope</button>
-  <button class="tab" onclick="showTab('finance')"><i class="fas fa-piggy-bank"></i> Finance</button>
-  <button class="tab" onclick="showTab('guard')"><i class="fas fa-shield-alt"></i> Guard</button>
-</div>
-
-<!-- CHAT -->
-<div id="chat" class="content active">
-  <div class="chat-container" id="chat-container">
-    <div class="chat-msg bot">
-      <div class="bubble">
-        <div style="font-size:20px;margin-bottom:12px">👋 नमस्ते! मैं <b class="gradient-text">Singh Ji Ultra</b> हूँ</div>
-        <div>🧠 <b>Gemini Pro</b> + <b>Claude</b> + <b>GPT-4</b> powered</div>
-        <div style="margin-top:8px">🌐 Real-time Web Search</div>
-        <div>🎨 AI Image Generation</div>
-        <div>💻 Code Execution</div>
-        <div>🎙️ Voice Commands</div>
-        <div style="margin-top:12px;font-size:13px;color:var(--text-secondary)">मैं आपकी हर बात याद रखूँगा। कुछ भी पूछो!</div>
-      </div>
-      <div class="time">Just now</div>
+    <div class="bg-animation"></div>
+    <div class="floating-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
     </div>
-  </div>
-  <div class="input-area">
-    <div class="input-row">
-      <button class="action-btn" onclick="startVoice()" title="Voice"><i class="fas fa-microphone"></i></button>
-      <textarea id="chat-input" placeholder="कुछ भी पूछो... मैं सब जानता हूँ!" rows="1" onkeypress="if(event.key==='Enter' && !event.shiftKey){event.preventDefault();sendMessage()}"></textarea>
-      <button class="action-btn" onclick="attachFile()" title="Attach"><i class="fas fa-paperclip"></i></button>
-      <button class="action-btn" onclick="toggleSearch()" title="Web Search"><i class="fas fa-globe"></i></button>
-      <button class="send-btn" onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+
+    <header>
+        <div class="logo">
+            <span class="logo-icon">🤖</span>
+            <span>Singh Ji AI</span>
+        </div>
+        <nav>
+            <a href="#features" data-en="Features" data-hi="फीचर्स">Features</a>
+            <a href="#pricing" data-en="Pricing" data-hi="कीमत">Pricing</a>
+            <a href="#" onclick="installApp()" data-en="Install App" data-hi="ऐप इंस्टॉल करें">Install App</a>
+            <button class="lang-toggle" onclick="toggleLanguage()">🇮🇳 हिंदी</button>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-badge">
+            <span>⚡</span>
+            <span data-en="Singh Ji AI Ultra - Ready!" data-hi="सिंह जी AI अल्ट्रा - तैयार!">Singh Ji AI Ultra - Ready!</span>
+        </div>
+
+        <h1>
+            <span data-en="ChatGPT से बेहतर" data-hi="ChatGPT से बेहतर">ChatGPT से बेहतर</span><br>
+            <span class="gradient-text" data-en="भारत का अपना AI!" data-hi="भारत का अपना AI!">भारत का अपना AI!</span>
+        </h1>
+
+        <p class="hero-subtitle" data-en="The most powerful AI assistant made for India and the world. Voice, Image, Code, Crypto, Stocks - all in one place." data-hi="भारत और दुनिया के लिए बना सबसे शक्तिशाली AI assistant। Voice, Image, Code, Crypto, Stocks - सब एक जगह।">
+            The most powerful AI assistant made for India and the world. Voice, Image, Code, Crypto, Stocks - all in one place.
+        </p>
+
+        <div class="hero-buttons">
+            <a href="#pricing" class="btn btn-primary">
+                <span>🚀</span>
+                <span data-en="Get Ultra Pro" data-hi="Ultra Pro लें">Get Ultra Pro</span>
+            </a>
+            <a href="https://t.me/singhjiai_bot" class="btn btn-secondary" target="_blank">
+                <span>💬</span>
+                <span data-en="Try Free on Telegram" data-hi="Telegram पर Free Try करें">Try Free on Telegram</span>
+            </a>
+        </div>
+
+        <div class="stats-bar">
+            <div class="stat">
+                <div class="stat-number">50K+</div>
+                <div class="stat-label" data-en="Users" data-hi="यूजर्स">Users</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">2M+</div>
+                <div class="stat-label" data-en="Messages" data-hi="मैसेज">Messages</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">4.9★</div>
+                <div class="stat-label" data-en="Rating" data-hi="रेटिंग">Rating</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">24/7</div>
+                <div class="stat-label" data-en="Support" data-hi="सपोर्ट">Support</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="features-section" id="features">
+        <h2 class="section-title" data-en="🚀 Ultra Features" data-hi="🚀 अल्ट्रा फीचर्स">🚀 Ultra Features</h2>
+        <p class="section-subtitle" data-en="Everything you need, nothing you don't" data-hi="जो चाहिए वो सब, जो नहीं चाहिए वो कुछ नहीं">Everything you need, nothing you don't</p>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🗣️</div>
+                <h3 data-en="Voice Chat" data-hi="वॉइस चैट">Voice Chat</h3>
+                <p data-en="Speak in Hindi or English, get instant AI responses. No typing needed!" data-hi="हिंदी या English में बोलें, तुरंत AI जवाब मिलेगा। टाइपिंग की जरूरत नहीं!">Speak in Hindi or English, get instant AI responses. No typing needed!</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🖼️</div>
+                <h3 data-en="Image Analysis" data-hi="इमेज एनालिसिस">Image Analysis</h3>
+                <p data-en="Upload any image and get detailed analysis, OCR, and insights instantly." data-hi="कोई भी image upload करें और detailed analysis, OCR, insights तुरंत मिलेंगे।">Upload any image and get detailed analysis, OCR, and insights instantly.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">💻</div>
+                <h3 data-en="Code Generation" data-hi="कोड जनरेशन">Code Generation</h3>
+                <p data-en="Write code in any language. Debug, explain, and optimize with AI power." data-hi="किसी भी language में code लिखें। Debug, explain, optimize - AI power से।">Write code in any language. Debug, explain, and optimize with AI power.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📈</div>
+                <h3 data-en="Live Crypto + Stocks" data-hi="लाइव क्रिप्टो + स्टॉक्स">Live Crypto + Stocks</h3>
+                <p data-en="Real-time market data, price alerts, and AI-powered investment insights." data-hi="Real-time market data, price alerts, और AI-powered investment insights।">Real-time market data, price alerts, and AI-powered investment insights.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎨</div>
+                <h3 data-en="AI Image Generator" data-hi="AI इमेज जनरेटर">AI Image Generator</h3>
+                <p data-en="Create stunning images from text prompts. Free for all users!" data-hi="Text prompts से stunning images बनाएं। सभी users के लिए Free!">Create stunning images from text prompts. Free for all users!</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🛡️</div>
+                <h3 data-en="Guard Agent" data-hi="गार्ड एजेंट">Guard Agent</h3>
+                <p data-en="AI-powered CCTV monitoring with motion detection and WhatsApp alerts." data-hi="AI-powered CCTV monitoring motion detection और WhatsApp alerts के साथ।">AI-powered CCTV monitoring with motion detection and WhatsApp alerts.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="pricing-section" id="pricing">
+        <h2 class="section-title" data-en="💎 Choose Your Plan" data-hi="💎 अपना प्लान चुनें">💎 Choose Your Plan</h2>
+        <p class="section-subtitle" data-en="Fair pricing based on your country's economy 💪" data-hi="आपके देश की economy के हिसाब से fair pricing 💪">Fair pricing based on your country's economy 💪</p>
+
+        <div class="country-detected" id="country-detected">
+            <span class="flag" id="country-flag">🇮🇳</span>
+            <span class="name" id="country-name">India</span>
+            <span class="tier-badge tier2" id="tier-badge">Tier 2</span>
+            <br><br>
+            <button class="change-country-btn" onclick="openCountryModal()" data-en="🌍 Change Country" data-hi="🌍 देश बदलें">🌍 Change Country</button>
+        </div>
+
+        <div class="pricing-cards">
+            <!-- Free Plan -->
+            <div class="pricing-card free">
+                <div class="card-header">
+                    <h3 data-en="🆓 Free" data-hi="🆓 Free">🆓 Free</h3>
+                    <div class="price">
+                        <span class="currency" id="free-currency">₹</span>
+                        <span class="amount" id="free-price">0</span>
+                        <span class="period" data-en="/month" data-hi="/महीना">/month</span>
+                    </div>
+                </div>
+                <ul class="features-list">
+                    <li><span class="check">✅</span> <span data-en="Basic Chat" data-hi="Basic Chat">Basic Chat</span></li>
+                    <li><span class="check">✅</span> <span data-en="Hindi + English" data-hi="Hindi + English">Hindi + English</span></li>
+                    <li><span class="cross">❌</span> <span data-en="Voice Chat" data-hi="Voice Chat">Voice Chat</span></li>
+                    <li><span class="cross">❌</span> <span data-en="Image Analysis" data-hi="Image Analysis">Image Analysis</span></li>
+                    <li><span class="cross">❌</span> <span data-en="Code Generation" data-hi="Code Generation">Code Generation</span></li>
+                    <li><span class="cross">❌</span> <span data-en="Live Crypto/Stocks" data-hi="Live Crypto/Stocks">Live Crypto/Stocks</span></li>
+                    <li><span class="check">✅</span> <span data-en="AI Image Generator (Limited)" data-hi="AI Image Generator (Limited)">AI Image Generator (Limited)</span></li>
+                </ul>
+                <button class="btn btn-secondary" onclick="startFree()">
+                    <span data-en="Get Started" data-hi="शुरू करें">Get Started</span>
+                </button>
+            </div>
+
+            <!-- Pro Plan -->
+            <div class="pricing-card pro popular">
+                <div class="popular-badge" data-en="🔥 Most Popular" data-hi="🔥 सबसे लोकप्रिय">🔥 Most Popular</div>
+                <div class="card-header">
+                    <h3 data-en="⚡ Ultra Pro" data-hi="⚡ अल्ट्रा प्रो">⚡ Ultra Pro</h3>
+                    <div class="price">
+                        <span class="currency" id="pro-currency">₹</span>
+                        <span class="amount" id="pro-price">99</span>
+                        <span class="period" data-en="/month" data-hi="/महीना">/month</span>
+                    </div>
+                    <div class="annual-price">
+                        <span class="strikethrough" id="pro-strikethrough">₹1,188</span>
+                        <span class="final" id="pro-annual">₹999</span>
+                        <span class="save" data-en="Save 16%" data-hi="16% बचाएं">Save 16%</span>
+                        <span data-en="/year" data-hi="/साल">/year</span>
+                    </div>
+                </div>
+                <ul class="features-list">
+                    <li><span class="check">✅</span> <span data-en="Everything in Free" data-hi="Free में जो सब कुछ है">Everything in Free</span></li>
+                    <li><span class="check">✅</span> <span data-en="Voice Chat" data-hi="Voice Chat">Voice Chat</span></li>
+                    <li><span class="check">✅</span> <span data-en="Image Analysis" data-hi="Image Analysis">Image Analysis</span></li>
+                    <li><span class="check">✅</span> <span data-en="Code Generation" data-hi="Code Generation">Code Generation</span></li>
+                    <li><span class="check">✅</span> <span data-en="Live Crypto + Stocks" data-hi="Live Crypto + Stocks">Live Crypto + Stocks</span></li>
+                    <li><span class="check">✅</span> <span data-en="AI Image Generator (Unlimited)" data-hi="AI Image Generator (Unlimited)">AI Image Generator (Unlimited)</span></li>
+                    <li><span class="check">✅</span> <span data-en="Priority Support" data-hi="Priority Support">Priority Support</span></li>
+                </ul>
+                <button class="btn btn-primary" onclick="openPaymentModal('pro')">
+                    <span class="spinner"></span>
+                    <span class="btn-text" data-en="Upgrade Now" data-hi="अभी Upgrade करें">Upgrade Now</span>
+                </button>
+                <div class="gateway-info" id="pro-gateway">
+                    💳 UPI, Cards, Netbanking
+                </div>
+            </div>
+
+            <!-- Ultra Plan -->
+            <div class="pricing-card ultra">
+                <div class="card-header">
+                    <h3 data-en="👑 Ultra Max" data-hi="👑 अल्ट्रा मैक्स">👑 Ultra Max</h3>
+                    <div class="price">
+                        <span class="currency" id="ultra-currency">₹</span>
+                        <span class="amount" id="ultra-price">199</span>
+                        <span class="period" data-en="/month" data-hi="/महीना">/month</span>
+                    </div>
+                    <div class="annual-price">
+                        <span class="strikethrough" id="ultra-strikethrough">₹2,388</span>
+                        <span class="final" id="ultra-annual">₹1,999</span>
+                        <span class="save" data-en="Save 16%" data-hi="16% बचाएं">Save 16%</span>
+                        <span data-en="/year" data-hi="/साल">/year</span>
+                    </div>
+                </div>
+                <ul class="features-list">
+                    <li><span class="check">✅</span> <span data-en="Everything in Pro" data-hi="Pro में जो सब कुछ है">Everything in Pro</span></li>
+                    <li><span class="check">✅</span> <span data-en="Guard Agent (CCTV)" data-hi="Guard Agent (CCTV)">Guard Agent (CCTV)</span></li>
+                    <li><span class="check">✅</span> <span data-en="WhatsApp Alerts" data-hi="WhatsApp Alerts">WhatsApp Alerts</span></li>
+                    <li><span class="check">✅</span> <span data-en="Custom AI Training" data-hi="Custom AI Training">Custom AI Training</span></li>
+                    <li><span class="check">✅</span> <span data-en="API Access" data-hi="API Access">API Access</span></li>
+                    <li><span class="check">✅</span> <span data-en="24/7 Dedicated Support" data-hi="24/7 Dedicated Support">24/7 Dedicated Support</span></li>
+                </ul>
+                <button class="btn btn-primary" onclick="openPaymentModal('ultra')" style="background: linear-gradient(90deg, var(--secondary), #ee5a24);">
+                    <span class="spinner"></span>
+                    <span class="btn-text" data-en="Go Ultra" data-hi="Ultra बनें">Go Ultra</span>
+                </button>
+                <div class="gateway-info" id="ultra-gateway">
+                    💳 UPI, Cards, Netbanking
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-tagline" data-en="Singh Ji AI - भारत का अपना AI!" data-hi="सिंह जी AI - भारत का अपना AI!">Singh Ji AI - भारत का अपना AI!</div>
+        <div class="footer-links">
+            <a href="#" data-en="Privacy Policy" data-hi="प्राइवेसी पॉलिसी">Privacy Policy</a>
+            <a href="#" data-en="Terms of Service" data-hi="सेवा की शर्तें">Terms of Service</a>
+            <a href="#" data-en="Contact Us" data-hi="संपर्क करें">Contact Us</a>
+            <a href="https://github.com/jp200883-sudo" target="_blank">GitHub</a>
+        </div>
+        <div class="copyright">© 2026 Singh Ji AI. Made with ❤️ in India</div>
+    </footer>
+
+    <!-- Country Selection Modal -->
+    <div class="modal-overlay" id="country-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 data-en="🌍 Select Your Country" data-hi="🌍 अपना देश चुनें">🌍 Select Your Country</h3>
+                <button class="close-btn" onclick="closeCountryModal()">✕</button>
+            </div>
+            <input type="text" class="country-search" id="country-search" placeholder="Search country..." onkeyup="filterCountries()">
+            <div class="country-grid" id="country-grid">
+                <!-- Populated by JS -->
+            </div>
+        </div>
     </div>
-    <div class="memory-indicator" style="margin-top:8px;padding:0 8px">
-      <i class="fas fa-bolt"></i>
-      <span id="input-status">AI ready • Type to chat</span>
+
+    <!-- Payment Modal -->
+    <div class="modal-overlay payment-modal" id="payment-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 data-en="💳 Complete Payment" data-hi="💳 पेमेंट पूरा करें">💳 Complete Payment</h3>
+                <button class="close-btn" onclick="closePaymentModal()">✕</button>
+            </div>
+            <div class="payment-form">
+                <div class="form-group">
+                    <label data-en="Email" data-hi="ईमेल">Email</label>
+                    <input type="email" id="payment-email" placeholder="your@email.com">
+                </div>
+                <div class="form-group">
+                    <label data-en="Select Plan" data-hi="प्लान चुनें">Select Plan</label>
+                    <div class="plan-selector">
+                        <div class="plan-option selected" onclick="selectPlan('monthly')" id="plan-monthly">
+                            <div class="plan-name" data-en="Monthly" data-hi="महीने का">Monthly</div>
+                            <div class="plan-price" id="monthly-price">₹99</div>
+                        </div>
+                        <div class="plan-option" onclick="selectPlan('annual')" id="plan-annual">
+                            <div class="plan-name" data-en="Annual" data-hi="सालाना">Annual</div>
+                            <div class="plan-price" id="annual-price-display">₹999</div>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="processPayment()" id="pay-btn">
+                    <span class="spinner"></span>
+                    <span class="btn-text" data-en="Pay Now" data-hi="अभी Pay करें">Pay Now</span>
+                </button>
+                <div class="gateway-info" id="payment-gateway-info" style="margin-top: 15px;">
+                    🔒 Secure payment powered by Razorpay
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
 
-<!-- WEB SEARCH -->
-<div id="search" class="content">
-  <div class="result-card">
-    <h3><i class="fas fa-search"></i> Web Search</h3>
-    <div class="input-row" style="margin-bottom:15px">
-      <textarea id="search-input" placeholder="Google जैसा search... जैसे: आज की ताज़ा खबरें, Bitcoin price, etc." rows="1"></textarea>
-      <button class="send-btn" onclick="webSearch()"><i class="fas fa-search"></i></button>
-    </div>
-    <div id="search-results">Search results यहाँ दिखेंगे...</div>
-  </div>
-</div>
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
 
-<!-- AI IMAGE -->
-<div id="image" class="content">
-  <div class="result-card">
-    <h3><i class="fas fa-magic"></i> AI Image Generator</h3>
-    <div class="input-row" style="margin-bottom:15px">
-      <textarea id="image-prompt" placeholder="जैसे: A futuristic Indian city, A meditating monk in space, etc." rows="2"></textarea>
-      <button class="send-btn" onclick="generateImage()"><i class="fas fa-wand-magic-sparkles"></i></button>
-    </div>
-    <div class="feature-grid" style="margin-bottom:15px">
-      <div class="feature-card" onclick="setImageStyle('realistic')"><i class="fas fa-camera"></i><h3>Realistic</h3><p>Photo quality</p></div>
-      <div class="feature-card" onclick="setImageStyle('anime')"><i class="fas fa-paint-brush"></i><h3>Anime</h3><p>Japanese art</p></div>
-      <div class="feature-card" onclick="setImageStyle('3d')"><i class="fas fa-cube"></i><h3>3D Render</h3><p>Cinematic</p></div>
-      <div class="feature-card" onclick="setImageStyle('art')"><i class="fas fa-palette"></i><h3>Digital Art</h3><p>Creative</p></div>
-    </div>
-    <div id="image-results">AI Images यहाँ दिखेंगी...</div>
-  </div>
-</div>
-
-<!-- CODE -->
-<div id="code" class="content">
-  <div class="result-card">
-    <h3><i class="fas fa-terminal"></i> AI Code Writer + Executor</h3>
-    <div style="display:flex;gap:10px;margin-bottom:15px">
-      <select id="code-lang" style="flex:1;background:var(--surface-light);color:var(--text);border:1px solid var(--border);padding:12px;border-radius:12px;outline:none">
-        <option>Python</option>
-        <option>JavaScript</option>
-        <option>HTML/CSS</option>
-        <option>Java</option>
-        <option>C++</option>
-        <option>SQL</option>
-      </select>
-      <button class="action-btn" onclick="runCode()" title="Run Code"><i class="fas fa-play"></i></button>
-    </div>
-    <textarea id="code-input" placeholder="// यहाँ code लिखो या 'Python calculator बनाओ' जैसा prompt दो..." style="width:100%;background:var(--surface-light);color:var(--text);border:1px solid var(--border);padding:15px;border-radius:12px;min-height:150px;font-family:'Fira Code',monospace;font-size:13px;outline:none;resize:vertical;margin-bottom:15px"></textarea>
-    <button class="send-btn" style="width:100%" onclick="generateCode()"><i class="fas fa-robot"></i> Generate Code</button>
-    <div id="code-output" style="margin-top:15px">Code output यहाँ दिखेगा...</div>
-  </div>
-</div>
-
-<!-- CRYPTO -->
-<div id="crypto" class="content">
-  <div class="result-card">
-    <h3><i class="fas fa-coins"></i> Live Crypto Market</h3>
-    <div class="chart-placeholder" id="crypto-chart">📊 Live Chart Loading...</div>
-    <table class="crypto-table" style="margin-top:15px">
-      <thead><tr><th>Coin</th><th>Price (₹)</th><th>24h Change</th><th>Market Cap</th></tr></thead>
-      <tbody id="crypto-data">
-        <tr><td colspan="4" style="text-align:center;color:var(--text-secondary)">Loading...</td></tr>
-      </tbody>
-    </table>
-    <button class="send-btn" style="width:100%;margin-top:15px" onclick="refreshCrypto()"><i class="fas fa-sync"></i> Refresh</button>
-  </div>
-</div>
-
-<!-- WEATHER -->
-<div id="weather" class="content">
-  <div class="result-card">
-    <h3><i class="fas fa-cloud-sun-rain"></i> Live Weather</h3>
-    <div class="input-row" style="margin-bottom:15px">
-      <textarea id="weather-input" placeholder="City name..." rows="1">Kanpur</textarea>
-      <button class="action-btn" onclick="getLocationWeather()"><i class="fas fa-location-arrow"></i></button>
-      <button class="send-btn" onclick="getWeather()"><i class="fas fa-search"></i></button>
-    </div>
-    <div id="weather-result">Weather data...</div>
-  </div>
-</div>
-
-<!-- NEWS -->
-<div id="news" class="content">
-  <div class="result-card">
-    <h3><i class="fas fa-broadcast-tower"></i> Live News</h3>
-    <button class="send-btn" style="width:100%;margin-bottom:15px" onclick="getNews()"><i class="fas fa-sync"></i> Latest News</button>
-    <div id="news-result">News loading...</div>
-  </div>
-</div>
-
-<!-- CRICKET -->
-<div id="cricket" class="content">
-  <div class="result-card">
-    <h3><i class="fas fa-trophy"></i> Live Cricket</h3>
-    <button class="send-btn" style="width:100%;margin-bottom:15px" onclick="getCricket()"><i class="fas fa-sync"></i> Live Scores</button>
-    <div id="cricket-result">Cricket loading...</div>
-  </div>
-</div>
-
-<!-- STOCK -->
-<div id="stock" class="content">
-  <div class="result-card">
-    <h3><i class="fas fa-chart-line"></i> Stock Market</h3>
-    <div class="input-row" style="margin-bottom:15px">
-      <textarea id="stock-input" placeholder="RELIANCE, TCS, INFY..." rows="1">RELIANCE</textarea>
-      <button class="send-btn" onclick="getStock()"><i class="fas fa-search"></i></button>
-    </div>
-    <div class="chart-placeholder" id="stock-chart">📈 Stock Chart</div>
-    <div id="stock-result" style="margin-top:15px">Stock data...</div>
-  </div>
-</div>
-
-<!-- HOROSCOPE -->
-<div id="horoscope" class="content">
-  <div class="result-card">
-    <h3><i class="fas fa-star"></i> Daily Horoscope</h3>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:15px">
-      <button class="tab" style="width:100%" onclick="getHoroscope('aries')">♈ Aries</button>
-      <button class="tab" style="width:100%" onclick="getHoroscope('taurus')">♉ Taurus</button>
-      <button class="tab" style="width:100%" onclick="getHoroscope('gemini')">♊ Gemini</button>
-      <button class="tab" style="width:100%" onclick="getHoroscope('cancer')">♋ Cancer</button>
-      <button class="tab" style="width:100%" onclick="getHoroscope('leo')">♌ Leo</button>
-      <button class="tab" style="width:100%" onclick="getHoroscope('virgo')">♍ Virgo</button>
-      <button class="tab" style="width:100%" onclick="getHoroscope('libra')">♎ Libra</button>
-      <button class="tab" style="width:100%" onclick="getHoroscope('scorpio')">♏ Scorpio</button>
-      <button class="tab" style="width:100%" onclick="getHoroscope('sagittarius')">♐ Sagittarius</button>
-      <button class="tab" style="width:100%" onclick="getHoroscope('capricorn')">♑ Capricorn</button>
-      <button class="tab" style="width:100%" onclick="getHoroscope('aquarius')">♒ Aquarius</button>
-      <button class="tab" style="width:100%" onclick="getHoroscope('pisces')">♓ Pisces</button>
-    </div>
-    <div id="horoscope-result">Select your sign...</div>
-  </div>
-</div>
-
-<!-- FINANCE -->
-<div id="finance" class="content">
-  <div class="result-card">
-    <h3><i class="fas fa-piggy-bank"></i> AI Finance Advisor</h3>
-    <div class="input-row" style="margin-bottom:15px">
-      <textarea id="finance-input" placeholder="जैसे: ₹50,000 invest करना है, SIP vs FD क्या better?" rows="2"></textarea>
-      <button class="send-btn" onclick="getFinance()"><i class="fas fa-brain"></i></button>
-    </div>
-    <div id="finance-result">Finance advice...</div>
-  </div>
-</div>
-
-<!-- GUARD -->
-<div id="guard" class="content">
-  <div class="result-card">
-    <h3><i class="fas fa-shield-alt"></i> AI Security Guard</h3>
-    <div class="input-row" style="margin-bottom:15px">
-      <textarea id="guard-input" placeholder="Alert describe करो..." rows="2"></textarea>
-      <button class="send-btn" onclick="getGuard()"><i class="fas fa-search"></i></button>
-    </div>
-    <div id="guard-result">Security analysis...</div>
-  </div>
-</div>
-
-<script>
-const API = "https://singhji-api.onrender.com";
-let currentModel = 'gemini';
-let chatHistory = JSON.parse(localStorage.getItem('chatHistory') || '[]');
-let webSearchEnabled = false;
-let imageStyle = 'realistic';
-
-// ==================== MODEL TOGGLE ====================
-function toggleModel() {
-  const models = {gemini: 'Gemini Pro', claude: 'Claude 3', gpt: 'GPT-4'};
-  const keys = Object.keys(models);
-  const idx = keys.indexOf(currentModel);
-  currentModel = keys[(idx + 1) % keys.length];
-  document.getElementById('current-model').innerText = models[currentModel];
-  document.getElementById('model-status').innerHTML = `🧠 ${models[currentModel]}`;
-}
-
-// ==================== TABS ====================
-function showTab(name) {
-  document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.getElementById(name).classList.add('active');
-  event.target.classList.add('active');
-}
-
-// ==================== CHAT WITH STREAMING ====================
-async function sendMessage() {
-  const input = document.getElementById('chat-input');
-  const msg = input.value.trim();
-  if(!msg) return;
-  
-  // Add user message
-  addChatMessage(msg, 'user');
-  input.value = '';
-  updateMemoryStatus('AI thinking...');
-  
-  // Show typing
-  const typingId = showTyping();
-  
-  try {
-    // Streaming response
-    const response = await fetch(API+'/chat', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({message: msg, model: currentModel, history: chatHistory})
-    });
-    
-    const data = await response.json();
-    removeTyping(typingId);
-    
-    // Stream the response
-    await streamResponse(data.reply);
-    
-    // Save to memory
-    chatHistory.push({role: 'user', content: msg});
-    chatHistory.push({role: 'assistant', content: data.reply});
-    if(chatHistory.length > 20) chatHistory = chatHistory.slice(-20);
-    localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
-    updateMemoryStatus(`${chatHistory.length/2} chats saved`);
-    
-  } catch(error) {
-    removeTyping(typingId);
-    addChatMessage('❌ Error! AI se connect nahi ho raha. Retry karo.', 'bot');
-  }
-}
-
-function addChatMessage(text, type) {
-  const container = document.getElementById('chat-container');
-  const div = document.createElement('div');
-  div.className = `chat-msg ${type}`;
-  const time = new Date().toLocaleTimeString('hi-IN', {hour: '2-digit', minute: '2-digit'});
-  
-  if(type === 'bot') {
-    div.innerHTML = `
-      <div class="bubble">${formatMessage(text)}</div>
-      <div class="time">${time} • ${currentModel}</div>
-    `;
-  } else {
-    div.innerHTML = `
-      <div class="bubble">${text}</div>
-      <div class="time">${time} • You</div>
-    `;
-  }
-  
-  container.appendChild(div);
-  container.scrollTop = container.scrollHeight;
-}
-
-function formatMessage(text) {
-  // Format code blocks
-  text = text.replace(/```(\w+)?\n([\s\S]*?)```/g, '<pre><code>$2</code></pre>');
-  // Format inline code
-  text = text.replace(/`([^`]+)`/g, '<code>$1</code>');
-  // Format bold
-  text = text.replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>');
-  // Format links
-  text = text.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" style="color:var(--secondary)">$1</a>');
-  return text;
-}
-
-async function streamResponse(text) {
-  const container = document.getElementById('chat-container');
-  const div = document.createElement('div');
-  div.className = 'chat-msg bot';
-  const time = new Date().toLocaleTimeString('hi-IN', {hour: '2-digit', minute: '2-digit'});
-  
-  div.innerHTML = `
-    <div class="bubble"><span class="streaming-text" id="stream-text"></span><span class="streaming-cursor"></span></div>
-    <div class="time">${time} • ${currentModel}</div>
-  `;
-  container.appendChild(div);
-  container.scrollTop = container.scrollHeight;
-  
-  const streamEl = div.querySelector('#stream-text');
-  const words = text.split(' ');
-  
-  for(let i = 0; i < words.length; i++) {
-    streamEl.innerHTML += words[i] + ' ';
-    container.scrollTop = container.scrollHeight;
-    await new Promise(r => setTimeout(r, 30)); // Typing speed
-  }
-  
-  // Final format
-  streamEl.innerHTML = formatMessage(text);
-  streamEl.nextElementSibling.remove(); // Remove cursor
-}
-
-function showTyping() {
-  const container = document.getElementById('chat-container');
-  const id = 'typing-' + Date.now();
-  const div = document.createElement('div');
-  div.className = 'chat-msg bot';
-  div.id = id;
-  div.innerHTML = `
-    <div class="bubble">
-      <div class="typing-indicator">
-        <div class="typing-dot"></div>
-        <div class="typing-dot"></div>
-        <div class="typing-dot"></div>
-      </div>
-    </div>
-  `;
-  container.appendChild(div);
-  container.scrollTop = container.scrollHeight;
-  return id;
-}
-
-function removeTyping(id) {
-  document.getElementById(id)?.remove();
-}
-
-function updateMemoryStatus(text) {
-  document.getElementById('input-status').innerText = text;
-}
-
-// ==================== VOICE ====================
-function startVoice() {
-  if(!('webkitSpeechRecognition' in window)) {
-    addChatMessage('❌ Voice input supported nahi hai is browser mein!', 'bot');
-    return;
-  }
-  const rec = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-  rec.lang = 'hi-IN';
-  rec.continuous = true;
-  rec.interimResults = true;
-  
-  rec.onstart = () => updateMemoryStatus('🎤 Listening...');
-  
-  rec.onresult = e => {
-    const transcript = Array.from(e.results)
-      .map(r => r[0].transcript)
-      .join('');
-    document.getElementById('chat-input').value = transcript;
-  };
-  
-  rec.onend = () => {
-    updateMemoryStatus('AI ready • Type to chat');
-    const msg = document.getElementById('chat-input').value.trim();
-    if(msg) sendMessage();
-  };
-  
-  rec.start();
-}
-
-// ==================== WEB SEARCH ====================
-async function webSearch() {
-  const query = document.getElementById('search-input').value;
-  const results = document.getElementById('search-results');
-  results.innerHTML = '<div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>';
-  
-  try {
-    const r = await fetch(API+'/chat', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({message: `Search web for: ${query}. Give top 5 results with links and summaries.`})
-    });
-    const d = await r.json();
-    results.innerHTML = formatWebResults(d.reply);
-  } catch {
-    results.innerHTML = '❌ Search failed!';
-  }
-}
-
-function formatWebResults(text) {
-  // Parse and format web results
-  return `<div class="web-result"><a href="#">${text.substring(0, 100)}...</a><p>Web search results</p></div>`;
-}
-
-function toggleSearch() {
-  webSearchEnabled = !webSearchEnabled;
-  updateMemoryStatus(webSearchEnabled ? '🌐 Web search ON' : 'AI ready • Type to chat');
-}
-
-// ==================== AI IMAGE ====================
-function setImageStyle(style) {
-  imageStyle = style;
-  updateMemoryStatus(`🎨 ${style} mode selected`);
-}
-
-async function generateImage() {
-  const prompt = document.getElementById('image-prompt').value;
-  const results = document.getElementById('image-results');
-  results.innerHTML = '<div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div> Generating...';
-  
-  try {
-    const encodedPrompt = encodeURIComponent(`${prompt}, ${imageStyle}, high quality, detailed`);
-    const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=512&height=512&nologo=true&seed=${Date.now()}`;
-    
-    results.innerHTML = `
-      <div class="image-grid">
-        <img src="${imageUrl}" alt="AI Generated" onclick="downloadImage('${imageUrl}')">
-      </div>
-      <div style="margin-top:10px;font-size:13px;color:var(--text-secondary)">
-        🎨 ${imageStyle.toUpperCase()} • Click to download
-      </div>
-    `;
-    updateMemoryStatus('🎨 Image generated!');
-  } catch {
-    results.innerHTML = '❌ Image generation failed!';
-  }
-}
-
-function downloadImage(url) {
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `singhji-ai-${Date.now()}.png`;
-  a.click();
-}
-
-// ==================== CODE ====================
-async function generateCode() {
-  const prompt = document.getElementById('code-input').value;
-  const lang = document.getElementById('code-lang').value;
-  const output = document.getElementById('code-output');
-  
-  output.innerHTML = '<div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div> Generating code...';
-  
-  try {
-    const r = await fetch(API+'/chat', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({message: `Write ${lang} code for: ${prompt}. Only code, no explanation. Add comments in Hindi.`})
-    });
-    const d = await r.json();
-    output.innerHTML = `<pre style="background:#000;padding:15px;border-radius:12px;overflow-x:auto;font-family:'Fira Code',monospace;font-size:13px;line-height:1.6">${escapeHtml(d.reply)}</pre>`;
-  } catch {
-    output.innerHTML = '❌ Code generation failed!';
-  }
-}
-
-function runCode() {
-  const code = document.getElementById('code-input').value;
-  const lang = document.getElementById('code-lang').value;
-  const output = document.getElementById('code-output');
-  
-  if(lang === 'JavaScript') {
-    try {
-      const result = eval(code);
-      output.innerHTML = `<div style="color:var(--success)">✅ Output: ${result}</div>`;
-    } catch(e) {
-      output.innerHTML = `<div style="color:var(--danger)">❌ Error: ${e.message}</div>`;
-    }
-  } else {
-    output.innerHTML = '<div style="color:var(--warning)">⚠️ Execution only for JavaScript in browser. Use backend for Python/Java.</div>';
-  }
-}
-
-function escapeHtml(text) {
-  return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-}
-
-// ==================== CRYPTO ====================
-async function refreshCrypto() {
-  const tbody = document.getElementById('crypto-data');
-  tbody.innerHTML = '<tr><td colspan="4" style="text-align:center"><div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div></td></tr>';
-  
-  try {
-    const r = await fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=inr&order=market_cap_desc&per_page=5&page=1&sparkline=false');
-    const data = await r.json();
-    
-    tbody.innerHTML = data.map(coin => `
-      <tr>
-        <td style="display:flex;align-items:center;gap:10px">
-          <img src="${coin.image}" style="width:24px;height:24px">
-          <div>
-            <div style="font-weight:700">${coin.name}</div>
-            <div style="font-size:11px;color:var(--text-secondary);text-transform:uppercase">${coin.symbol}</div>
-          </div>
-        </td>
-        <td>₹${coin.current_price.toLocaleString()}</td>
-        <td class="${coin.price_change_percentage_24h > 0 ? 'price-up' : 'price-down'}">
-          ${coin.price_change_percentage_24h > 0 ? '↗' : '↘'} ${Math.abs(coin.price_change_percentage_24h).toFixed(2)}%
-        </td>
-        <td>₹${(coin.market_cap / 1e9).toFixed(2)}B</td>
-      </tr>
-    `).join('');
-    
-    updateMemoryStatus('💰 Crypto updated!');
-  } catch {
-    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--danger)">❌ Failed to load crypto data</td></tr>';
-  }
-}
-
-// ==================== WEATHER ====================
-async function getWeather() {
-  const city = document.getElementById('weather-input').value || 'Kanpur';
-  const result = document.getElementById('weather-result');
-  result.innerHTML = '<div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>';
-  
-  try {
-    const r = await fetch(API+'/weather?city='+city);
-    const d = await r.json();
-    result.innerHTML = `<div style="font-size:18px;font-weight:600">${d.reply}</div>`;
-  } catch {
-    result.innerHTML = '❌ Weather failed!';
-  }
-}
-
-function getLocationWeather() {
-  if(!navigator.geolocation) {
-    getWeather();
-    return;
-  }
-  navigator.geolocation.getCurrentPosition(
-    pos => {
-      document.getElementById('weather-input').value = `${pos.coords.latitude.toFixed(2)}, ${pos.coords.longitude.toFixed(2)}`;
-      getWeather();
-    },
-    () => getWeather()
-  );
-}
-
-// ==================== NEWS ====================
-async function getNews() {
-  const result = document.getElementById('news-result');
-  result.innerHTML = '<div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div> Fetching latest news...';
-  
-  try {
-    const r = await fetch(API+'/news');
-    const d = await r.json();
-    result.innerHTML = formatMessage(d.reply);
-  } catch {
-    result.innerHTML = '❌ News failed!';
-  }
-}
-
-// ==================== CRICKET ====================
-async function getCricket() {
-  const result = document.getElementById('cricket-result');
-  result.innerHTML = '<div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div> Fetching live scores...';
-  
-  try {
-    const r = await fetch(API+'/cricket');
-    const d = await r.json();
-    result.innerHTML = formatMessage(d.reply);
-  } catch {
-    result.innerHTML = '❌ Cricket failed!';
-  }
-}
-
-// ==================== STOCK ====================
-async function getStock() {
-  const symbol = document.getElementById('stock-input').value || 'RELIANCE';
-  const result = document.getElementById('stock-result');
-  result.innerHTML = '<div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>';
-  
-  try {
-    const r = await fetch(API+'/stock?symbol='+symbol);
-    const d = await r.json();
-    result.innerHTML = formatMessage(d.reply);
-  } catch {
-    result.innerHTML = '❌ Stock failed!';
-  }
-}
-
-// ==================== HOROSCOPE ====================
-async function getHoroscope(sign) {
-  const result = document.getElementById('horoscope-result');
-  result.innerHTML = '<div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div> Reading stars...';
-  
-  try {
-    const r = await fetch(API+'/horoscope', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({sign})
-    });
-    const d = await r.json();
-    result.innerHTML = `
-      <div style="text-align:center;margin-bottom:15px">
-        <div style="font-size:48px">${getSignEmoji(sign)}</div>
-        <div style="font-size:20px;font-weight:700;text-transform:capitalize">${sign}</div>
-      </div>
-      <div style="line-height:1.8">${formatMessage(d.reply)}</div>
-    `;
-  } catch {
-    result.innerHTML = '❌ Horoscope failed!';
-  }
-}
-
-function getSignEmoji(sign) {
-  const emojis = {aries:'♈',taurus:'♉',gemini:'♊',cancer:'♋',leo:'♌',virgo:'♍',libra:'♎',scorpio:'♏',sagittarius:'♐',capricorn:'♑',aquarius:'♒',pisces:'♓'};
-  return emojis[sign] || '⭐';
-}
-
-// ==================== FINANCE ====================
-async function getFinance() {
-  const query = document.getElementById('finance-input').value;
-  const result = document.getElementById('finance-result');
-  result.innerHTML = '<div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div> Analyzing...';
-  
-  try {
-    const r = await fetch(API+'/finance', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({query})
-    });
-    const d = await r.json();
-    result.innerHTML = formatMessage(d.reply);
-  } catch {
-    result.innerHTML = '❌ Finance failed!';
-  }
-}
-
-// ==================== GUARD ====================
-async function getGuard() {
-  const alert = document.getElementById('guard-input').value;
-  const result = document.getElementById('guard-result');
-  result.innerHTML = '<div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div> Analyzing threat...';
-  
-  try {
-    const r = await fetch(API+'/guard', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({alert})
-    });
-    const d = await r.json();
-    result.innerHTML = formatMessage(d.reply);
-  } catch {
-    result.innerHTML = '❌ Guard failed!';
-  }
-}
-
-// ==================== INIT ====================
-window.addEventListener('load', () => {
-  refreshCrypto();
-  updateMemoryStatus(`${chatHistory.length/2} chats • AI ready`);
-  
-  // Auto refresh crypto every 30s
-  setInterval(() => {
-    if(document.getElementById('crypto').classList.contains('active')) {
-      refreshCrypto();
-    }
-  }, 30000);
-});
-
-// Service Worker
-if('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js').catch(() => {});
-}
-</script>
+    <script src="index.js"></script>
 </body>
 </html>
