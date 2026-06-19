@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Singh Ji AI - भारत का अपना AI</title>
+<title>Singh Ji AI Ultra - भारत का अपना AI</title>
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="icon-192.png">
 <meta name="theme-color" content="#0a0a1a">
@@ -29,13 +29,11 @@ body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg-dark
 .orb-3 { width: 200px; height: 200px; background: rgba(74,158,255,0.15); bottom: 20%; left: 30%; animation-delay: -10s; }
 @keyframes float { 0%,100%{transform:translate(0,0)scale(1)} 33%{transform:translate(30px,-30px)scale(1.1)} 66%{transform:translate(-20px,20px)scale(0.9)} }
 
-/* Toast */
 .toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--glass); border: 1px solid var(--border); color: var(--text-primary); padding: 1rem 2rem; border-radius: 50px; font-weight: 600; z-index: 10000; transition: transform 0.4s, opacity 0.4s; opacity: 0; }
 .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 .toast.success { border-color: var(--accent-green); background: rgba(76,209,55,0.15); }
 .toast.error { border-color: var(--accent-red); background: rgba(255,71,87,0.15); }
 
-/* Header */
 header { display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; position: sticky; top: 0; background: rgba(10,10,26,0.9); backdrop-filter: blur(20px); z-index: 1000; border-bottom: 1px solid var(--border); }
 .logo { display: flex; align-items: center; gap: 0.5rem; font-size: 1.4rem; font-weight: 800; color: var(--secondary); }
 .nav-links { display: flex; gap: 2rem; list-style: none; }
@@ -50,7 +48,6 @@ header { display: flex; justify-content: space-between; align-items: center; pad
 .lang-toggle { background: var(--glass); border: 1px solid var(--border); color: var(--text-primary); padding: 0.5rem 1rem; border-radius: 50px; cursor: pointer; font-size: 0.8rem; }
 .lang-toggle:hover { border-color: var(--primary); }
 
-/* Hero */
 .hero { text-align: center; padding: 3rem 2rem 2rem; max-width: 900px; margin: 0 auto; }
 .badge-banner { display: inline-flex; align-items: center; gap: 0.5rem; background: linear-gradient(135deg, rgba(254,202,87,0.2), rgba(255,159,67,0.2)); border: 1px solid rgba(254,202,87,0.3); color: var(--primary); padding: 0.5rem 1.2rem; border-radius: 50px; font-size: 0.9rem; font-weight: 700; margin-bottom: 1rem; cursor: pointer; animation: pulse 2s infinite; }
 @keyframes pulse { 0%,100%{box-shadow:0 0 0 0 rgba(254,202,87,0.3)} 50%{box-shadow:0 0 20px 5px rgba(254,202,87,0.1)} }
@@ -69,7 +66,6 @@ header { display: flex; justify-content: space-between; align-items: center; pad
 .stat-number { font-size: 1.8rem; font-weight: 900; color: var(--primary); }
 .stat-label { font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.2rem; }
 
-/* Chat */
 .chat-section { padding: 2rem; max-width: 750px; margin: 0 auto 3rem; }
 .section-title { text-align: center; font-size: 2.2rem; font-weight: 800; margin-bottom: 0.3rem; }
 .section-subtitle { text-align: center; color: var(--text-secondary); margin-bottom: 2rem; font-size: 0.95rem; }
@@ -92,18 +88,19 @@ header { display: flex; justify-content: space-between; align-items: center; pad
 .typing-indicator span:nth-child(2){animation-delay:0.2s} .typing-indicator span:nth-child(3){animation-delay:0.4s}
 @keyframes typing { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-8px)} }
 
-/* Features */
 .features-section { padding: 3rem 2rem; max-width: 1200px; margin: 0 auto; }
 .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.2rem; }
-.feature-card { background: var(--glass); border: 1px solid var(--border); border-radius: 18px; padding: 1.5rem; transition: all 0.3s; position: relative; overflow: hidden; }
+.feature-card { background: var(--glass); border: 1px solid var(--border); border-radius: 18px; padding: 1.5rem; transition: all 0.3s; position: relative; overflow: hidden; cursor: pointer; }
 .feature-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: linear-gradient(90deg, var(--secondary), var(--accent-purple)); transform: scaleX(0); transition: transform 0.3s; }
 .feature-card:hover::before { transform: scaleX(1); }
 .feature-card:hover { transform: translateY(-5px); background: var(--bg-card-hover); box-shadow: 0 10px 40px rgba(0,0,0,0.3); }
 .feature-icon { font-size: 2.2rem; margin-bottom: 0.8rem; }
 .feature-card h3 { font-size: 1.1rem; margin-bottom: 0.4rem; }
 .feature-card p { color: var(--text-secondary); font-size: 0.85rem; line-height: 1.5; }
+.feature-card .feature-status { font-size: 0.7rem; padding: 0.2rem 0.6rem; border-radius: 50px; margin-top: 0.5rem; display: inline-block; }
+.feature-card .status-live { background: rgba(76,209,55,0.15); color: var(--accent-green); }
+.feature-card .status-demo { background: rgba(254,202,87,0.15); color: var(--primary); }
 
-/* Pricing */
 .pricing-section { background: linear-gradient(180deg, transparent, rgba(254,202,87,0.04), transparent); padding: 3rem 2rem; }
 .country-selector { text-align: center; margin-bottom: 1.5rem; }
 .country-display { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--glass); border: 1px solid var(--border); color: var(--text-primary); padding: 0.5rem 1.2rem; border-radius: 50px; cursor: pointer; font-size: 0.9rem; transition: all 0.3s; }
@@ -141,7 +138,6 @@ header { display: flex; justify-content: space-between; align-items: center; pad
 .btn-ultra-max { background: linear-gradient(135deg, var(--accent-purple), var(--accent-red)); color: white; }
 .gateway-info { font-size: 0.7rem; color: var(--text-muted); margin-top: 0.5rem; }
 
-/* Modals */
 .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 1rem; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
 .modal-overlay.active { opacity: 1; pointer-events: all; }
 .modal-content { background: linear-gradient(135deg, #12122a, #1a1a3e); border: 1px solid var(--border); border-radius: 24px; padding: 2rem; max-width: 500px; width: 100%; max-height: 90vh; overflow-y: auto; position: relative; box-shadow: 0 25px 80px rgba(0,0,0,0.5); }
@@ -163,29 +159,24 @@ header { display: flex; justify-content: space-between; align-items: center; pad
 .country-btn-grid .price-tag { margin-left: auto; font-size: 0.7rem; color: var(--primary); font-weight: 700; }
 .tier-label { grid-column: 1 / -1; font-weight: 700; margin-top: 0.8rem; color: var(--primary); padding: 0.5rem; background: rgba(254,202,87,0.1); border-radius: 8px; font-size: 0.85rem; }
 
-/* Spinner */
 .spinner { display: none; width: 16px; height: 16px; border: 2px solid transparent; border-top-color: currentColor; border-radius: 50%; animation: spin 0.8s linear infinite; }
 .loading .spinner { display: inline-block; }
 .loading .btn-text { display: none; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* Footer */
 .footer { text-align: center; padding: 2.5rem 2rem; border-top: 1px solid var(--border); color: var(--text-secondary); font-size: 0.85rem; }
 .footer-links { display: flex; justify-content: center; gap: 2rem; margin-bottom: 1rem; flex-wrap: wrap; }
 .footer-links a { color: var(--text-secondary); text-decoration: none; transition: color 0.3s; }
 .footer-links a:hover { color: var(--primary); }
 
-/* Trial Banner */
 #trial-banner { position: fixed; top: 65px; left: 50%; transform: translateX(-50%); padding: 10px 25px; border-radius: 50px; font-weight: 700; z-index: 999; font-size: 0.85rem; cursor: pointer; animation: slideDown 0.5s ease; box-shadow: 0 5px 20px rgba(0,0,0,0.3); white-space: nowrap; }
 @keyframes slideDown { from { transform: translateX(-50%) translateY(-50px); opacity: 0; } to { transform: translateX(-50%) translateY(0); opacity: 1; } }
 
-/* Scrollbar */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: var(--bg-dark); }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--secondary); }
 
-/* Mobile */
 @media (max-width: 768px) {
   header { padding: 0.8rem 1rem; }
   .nav-links { display: none; }
@@ -199,6 +190,17 @@ header { display: flex; justify-content: space-between; align-items: center; pad
   .btn-glow, .btn-telegram { width: 100%; max-width: 280px; justify-content: center; }
   .modal-content { padding: 1.5rem; }
 }
+
+/* Feature Modal */
+.feature-modal-content { text-align: center; }
+.feature-modal-content .feature-icon-large { font-size: 4rem; margin-bottom: 1rem; }
+.feature-modal-content h2 { margin-bottom: 0.5rem; }
+.feature-modal-content .feature-input { width: 100%; background: var(--glass); border: 1px solid var(--border); border-radius: 12px; padding: 0.8rem 1rem; color: var(--text-primary); font-size: 0.95rem; margin: 1rem 0; outline: none; }
+.feature-modal-content .feature-input:focus { border-color: var(--primary); }
+.feature-modal-content .feature-result { background: var(--glass); border: 1px solid var(--border); border-radius: 12px; padding: 1rem; margin-top: 1rem; text-align: left; min-height: 60px; font-size: 0.9rem; color: var(--text-secondary); }
+.feature-modal-content .upload-area { border: 2px dashed var(--border); border-radius: 12px; padding: 2rem; margin: 1rem 0; cursor: pointer; transition: all 0.3s; }
+.feature-modal-content .upload-area:hover { border-color: var(--primary); background: rgba(254,202,87,0.05); }
+.feature-modal-content .upload-area.dragover { border-color: var(--accent-green); background: rgba(76,209,55,0.05); }
 </style>
 <base target="_blank">
 </head>
@@ -258,20 +260,80 @@ header { display: flex; justify-content: space-between; align-items: center; pad
 
 <section id="features" class="features-section">
   <h2 class="section-title">All-in-One AI Powers</h2>
-  <p class="section-subtitle">Everything you need in a single AI assistant</p>
-  <div class="features-grid">
-    <div class="feature-card"><div class="feature-icon">💬</div><h3>AI Chat</h3><p>Smart conversations in Hindi & English with context memory</p></div>
-    <div class="feature-card"><div class="feature-icon">🎨</div><h3>AI Image Generator</h3><p>Create stunning images from text prompts instantly</p></div>
-    <div class="feature-card"><div class="feature-icon">🎙️</div><h3>Voice Chat</h3><p>Talk naturally - speech recognition & text-to-speech</p></div>
-    <div class="feature-card"><div class="feature-icon">🔍</div><h3>Image Analysis</h3><p>Upload any image and get detailed AI analysis</p></div>
-    <div class="feature-card"><div class="feature-icon">💻</div><h3>Code Generation</h3><p>Write, debug & explain code in any programming language</p></div>
-    <div class="feature-card"><div class="feature-icon">📊</div><h3>Live Crypto + Stocks</h3><p>Real-time market data, charts & trading insights</p></div>
-    <div class="feature-card"><div class="feature-icon">🌤️</div><h3>Weather & News</h3><p>Live weather updates and trending news from India & world</p></div>
-    <div class="feature-card"><div class="feature-icon">🏏</div><h3>Cricket Updates</h3><p>Live scores, schedules & cricket news for every fan</p></div>
-    <div class="feature-card"><div class="feature-icon">🔮</div><h3>Daily Horoscope</h3><p>Personalized horoscope readings in Hindi</p></div>
-    <div class="feature-card"><div class="feature-icon">📍</div><h3>Nearby Places</h3><p>Find restaurants, hospitals, ATMs near your location</p></div>
-    <div class="feature-card"><div class="feature-icon">🧾</div><h3>Bill Scanner</h3><p>Scan bills & invoices with OCR - auto extract data</p></div>
-    <div class="feature-card"><div class="feature-icon">🛡️</div><h3>Guard Agent (CCTV)</h3><p>AI security analysis for your images & documents</p></div>
+  <p class="section-subtitle">Click any feature to try it live!</p>
+  <div class="features-grid" id="features-grid">
+    <div class="feature-card" onclick="openFeatureModal('chat')">
+      <div class="feature-icon">💬</div>
+      <h3>AI Chat</h3>
+      <p>Smart conversations in Hindi & English with context memory</p>
+      <span class="feature-status status-live">● LIVE</span>
+    </div>
+    <div class="feature-card" onclick="openFeatureModal('image-gen')">
+      <div class="feature-icon">🎨</div>
+      <h3>AI Image Generator</h3>
+      <p>Create stunning images from text prompts instantly</p>
+      <span class="feature-status status-live">● LIVE</span>
+    </div>
+    <div class="feature-card" onclick="openFeatureModal('voice')">
+      <div class="feature-icon">🎙️</div>
+      <h3>Voice Chat</h3>
+      <p>Talk naturally - speech recognition & text-to-speech</p>
+      <span class="feature-status status-live">● LIVE</span>
+    </div>
+    <div class="feature-card" onclick="openFeatureModal('image-analysis')">
+      <div class="feature-icon">🔍</div>
+      <h3>Image Analysis</h3>
+      <p>Upload any image and get detailed AI analysis</p>
+      <span class="feature-status status-live">● LIVE</span>
+    </div>
+    <div class="feature-card" onclick="openFeatureModal('code')">
+      <div class="feature-icon">💻</div>
+      <h3>Code Generation</h3>
+      <p>Write, debug & explain code in any programming language</p>
+      <span class="feature-status status-live">● LIVE</span>
+    </div>
+    <div class="feature-card" onclick="openFeatureModal('crypto')">
+      <div class="feature-icon">📊</div>
+      <h3>Live Crypto + Stocks</h3>
+      <p>Real-time market data, charts & trading insights</p>
+      <span class="feature-status status-live">● LIVE</span>
+    </div>
+    <div class="feature-card" onclick="openFeatureModal('weather')">
+      <div class="feature-icon">🌤️</div>
+      <h3>Weather & News</h3>
+      <p>Live weather updates and trending news from India & world</p>
+      <span class="feature-status status-live">● LIVE</span>
+    </div>
+    <div class="feature-card" onclick="openFeatureModal('cricket')">
+      <div class="feature-icon">🏏</div>
+      <h3>Cricket Updates</h3>
+      <p>Live scores, schedules & cricket news for every fan</p>
+      <span class="feature-status status-live">● LIVE</span>
+    </div>
+    <div class="feature-card" onclick="openFeatureModal('horoscope')">
+      <div class="feature-icon">🔮</div>
+      <h3>Daily Horoscope</h3>
+      <p>Personalized horoscope readings in Hindi</p>
+      <span class="feature-status status-live">● LIVE</span>
+    </div>
+    <div class="feature-card" onclick="openFeatureModal('nearby')">
+      <div class="feature-icon">📍</div>
+      <h3>Nearby Places</h3>
+      <p>Find restaurants, hospitals, ATMs near your location</p>
+      <span class="feature-status status-live">● LIVE</span>
+    </div>
+    <div class="feature-card" onclick="openFeatureModal('bill')">
+      <div class="feature-icon">🧾</div>
+      <h3>Bill Scanner</h3>
+      <p>Scan bills & invoices with OCR - auto extract data</p>
+      <span class="feature-status status-live">● LIVE</span>
+    </div>
+    <div class="feature-card" onclick="openFeatureModal('guard')">
+      <div class="feature-icon">🛡️</div>
+      <h3>Guard Agent (CCTV)</h3>
+      <p>AI security analysis for your images & documents</p>
+      <span class="feature-status status-live">● LIVE</span>
+    </div>
   </div>
 </section>
 
@@ -297,6 +359,14 @@ header { display: flex; justify-content: space-between; align-items: center; pad
   </div>
   <p>© 2026 Singh Ji AI. Made with ❤️ for India 🇮🇳</p>
 </footer>
+
+<!-- Feature Modal -->
+<div class="modal-overlay" id="feature-modal-overlay">
+  <div class="modal-content" style="max-width: 550px;">
+    <button class="close-btn" onclick="closeFeatureModal()">✕</button>
+    <div id="feature-modal-content"></div>
+  </div>
+</div>
 
 <!-- Trial Modal -->
 <div class="modal-overlay" id="trial-modal-overlay">
@@ -425,32 +495,51 @@ document.addEventListener('DOMContentLoaded', async () => {
   setupPWA();
 });
 
-// ==================== CHAT ====================
+// ==================== CHAT (BACKEND CONNECTED) ====================
 const chatMessages = document.getElementById('chatMessages');
 const chatInput = document.getElementById('chatInput');
-const aiResponses = {
-  'hi': 'Hello! How can I help you today? 😊',
-  'hello': 'Namaste! Singh Ji AI at your service 🙏',
-  'namaste': 'Namaste! Kaise madad kar sakta hoon? 🙏',
-  'weather': 'I can check live weather for any city! Just tell me the city name. 🌤️',
-  'news': "Here are today's top headlines from India... 📰",
-  'stock': 'Which stock would you like to check? I provide real-time data 📈',
-  'crypto': 'Live crypto prices: BTC ₹58L, ETH ₹3.2L, SOL ₹12K 📊',
-  'cricket': '🏏 India vs Australia - India won by 5 wickets! Score: 245/5',
-  'image': "Send me any image and I'll analyze it for you! 🖼️",
-  'code': 'I can write code in Python, JavaScript, Java, C++ and more! What do you need? 💻',
-  'voice': 'Click the microphone button to speak with me! 🎙️',
-  'help': 'Available: weather, news, stock, crypto, cricket, image, code, voice, horoscope',
-  'horoscope': '🔮 Your daily horoscope: Today is a great day for new beginnings! Lucky number: 7',
-  'default': 'Main samajh gaya! Main aapki madad karne ke liye yahan hoon. Aur bataiye? 🤔'
-};
-function handleKeyPress(e) { if (e.key === 'Enter') sendMessage(); }
-function sendMessage() {
+
+async function sendMessage() {
   const text = chatInput.value.trim(); if (!text) return;
   addMessage(text, 'user'); chatInput.value = '';
   showTyping();
-  setTimeout(() => { removeTyping(); addMessage(getAIResponse(text.toLowerCase()), 'ai'); }, 1000 + Math.random() * 800);
+  try {
+    const response = await fetch(API_BASE_URL + '/api/chat', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: text, language: currentLanguage, user_id: getUserId() })
+    });
+    const data = await response.json();
+    removeTyping();
+    addMessage(data.response || data.reply || 'Sorry, try again!', 'ai');
+  } catch (e) {
+    removeTyping();
+    addMessage('Server busy. Using offline mode...', 'ai');
+    setTimeout(() => addMessage(getOfflineResponse(text.toLowerCase()), 'ai'), 500);
+  }
 }
+
+function getOfflineResponse(text) {
+  const responses = {
+    'hi': 'Hello! How can I help you today? 😊',
+    'hello': 'Namaste! Singh Ji AI at your service 🙏',
+    'namaste': 'Namaste! Kaise madad kar sakta hoon? 🙏',
+    'weather': 'I can check live weather! Tell me your city. 🌤️',
+    'news': "Today's top headlines from India... 📰",
+    'stock': 'Which stock? I provide real-time data 📈',
+    'crypto': 'Live crypto: BTC ₹58L, ETH ₹3.2L, SOL ₹12K 📊',
+    'cricket': '🏏 India vs Australia - India won by 5 wickets!',
+    'image': "Send me any image and I'll analyze it! 🖼️",
+    'code': 'I can write Python, JS, Java, C++ code! 💻',
+    'voice': 'Click the mic button to speak! 🎙️',
+    'help': 'Available: weather, news, stock, crypto, cricket, image, code, voice, horoscope',
+    'horoscope': '🔮 Today is great for new beginnings! Lucky: 7',
+    'default': 'Main samajh gaya! Main aapki madad karne ke liye yahan hoon. 🤔'
+  };
+  for (const [k,v] of Object.entries(responses)) if (text.includes(k)) return v;
+  return responses['default'];
+}
+
+function handleKeyPress(e) { if (e.key === 'Enter') sendMessage(); }
 function addMessage(text, sender) {
   const div = document.createElement('div'); div.className = 'message message-' + sender; div.textContent = text;
   chatMessages.appendChild(div); chatMessages.scrollTop = chatMessages.scrollHeight;
@@ -460,14 +549,145 @@ function showTyping() {
   div.innerHTML = '<span></span><span></span><span></span>'; chatMessages.appendChild(div); chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 function removeTyping() { const t = document.getElementById('typing'); if (t) t.remove(); }
-function getAIResponse(text) { for (const [k,v] of Object.entries(aiResponses)) if (text.includes(k)) return v; return aiResponses['default']; }
-function startVoice() {
+
+// ==================== VOICE (BACKEND CONNECTED) ====================
+async function startVoice() {
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if (!SR) { showToast('Voice not supported in this browser', 'error'); return; }
-  const r = new SR(); r.lang = 'hi-IN'; r.start();
-  r.onresult = (e) => { chatInput.value = e.results[0][0].transcript; sendMessage(); };
+  if (!SR) { showToast('Voice not supported', 'error'); return; }
+  const r = new SR(); r.lang = currentLanguage === 'hi' ? 'hi-IN' : 'en-US'; r.start();
+  r.onresult = async (e) => {
+    const transcript = e.results[0][0].transcript;
+    chatInput.value = transcript;
+    addMessage(transcript, 'user');
+    showTyping();
+    try {
+      const response = await fetch(API_BASE_URL + '/api/voice', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ audio_text: transcript, language: currentLanguage, user_id: getUserId() })
+      });
+      const data = await response.json();
+      removeTyping();
+      addMessage(data.response || data.reply, 'ai');
+      if (data.tts_audio) { playAudio(data.tts_audio); }
+    } catch (err) {
+      removeTyping();
+      sendMessage();
+    }
+  };
   r.onerror = () => showToast('Voice failed, please type', 'error');
 }
+
+function playAudio(base64Audio) {
+  const audio = new Audio('data:audio/mp3;base64,' + base64Audio);
+  audio.play();
+}
+
+// ==================== FEATURE MODALS (BACKEND CONNECTED) ====================
+const FEATURE_CONFIG = {
+  'chat': { icon: '💬', title: 'AI Chat', placeholder: 'Ask anything...', api: '/api/chat', inputType: 'text' },
+  'image-gen': { icon: '🎨', title: 'AI Image Generator', placeholder: 'Describe the image...', api: '/api/image/generate', inputType: 'text' },
+  'voice': { icon: '🎙️', title: 'Voice Chat', placeholder: 'Click mic to speak...', api: '/api/voice', inputType: 'voice' },
+  'image-analysis': { icon: '🔍', title: 'Image Analysis', placeholder: 'Upload an image...', api: '/api/image/analyze', inputType: 'upload' },
+  'code': { icon: '💻', title: 'Code Generation', placeholder: 'Describe what code you need...', api: '/api/code', inputType: 'text' },
+  'crypto': { icon: '📊', title: 'Live Crypto + Stocks', placeholder: 'Enter stock/crypto symbol...', api: '/api/finance', inputType: 'text' },
+  'weather': { icon: '🌤️', title: 'Weather & News', placeholder: 'Enter city name...', api: '/api/weather', inputType: 'text' },
+  'cricket': { icon: '🏏', title: 'Cricket Updates', placeholder: 'Enter team or match...', api: '/api/cricket', inputType: 'text' },
+  'horoscope': { icon: '🔮', title: 'Daily Horoscope', placeholder: 'Enter your zodiac sign...', api: '/api/horoscope', inputType: 'text' },
+  'nearby': { icon: '📍', title: 'Nearby Places', placeholder: 'Enter location...', api: '/api/nearby', inputType: 'text' },
+  'bill': { icon: '🧾', title: 'Bill Scanner', placeholder: 'Upload a bill image...', api: '/api/bill/scan', inputType: 'upload' },
+  'guard': { icon: '🛡️', title: 'Guard Agent (CCTV)', placeholder: 'Upload image for security analysis...', api: '/api/guard/analyze', inputType: 'upload' }
+};
+
+function openFeatureModal(featureKey) {
+  const config = FEATURE_CONFIG[featureKey];
+  const content = document.getElementById('feature-modal-content');
+  let inputHtml = '';
+  if (config.inputType === 'text') {
+    inputHtml = '<input type="text" class="feature-input" id="feature-input" placeholder="' + config.placeholder + '" onkeypress="if(event.key===\'Enter\')executeFeature(\'' + featureKey + '\')">';
+  } else if (config.inputType === 'voice') {
+    inputHtml = '<button class="btn btn-primary" onclick="startFeatureVoice(\'' + featureKey + '\')" style="width:100%;margin:1rem 0;">🎤 Click to Speak</button>';
+  } else if (config.inputType === 'upload') {
+    inputHtml = '<div class="upload-area" id="upload-area" onclick="document.getElementById(\'feature-file\').click()">📤 Click or drag image here</div><input type="file" id="feature-file" accept="image/*" style="display:none" onchange="handleFeatureUpload(\'' + featureKey + '\',this)">';
+  }
+  content.innerHTML = '<div class="feature-modal-content"><div class="feature-icon-large">' + config.icon + '</div><h2>' + config.title + '</h2>' + inputHtml + '<button class="btn btn-primary" onclick="executeFeature(\'' + featureKey + '\')" style="width:100%;margin-top:0.5rem;">⚡ Generate</button><div class="feature-result" id="feature-result">Result will appear here...</div></div>';
+  document.getElementById('feature-modal-overlay').classList.add('active');
+}
+
+async function executeFeature(featureKey) {
+  const config = FEATURE_CONFIG[featureKey];
+  const resultDiv = document.getElementById('feature-result');
+  resultDiv.textContent = 'Loading...';
+  try {
+    let body = {};
+    if (config.inputType === 'text') {
+      const input = document.getElementById('feature-input');
+      body = { query: input.value, language: currentLanguage, user_id: getUserId() };
+    } else if (config.inputType === 'voice') {
+      body = { audio_text: document.getElementById('feature-input')?.value || '', language: currentLanguage, user_id: getUserId() };
+    }
+    const response = await fetch(API_BASE_URL + config.api, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    const data = await response.json();
+    if (featureKey === 'image-gen' && data.image_url) {
+      resultDiv.innerHTML = '<img src="' + data.image_url + '" style="max-width:100%;border-radius:12px;">';
+    } else if (featureKey === 'crypto' && data.prices) {
+      resultDiv.innerHTML = '<div style="font-size:1.2rem;">' + Object.entries(data.prices).map(([k,v]) => '<div><strong>' + k + ':</strong> ' + v + '</div>').join('') + '</div>';
+    } else if (featureKey === 'weather' && data.weather) {
+      resultDiv.innerHTML = '<div>🌡️ ' + data.weather.temp + '°C | ' + data.weather.condition + '<br>💨 ' + data.weather.wind + ' | 💧 ' + data.weather.humidity + '</div>';
+    } else if (featureKey === 'cricket' && data.matches) {
+      resultDiv.innerHTML = data.matches.map(m => '<div>🏏 ' + m.team1 + ' vs ' + m.team2 + ': ' + m.score + '</div>').join('');
+    } else if (featureKey === 'horoscope' && data.horoscope) {
+      resultDiv.innerHTML = '<div>🔮 ' + data.horoscope.sign + '<br>' + data.horoscope.reading + '<br>✨ Lucky: ' + data.horoscope.lucky_number + '</div>';
+    } else if (featureKey === 'nearby' && data.places) {
+      resultDiv.innerHTML = data.places.map(p => '<div>📍 ' + p.name + ' (' + p.distance + 'km) - ⭐' + p.rating + '</div>').join('');
+    } else {
+      resultDiv.textContent = data.response || data.result || data.reply || JSON.stringify(data);
+    }
+  } catch (e) {
+    resultDiv.textContent = 'Server error. Please try again.';
+  }
+}
+
+function startFeatureVoice(featureKey) {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) { showToast('Voice not supported', 'error'); return; }
+  const r = new SR(); r.lang = currentLanguage === 'hi' ? 'hi-IN' : 'en-US'; r.start();
+  r.onresult = (e) => {
+    const transcript = e.results[0][0].transcript;
+    const input = document.getElementById('feature-input');
+    if (input) input.value = transcript;
+    else {
+      const content = document.getElementById('feature-modal-content');
+      const inp = document.createElement('input');
+      inp.type = 'hidden'; inp.id = 'feature-input'; inp.value = transcript;
+      content.appendChild(inp);
+    }
+    executeFeature(featureKey);
+  };
+}
+
+async function handleFeatureUpload(featureKey, input) {
+  const file = input.files[0]; if (!file) return;
+  const resultDiv = document.getElementById('feature-result');
+  resultDiv.textContent = 'Analyzing image...';
+  const formData = new FormData();
+  formData.append('image', file);
+  formData.append('language', currentLanguage);
+  formData.append('user_id', getUserId());
+  try {
+    const response = await fetch(API_BASE_URL + FEATURE_CONFIG[featureKey].api, {
+      method: 'POST', body: formData
+    });
+    const data = await response.json();
+    resultDiv.innerHTML = '<div style="white-space:pre-wrap;">' + (data.analysis || data.description || data.result || JSON.stringify(data)) + '</div>';
+  } catch (e) {
+    resultDiv.textContent = 'Image analysis failed. Try again.';
+  }
+}
+
+function closeFeatureModal() { document.getElementById('feature-modal-overlay').classList.remove('active'); }
 
 // ==================== TRIAL ====================
 function checkTrialStatus() { const d = localStorage.getItem('singhji_trial'); if (d) userTrialStatus = JSON.parse(d); }
@@ -674,11 +894,13 @@ function installApp() {
 }
 window.addEventListener('beforeinstallprompt', (e) => { window.deferredPrompt = e; });
 
-// ==================== SCROLL ====================
+// ==================== UTILS ====================
+function getUserId() { let id = localStorage.getItem('singhji_user_id'); if (!id) { id = 'user_' + Date.now(); localStorage.setItem('singhji_user_id', id); } return id; }
+
 document.querySelectorAll('a[href^="#"]').forEach(a => { a.addEventListener('click', function(e) { e.preventDefault(); const t = document.querySelector(this.getAttribute('href')); if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' }); }); });
 window.addEventListener('scroll', () => { const h = document.querySelector('header'); h.style.background = window.scrollY > 50 ? 'rgba(10,10,26,0.98)' : 'rgba(10,10,26,0.9)'; });
 
-console.log('🤖 Singh Ji AI Ultra - Free Trial System Loaded!');
+console.log('🤖 Singh Ji AI Ultra - All 12 Features Connected to Backend!');
 console.log('🎁 Strategy: Free Trial -> Habit -> Paid Conversion');
 </script>
 </body>
