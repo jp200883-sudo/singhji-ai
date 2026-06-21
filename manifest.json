@@ -1,89 +1,1163 @@
-{
-  "name": "Singh Ji AI Ultra",
-  "short_name": "SinghJi AI",
-  "description": "भारत का अपना AI - ChatGPT से बेहतर!",
-  "start_url": "/singhji-ai/",
-  "display": "standalone",
-  "background_color": "#0a0a1a",
-  "theme_color": "#1a1a2e",
-  "orientation": "portrait",
-  "icons": [
-    {
-      "src": "icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
+"""
+Singh Ji AI - Main API Server (Single File - No Import Issues)
+Full Auto System with Voice, Intent Detection, Guard Agent
+Business: Freemium Hook Model
+"""
+
+import os
+import re
+import json
+import time
+import random
+from datetime import datetime, timedelta
+from dataclasses import dataclass
+from typing import Dict, Any, Optional, Tuple
+from flask import Flask, request, jsonify, render_template_string
+from flask_cors import CORS
+
+app = Flask(__name__)
+CORS(app)
+
+# ============================================================================
+# CONFIGURATION (All in one file - No external imports)
+# ============================================================================
+
+# ========================
+# BUSINESS STRATEGY
+# ========================
+
+class TrialConfig:
+    """Freemium Hook Model - Country-based trial periods"""
+
+    TRIAL_PERIODS = {
+        'ultra_max': {'months': 12, 'name': 'Ultra Max', 'free_until': '2026-11-30'},
+        'india': {'months': 5, 'name': 'India'},
+        'small_poor': {'months': 6, 'name': 'Small/Poor Countries'},
+        'rich': {'months': 2, 'name': 'Rich Countries'},
     }
-  ],
-  "categories": ["productivity", "utilities", "ai"],
-  "lang": "en",
-  "dir": "ltr",
-  "shortcuts": [
-    {
-      "name": "AI Chat",
-      "short_name": "Chat",
-      "description": "Start chatting with Singh Ji AI",
-      "url": "/singhji-ai/#chat",
-      "icons": [
-        {
-          "src": "icon-192.png",
-          "sizes": "192x192"
+
+    COUNTRY_CATEGORIES = {
+        'IN': 'india',
+        'BD': 'small_poor', 'PK': 'small_poor', 'NP': 'small_poor', 'LK': 'small_poor',
+        'AF': 'small_poor', 'MM': 'small_poor', 'KH': 'small_poor', 'LA': 'small_poor',
+        'KE': 'small_poor', 'NG': 'small_poor', 'GH': 'small_poor', 'ET': 'small_poor',
+        'TZ': 'small_poor', 'UG': 'small_poor', 'RW': 'small_poor', 'SN': 'small_poor',
+        'ML': 'small_poor', 'BF': 'small_poor', 'MZ': 'small_poor', 'ZM': 'small_poor',
+        'ZW': 'small_poor', 'MW': 'small_poor', 'MG': 'small_poor', 'HT': 'small_poor',
+        'BO': 'small_poor', 'PY': 'small_poor', 'HN': 'small_poor', 'NI': 'small_poor',
+        'SV': 'small_poor', 'GT': 'small_poor', 'VN': 'small_poor', 'PH': 'small_poor',
+        'ID': 'small_poor', 'EG': 'small_poor', 'UA': 'small_poor', 'BY': 'small_poor',
+        'US': 'rich', 'GB': 'rich', 'DE': 'rich', 'FR': 'rich', 'IT': 'rich',
+        'ES': 'rich', 'NL': 'rich', 'BE': 'rich', 'AT': 'rich', 'CH': 'rich',
+        'SE': 'rich', 'NO': 'rich', 'DK': 'rich', 'FI': 'rich', 'AU': 'rich',
+        'CA': 'rich', 'JP': 'rich', 'KR': 'rich', 'SG': 'rich', 'AE': 'rich',
+        'SA': 'rich', 'QA': 'rich', 'KW': 'rich', 'BH': 'rich', 'OM': 'rich',
+        'IL': 'rich', 'NZ': 'rich', 'IE': 'rich', 'LU': 'rich', 'IS': 'rich',
+        'TW': 'rich', 'HK': 'rich', 'MO': 'rich', 'MY': 'rich', 'TH': 'rich',
+        'BR': 'rich', 'MX': 'rich', 'AR': 'rich', 'CL': 'rich', 'CO': 'rich',
+        'PE': 'rich', 'UY': 'rich', 'CR': 'rich', 'PA': 'rich', 'TT': 'rich',
+        'JM': 'rich', 'BB': 'rich', 'BS': 'rich', 'BZ': 'rich', 'DM': 'rich',
+        'GD': 'rich', 'KN': 'rich', 'LC': 'rich', 'VC': 'rich', 'AG': 'rich',
+        'SR': 'rich', 'GY': 'rich', 'EC': 'rich', 'VE': 'rich', 'RU': 'rich',
+        'CN': 'rich',
+    }
+
+    PAYMENT_START_DATE = datetime(2026, 11, 1)
+
+    @classmethod
+    def get_trial_info(cls, country_code: str, user_id: str = None):
+        category = cls.COUNTRY_CATEGORIES.get(country_code, 'small_poor')
+        config = cls.TRIAL_PERIODS[category]
+
+        if category == 'ultra_max':
+            return {
+                'category': 'ultra_max',
+                'trial_months': config['months'],
+                'free_until': config['free_until'],
+                'payment_start': cls.PAYMENT_START_DATE.strftime('%Y-%m-%d'),
+                'is_premium': False,
+                'message': '🔥 Ultra Max: Free worldwide until November 2026!'
+            }
+
+        return {
+            'category': category,
+            'trial_months': config['months'],
+            'payment_start': cls.PAYMENT_START_DATE.strftime('%Y-%m-%d'),
+            'is_premium': False,
+            'message': f"🎁 {config['name']}: {config['months']} months free trial!"
         }
-      ]
+
+    @classmethod
+    def is_payment_active(cls):
+        return datetime.now() >= cls.PAYMENT_START_DATE
+
+
+# ========================
+# INTENT DETECTION CONFIG
+# ========================
+
+INTENTS = {
+    'train': {
+        'keywords': ['train', 'gadi', 'rail', 'railway', 'station', 'platform'],
+        'patterns': [r'train\s+(\d+)', r'gadi\s+(\d+)'],
+        'api_endpoint': '/api/train/{number}',
+        'response_template': 'Train {number} is currently at {location}. Expected arrival: {eta}.'
     },
-    {
-      "name": "Pricing Plans",
-      "short_name": "Pricing",
-      "description": "View pricing and start free trial",
-      "url": "/singhji-ai/#pricing",
-      "icons": [
-        {
-          "src": "icon-192.png",
-          "sizes": "192x192"
-        }
-      ]
+    'mandi': {
+        'keywords': ['mandi', 'bhav', 'rate', 'price', 'commodity', 'crop', 'fasal'],
+        'patterns': [r'(\w+)\s+(?:ka|ki|ke)\s+(?:bhav|rate|price)'],
+        'api_endpoint': '/api/mandi/{commodity}',
+        'response_template': '{commodity} current rate: Rs.{price} per quintal. Market: {market}.'
     },
-    {
-      "name": "Features",
-      "short_name": "Features",
-      "description": "Explore all AI features",
-      "url": "/singhji-ai/#features",
-      "icons": [
-        {
-          "src": "icon-192.png",
-          "sizes": "192x192"
-        }
-      ]
-    }
-  ],
-  "screenshots": [
-    {
-      "src": "screenshot-wide.png",
-      "sizes": "1280x720",
-      "type": "image/png",
-      "form_factor": "wide",
-      "label": "Singh Ji AI Dashboard"
+    'weather': {
+        'keywords': ['weather', 'mausam', 'temperature', 'temp', 'rain', 'barish'],
+        'patterns': [r'(\w+)\s+(?:ka|ki|ke)\s+(?:mausam|weather)'],
+        'api_endpoint': '/api/weather/{city}',
+        'response_template': '{city} weather: {condition}, {temp}C. Humidity: {humidity}%.'
     },
-    {
-      "src": "screenshot-narrow.png",
-      "sizes": "750x1334",
-      "type": "image/png",
-      "form_factor": "narrow",
-      "label": "Singh Ji AI Mobile"
+    'stock': {
+        'keywords': ['stock', 'share', 'share market', 'bazaar', 'bazar', 'bhav', 'price'],
+        'patterns': [r'(\w+)\s+(?:ka|ki|ke)\s+(?:share|stock|bhav)'],
+        'api_endpoint': '/api/stock/{symbol}',
+        'response_template': '{symbol}: Rs.{price} ({change}%). Market cap: Rs.{mcap} Cr.'
+    },
+    'cricket': {
+        'keywords': ['cricket', 'score', 'match', 'live', 'ipl', 't20', 'odi', 'test', 'khel'],
+        'patterns': [r'(?:live|score|match)\s+(?:of|for)?\s*(\w*)'],
+        'api_endpoint': '/api/cricket/live',
+        'response_template': 'Live match: {team1} vs {team2}. Score: {score}. Status: {status}.'
+    },
+    'horoscope': {
+        'keywords': ['horoscope', 'rashifal', 'rashi', 'zodiac', 'astro', 'astrology'],
+        'patterns': [r'(\w+)\s+(?:rashifal|rashi)'],
+        'api_endpoint': '/api/horoscope/{sign}',
+        'response_template': '{sign} Rashifal: {prediction}. Lucky number: {lucky_number}.'
+    },
+    'news': {
+        'keywords': ['news', 'khabar', 'samachar', 'headlines', 'update'],
+        'patterns': [r'(?:latest|today|abhi)\s*(?:news|khabar)'],
+        'api_endpoint': '/api/news/latest',
+        'response_template': 'Latest news: {headlines}. Source: {source}.'
+    },
+    'image_guard': {
+        'keywords': ['image', 'photo', 'picture', 'cctv', 'camera', 'security', 'guard', 'surveillance'],
+        'patterns': [],
+        'api_endpoint': '/api/vision/analyze',
+        'response_template': 'Guard Alert: {alert_message}. Objects detected: {objects}.'
+    },
+    'general': {
+        'keywords': [],
+        'patterns': [],
+        'api_endpoint': '/api/chat',
+        'response_template': '{response}'
     }
-  ],
-  "related_applications": [
-    {
-      "platform": "play",
-      "url": "https://play.google.com/store/apps/details?id=com.singhji.ai",
-      "id": "com.singhji.ai"
-    }
-  ],
-  "prefer_related_applications": false
 }
+
+CONFIDENCE_THRESHOLD = 0.6
+
+
+# ========================
+# GUARD AGENT CONFIG
+# ========================
+
+ALERT_TYPES = {
+    'suspicious_person': {'priority': 'high', 'vibrate': True, 'sound': True},
+    'unattended_bag': {'priority': 'high', 'vibrate': True, 'sound': True},
+    'crowd_surge': {'priority': 'medium', 'vibrate': True, 'sound': False},
+    'fire_smoke': {'priority': 'critical', 'vibrate': True, 'sound': True},
+    'normal': {'priority': 'low', 'vibrate': False, 'sound': False},
+}
+
+VIBRATION_PATTERNS = {
+    'high': [200, 100, 200, 100, 200],
+    'medium': [200, 100, 200],
+    'critical': [500, 200, 500, 200, 500, 200, 500],
+    'low': [100],
+}
+
+ALERT_MESSAGES = {
+    'suspicious_person': '⚠️ चेतावनी! संदिग्ध व्यक्ति देखा गया।',
+    'unattended_bag': '🚨 अलर्ट! बिना निगरानी का बैग मिला।',
+    'crowd_surge': '⚠️ भीड़ बढ़ रही है। सावधान रहें।',
+    'fire_smoke': '🔥 आग की चेतावनी! तुरंत निकलें!',
+    'normal': '✅ सब कुछ सामान्य है।',
+}
+
+
+# ========================
+# PWA CONFIG
+# ========================
+
+PWA_APP_NAME = 'Singh Ji AI'
+PWA_SHORT_NAME = 'SinghJi'
+PWA_THEME_COLOR = '#FF6B35'
+PWA_BACKGROUND_COLOR = '#1a1a2e'
+
+
+# ============================================================================
+# INTENT DETECTION ENGINE
+# ============================================================================
+
+@dataclass
+class IntentResult:
+    intent: str
+    confidence: float
+    entities: Dict[str, Any]
+    api_endpoint: str
+    response_template: str
+    language: str = 'hi'
+
+
+class IntentDetector:
+    def __init__(self):
+        self.intents = INTENTS
+        self.confidence_threshold = CONFIDENCE_THRESHOLD
+
+    def detect_intent(self, text: str, language: str = 'hi') -> IntentResult:
+        text_lower = text.lower().strip()
+        best_intent = 'general'
+        best_confidence = 0.0
+        best_entities = {}
+
+        for intent_name, intent_config in self.intents.items():
+            if intent_name == 'general':
+                continue
+
+            confidence, entities = self._calculate_confidence(text_lower, intent_config, language)
+
+            if confidence > best_confidence:
+                best_confidence = confidence
+                best_intent = intent_name
+                best_entities = entities
+
+        if best_confidence < self.confidence_threshold:
+            best_intent = 'general'
+            best_entities = {'query': text}
+
+        intent_config = self.intents[best_intent]
+        api_endpoint = self._format_endpoint(intent_config['api_endpoint'], best_entities)
+
+        return IntentResult(
+            intent=best_intent,
+            confidence=best_confidence,
+            entities=best_entities,
+            api_endpoint=api_endpoint,
+            response_template=intent_config['response_template'],
+            language=language
+        )
+
+    def _calculate_confidence(self, text: str, intent_config: Dict, language: str) -> Tuple[float, Dict]:
+        confidence = 0.0
+        entities = {}
+
+        keywords = intent_config['keywords']
+        keyword_matches = sum(1 for kw in keywords if kw.lower() in text)
+        keyword_confidence = keyword_matches / max(len(keywords), 1) * 0.6
+        confidence += keyword_confidence
+
+        patterns = intent_config.get('patterns', [])
+        for pattern in patterns:
+            match = re.search(pattern, text, re.IGNORECASE)
+            if match:
+                confidence += 0.4
+                groups = match.groups()
+                if groups:
+                    entities['number'] = groups[0] if len(groups) > 0 else None
+                    entities['commodity'] = groups[0] if len(groups) > 0 else None
+                    entities['city'] = groups[0] if len(groups) > 0 else None
+                    entities['symbol'] = groups[0] if len(groups) > 0 else None
+                    entities['sign'] = groups[0] if len(groups) > 0 else None
+                break
+
+        numbers = re.findall(r'\d+', text)
+        if numbers and 'train' in intent_config['keywords']:
+            entities['number'] = numbers[0]
+            confidence += 0.2
+
+        if 'mandi' in intent_config['keywords']:
+            commodities = self._extract_commodity(text)
+            if commodities:
+                entities['commodity'] = commodities[0]
+                confidence += 0.3
+
+        if 'weather' in intent_config['keywords']:
+            cities = self._extract_city(text)
+            if cities:
+                entities['city'] = cities[0]
+                confidence += 0.3
+
+        if 'stock' in intent_config['keywords']:
+            symbols = self._extract_stock_symbol(text)
+            if symbols:
+                entities['symbol'] = symbols[0]
+                confidence += 0.3
+
+        if 'horoscope' in intent_config['keywords']:
+            signs = self._extract_zodiac_sign(text)
+            if signs:
+                entities['sign'] = signs[0]
+                confidence += 0.3
+
+        return min(confidence, 1.0), entities
+
+    def _extract_commodity(self, text: str) -> list:
+        commodities = [
+            'onion', 'pyaj', 'tomato', 'tamatar', 'potato', 'aloo',
+            'wheat', 'gehu', 'rice', 'chawal', 'corn', 'makka',
+            'soybean', 'soya', 'mustard', 'sarso', 'cotton', 'kapas',
+            'sugarcane', 'ganna', 'garlic', 'lahsun', 'ginger', 'adrak',
+        ]
+        return [c for c in commodities if c.lower() in text.lower()]
+
+    def _extract_city(self, text: str) -> list:
+        cities = [
+            'delhi', 'mumbai', 'bangalore', 'bengaluru', 'hyderabad',
+            'chennai', 'kolkata', 'pune', 'jaipur', 'lucknow',
+            'kanpur', 'nagpur', 'indore', 'thane', 'bhopal',
+            'visakhapatnam', 'vadodara', 'firozabad', 'ludhiana',
+            'rajkot', 'agra', 'siliguri', 'durgapur', 'chandigarh',
+            'dehradun', 'noida', 'gurgaon', 'faridabad', 'ghaziabad',
+            'meerut', 'varanasi', 'patna', 'ranchi', 'guwahati',
+            'shimla', 'jammu', 'srinagar', 'amritsar', 'jalandhar',
+            'allahabad', 'prayagraj', 'gorakhpur', 'aligarh', 'bareilly',
+            'moradabad', 'saharanpur', 'muzaffarnagar', 'mathura',
+        ]
+        return [c.title() for c in cities if c.lower() in text.lower()]
+
+    def _extract_stock_symbol(self, text: str) -> list:
+        stocks = [
+            'reliance', 'tcs', 'infosys', 'hdfc', 'icici', 'sbi',
+            'bharti', 'airtel', 'itc', 'hul', 'lt', 'axis',
+            'kotak', 'bajaj', 'tatamotors', 'maruti', 'sunpharma',
+            'drreddy', 'cipla', 'wipro', 'techmahindra', 'hcltech',
+            'adani', 'coalindia', 'ongc', 'ntpc', 'powergrid',
+            'ioc', 'bpcl', 'hpcl', 'gail', 'nifty', 'sensex',
+        ]
+        return [s.upper() for s in stocks if s.lower() in text.lower()]
+
+    def _extract_zodiac_sign(self, text: str) -> list:
+        signs = [
+            'mesh', 'vrish', 'mithun', 'kark', 'singh', 'kanya',
+            'tula', 'vrishchik', 'dhanu', 'makara', 'kumbh', 'meen',
+            'aries', 'taurus', 'gemini', 'cancer', 'leo', 'virgo',
+            'libra', 'scorpio', 'sagittarius', 'capricorn', 'aquarius', 'pisces',
+        ]
+        return [s.title() for s in signs if s.lower() in text.lower()]
+
+    def _format_endpoint(self, endpoint: str, entities: Dict) -> str:
+        try:
+            return endpoint.format(**entities)
+        except KeyError:
+            return endpoint
+
+    def detect_language(self, text: str) -> str:
+        hindi_chars = set('अआइईउऊऋएऐओऔअंअःकखगघङचछजझञटठडढणतथदधनपफबभमयरलवशषसह')
+        text_chars = set(text)
+
+        if any(char in hindi_chars for char in text_chars):
+            return 'hi'
+
+        hindi_words = ['hai', 'hain', 'ka', 'ki', 'ke', 'ko', 'se', 'mein', 'me', 'par', 'aur', 'ya']
+        if any(word in text.lower() for word in hindi_words):
+            return 'hi'
+
+        return 'en'
+
+    def process_voice_input(self, transcript: str) -> Dict[str, Any]:
+        language = self.detect_language(transcript)
+        intent_result = self.detect_intent(transcript, language)
+
+        return {
+            'input': transcript,
+            'language': language,
+            'intent': intent_result.intent,
+            'confidence': intent_result.confidence,
+            'entities': intent_result.entities,
+            'api_endpoint': intent_result.api_endpoint,
+            'response_template': intent_result.response_template,
+            'should_speak': True,
+            'speak_language': language
+        }
+
+
+# ============================================================================
+# GUARD AGENT
+# ============================================================================
+
+class GuardAgent:
+    def analyze_image(self, image_data: bytes) -> Dict[str, Any]:
+        return {
+            'status': 'analyzed',
+            'objects_detected': [],
+            'persons_count': 0,
+            'suspicious_activity': False,
+            'alert_type': 'normal',
+            'alert_message': '✅ सब कुछ सामान्य है।',
+            'should_vibrate': False,
+            'should_sound': False,
+            'priority': 'low',
+        }
+
+    def generate_alert(self, analysis: Dict[str, Any]) -> Dict[str, Any]:
+        alert_type = analysis.get('alert_type', 'normal')
+        alert_config = ALERT_TYPES.get(alert_type, ALERT_TYPES['normal'])
+        alert_message = ALERT_MESSAGES.get(alert_type, '✅ सब कुछ सामान्य है।')
+        vibration_pattern = VIBRATION_PATTERNS.get(alert_config['priority'], [100])
+
+        return {
+            'type': alert_type,
+            'priority': alert_config['priority'],
+            'message': alert_message,
+            'vibrate': alert_config['vibrate'],
+            'sound': alert_config['sound'],
+            'vibration_pattern': vibration_pattern,
+            'timestamp': datetime.now().isoformat(),
+        }
+
+
+# ============================================================================
+# VOICE RESPONSE FORMATTER
+# ============================================================================
+
+class VoiceFormatter:
+    @staticmethod
+    def format_train_response(data: Dict) -> str:
+        train_no = data.get('number', 'Unknown')
+        location = data.get('current_location', 'Unknown')
+        eta = data.get('eta', 'Unknown')
+        return f"ट्रेन {train_no} अभी {location} स्टेशन पर है। अनुमानित आगमन समय: {eta}।"
+
+    @staticmethod
+    def format_mandi_response(data: Dict) -> str:
+        commodity = data.get('commodity', 'Unknown')
+        price = data.get('price', 'Unknown')
+        market = data.get('market', 'Unknown')
+        return f"{commodity} का वर्तमान भाव ₹{price} प्रति क्विंटल है। बाजार: {market}।"
+
+    @staticmethod
+    def format_weather_response(data: Dict) -> str:
+        city = data.get('city', 'Unknown')
+        condition = data.get('condition', 'Unknown')
+        temp = data.get('temp', 'Unknown')
+        humidity = data.get('humidity', 'Unknown')
+        return f"{city} में मौसम {condition} है। तापमान {temp} डिग्री सेल्सियस। नमी {humidity} प्रतिशत।"
+
+    @staticmethod
+    def format_stock_response(data: Dict) -> str:
+        symbol = data.get('symbol', 'Unknown')
+        price = data.get('price', 'Unknown')
+        change = data.get('change', 'Unknown')
+        direction = 'बढ़ा' if float(change) > 0 else 'घटा'
+        return f"{symbol} का भाव ₹{price} है। {change} प्रतिशत {direction}।"
+
+    @staticmethod
+    def format_cricket_response(data: Dict) -> str:
+        team1 = data.get('team1', 'Unknown')
+        team2 = data.get('team2', 'Unknown')
+        score = data.get('score', 'Unknown')
+        status = data.get('status', 'Unknown')
+        return f"लाइव मैच: {team1} बनाम {team2}। स्कोर: {score}। स्थिति: {status}।"
+
+    @staticmethod
+    def format_horoscope_response(data: Dict) -> str:
+        sign = data.get('sign', 'Unknown')
+        prediction = data.get('prediction', 'Unknown')
+        lucky = data.get('lucky_number', 'Unknown')
+        return f"{sign} राशिफल: {prediction}। आज का भाग्यशाली अंक: {lucky}।"
+
+    @staticmethod
+    def format_news_response(data: Dict) -> str:
+        headlines = data.get('headlines', [])
+        source = data.get('source', 'Unknown')
+        if isinstance(headlines, list):
+            headlines_text = '। '.join(headlines[:3])
+        else:
+            headlines_text = str(headlines)
+        return f"आज की प्रमुख खबरें: {headlines_text}। स्रोत: {source}।"
+
+    @staticmethod
+    def format_guard_alert(data: Dict) -> str:
+        return data.get('alert_message', '✅ सब कुछ सामान्य है।')
+
+
+# ============================================================================
+# TRIAL MANAGER
+# ============================================================================
+
+class TrialManager:
+    def __init__(self):
+        self.users = {}
+
+    def get_user_trial(self, user_id: str, country_code: str = 'IN'):
+        if user_id not in self.users:
+            trial_info = TrialConfig.get_trial_info(country_code, user_id)
+            self.users[user_id] = {
+                'user_id': user_id,
+                'country': country_code,
+                'trial_start': datetime.now().isoformat(),
+                'trial_info': trial_info,
+                'is_premium': False,
+                'trial_active': True,
+            }
+        return self.users[user_id]
+
+    def check_feature_access(self, user_id: str, feature: str) -> Dict:
+        user = self.users.get(user_id)
+        if not user:
+            return {'access': True, 'reason': 'new_user'}
+
+        if user['trial_info']['category'] == 'ultra_max':
+            if datetime.now() < TrialConfig.PAYMENT_START_DATE:
+                return {'access': True, 'reason': 'ultra_max_free'}
+
+        trial_start = datetime.fromisoformat(user['trial_start'])
+        trial_months = user['trial_info']['trial_months']
+        trial_end = trial_start + timedelta(days=30 * trial_months)
+
+        if datetime.now() < trial_end:
+            return {'access': True, 'reason': 'trial_active'}
+
+        if TrialConfig.is_payment_active():
+            if user['is_premium']:
+                return {'access': True, 'reason': 'premium'}
+            else:
+                return {
+                    'access': False,
+                    'reason': 'trial_expired',
+                    'message': '⏰ आपका ट्रायल समाप्त हो गया! Premium अपग्रेड करें।',
+                    'upgrade_url': '/premium'
+                }
+
+        return {'access': True, 'reason': 'payment_not_active'}
+
+
+# ============================================================================
+# MOCK DATA GENERATORS
+# ============================================================================
+
+def generate_train_data(number: str) -> Dict:
+    stations = [
+        'New Delhi', 'Agra Cantt', 'Jhansi', 'Bhopal', 'Nagpur',
+        'Itarsi', 'Bhusaval', 'Manmad', 'Kalyan', 'Mumbai CST',
+        'Lucknow', 'Kanpur', 'Allahabad', 'Varanasi', 'Patna',
+        'Jaipur', 'Ajmer', 'Jodhpur', 'Bikaner', 'Amritsar',
+        'Chandigarh', 'Ludhiana', 'Jammu', 'Katra', 'Srinagar',
+    ]
+    current = random.choice(stations)
+    next_station = random.choice([s for s in stations if s != current])
+    return {
+        'number': number,
+        'name': f'Express {number}',
+        'current_location': current,
+        'next_station': next_station,
+        'eta': f'{random.randint(10, 120)} minutes',
+        'status': random.choice(['Running', 'Delayed', 'On Time']),
+        'platform': random.randint(1, 8),
+        'speed': random.randint(40, 120),
+        'last_updated': datetime.now().isoformat(),
+    }
+
+def generate_mandi_data(commodity: str) -> Dict:
+    markets = [
+        'Azadpur Mandi (Delhi)', 'Vashi Mandi (Mumbai)', 'Koyambedu (Chennai)',
+        'Kolkata Sealdah', 'Bangalore Yeshwanthpur', 'Hyderabad Moosapet',
+        'Ahmedabad Kalupur', 'Pune Market Yard', 'Jaipur Muhana',
+        'Lucknow Aminabad', 'Kanpur Jajmau', 'Indore Chhawani',
+    ]
+    base_prices = {
+        'onion': 2500, 'pyaj': 2500, 'tomato': 1500, 'tamatar': 1500,
+        'potato': 1200, 'aloo': 1200, 'wheat': 2200, 'gehu': 2200,
+        'rice': 3500, 'chawal': 3500, 'corn': 1800, 'makka': 1800,
+        'soybean': 4500, 'mustard': 5200, 'cotton': 6200, 'kapas': 6200,
+        'sugarcane': 300, 'ganna': 300, 'garlic': 8000, 'ginger': 12000,
+    }
+    base = base_prices.get(commodity.lower(), random.randint(1000, 5000))
+    price = base + random.randint(-500, 500)
+    return {
+        'commodity': commodity.title(),
+        'price': price,
+        'unit': 'per quintal',
+        'market': random.choice(markets),
+        'trend': random.choice(['Up', 'Down', 'Stable']),
+        'change': round(random.uniform(-5, 5), 2),
+        'last_updated': datetime.now().isoformat(),
+    }
+
+def generate_weather_data(city: str) -> Dict:
+    conditions = ['Clear', 'Partly Cloudy', 'Cloudy', 'Rainy', 'Thunderstorm', 'Haze']
+    return {
+        'city': city.title(),
+        'temp': random.randint(15, 45),
+        'feels_like': random.randint(15, 45),
+        'condition': random.choice(conditions),
+        'humidity': random.randint(30, 90),
+        'wind_speed': random.randint(5, 30),
+        'wind_direction': random.choice(['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW']),
+        'visibility': random.randint(5, 10),
+        'uv_index': random.randint(1, 11),
+        'forecast': [
+            {'day': 'Tomorrow', 'temp': random.randint(15, 45), 'condition': random.choice(conditions)},
+            {'day': 'Day After', 'temp': random.randint(15, 45), 'condition': random.choice(conditions)},
+        ],
+        'last_updated': datetime.now().isoformat(),
+    }
+
+def generate_stock_data(symbol: str) -> Dict:
+    companies = {
+        'RELIANCE': 2450, 'TCS': 3850, 'INFY': 1520, 'HDFCBANK': 1680,
+        'ICICIBANK': 1050, 'SBIN': 720, 'BHARTIARTL': 980, 'ITC': 420,
+        'HINDUNILVR': 2450, 'LT': 2850, 'AXISBANK': 1050, 'KOTAKBANK': 1780,
+        'BAJFINANCE': 7200, 'TATAMOTORS': 780, 'MARUTI': 10500, 'SUNPHARMA': 1250,
+        'WIPRO': 450, 'HCLTECH': 1380, 'ADANIENT': 2850, 'COALINDIA': 420,
+        'ONGC': 250, 'NTPC': 320, 'POWERGRID': 280, 'IOC': 150,
+    }
+    base = companies.get(symbol.upper(), random.randint(100, 5000))
+    change = round(random.uniform(-5, 5), 2)
+    price = round(base * (1 + change/100), 2)
+    return {
+        'symbol': symbol.upper(),
+        'name': f'{symbol.upper()} Ltd.',
+        'price': price,
+        'change': change,
+        'change_percent': change,
+        'volume': random.randint(1000000, 50000000),
+        'market_cap': round(random.uniform(1000, 20000), 2),
+        'day_high': round(price * 1.02, 2),
+        'day_low': round(price * 0.98, 2),
+        '52w_high': round(price * 1.5, 2),
+        '52w_low': round(price * 0.6, 2),
+        'last_updated': datetime.now().isoformat(),
+    }
+
+def generate_cricket_data() -> Dict:
+    teams = ['India', 'Australia', 'England', 'Pakistan', 'South Africa', 'New Zealand', 'Sri Lanka', 'West Indies']
+    team1, team2 = random.sample(teams, 2)
+    score1 = f"{random.randint(120, 350)}/{random.randint(0, 9)}"
+    score2 = f"{random.randint(50, 300)}/{random.randint(0, 9)}"
+    overs = f"{random.randint(10, 50)}.{random.randint(0, 5)}"
+    return {
+        'match_id': f'live_{random.randint(1000, 9999)}',
+        'team1': team1,
+        'team2': team2,
+        'score': f"{team1}: {score1} vs {team2}: {score2}",
+        'team1_score': score1,
+        'team2_score': score2,
+        'overs': overs,
+        'status': random.choice(['Live', 'In Progress', 'Break', 'Match Ended']),
+        'venue': random.choice(['Wankhede', 'Eden Gardens', 'M Chinnaswamy', 'Arun Jaitley', 'Chepauk']),
+        'last_updated': datetime.now().isoformat(),
+    }
+
+def generate_horoscope_data(sign: str) -> Dict:
+    predictions = [
+        'आज का दिन आपके लिए शुभ रहेगा। नए अवसर मिलेंगे।',
+        'करियर में तरक्की के योग हैं। मेहनत का फल मिलेगा।',
+        'पारिवारिक जीवन सुखमय रहेगा। प्रेम संबंध मजबूत होंगे।',
+        'वित्तीय स्थिति में सुधार होगा। निवेश लाभदायक रहेगा।',
+        'स्वास्थ्य अच्छा रहेगा। योग और ध्यान से लाभ मिलेगा।',
+        'यात्रा के योग बन रहे हैं। दूर की यात्रा सफल रहेगी।',
+        'शत्रुओं पर विजय मिलेगी। मुकदमे में सफलता मिलेगी।',
+        'सामाजिक प्रतिष्ठा बढ़ेगी। सम्मान मिलेगा।',
+    ]
+    colors = ['Red', 'Blue', 'Green', 'Yellow', 'White', 'Orange', 'Purple', 'Black']
+    numbers = list(range(1, 10))
+    return {
+        'sign': sign.title(),
+        'prediction': random.choice(predictions),
+        'lucky_color': random.choice(colors),
+        'lucky_number': random.choice(numbers),
+        'lucky_time': f"{random.randint(6, 20)}:{random.choice(['00', '15', '30', '45'])}",
+        'compatibility': random.choice(['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo']),
+        'mood': random.choice(['Happy', 'Energetic', 'Calm', 'Focused', 'Creative']),
+        'date': datetime.now().strftime('%Y-%m-%d'),
+    }
+
+def generate_news_data() -> Dict:
+    headlines = [
+        'भारत ने क्रिकेट वर्ल्ड कप जीता!',
+        'ISRO का नया मिशन सफल',
+        'सेंसेक्स नए रिकॉर्ड पर',
+        'मानसून सामान्य रहने की संभावना',
+        'नई शिक्षा नीति लागू',
+        'GST संग्रह में वृद्धि',
+        'Digital India मिशन तेज',
+        'Startup India में नए रिकॉर्ड',
+        'Green Energy में निवेश बढ़ा',
+        'SpaceX का नया लॉन्च',
+    ]
+    return {
+        'headlines': random.sample(headlines, 5),
+        'source': 'Singh Ji AI News',
+        'category': random.choice(['National', 'Business', 'Sports', 'Technology', 'Politics']),
+        'timestamp': datetime.now().isoformat(),
+    }
+
+
+# ============================================================================
+# INITIALIZE SINGLETONS
+# ============================================================================
+
+intent_detector = IntentDetector()
+guard_agent = GuardAgent()
+voice_formatter = VoiceFormatter()
+trial_manager = TrialManager()
+
+
+# ============================================================================
+# API ROUTES
+# ============================================================================
+
+@app.route('/')
+def home():
+    return jsonify({
+        'name': 'Singh Ji AI',
+        'version': '2.0',
+        'status': 'online',
+        'features': [
+            'voice_input', 'intent_detection', 'auto_api_routing',
+            'train_tracking', 'mandi_rates', 'weather', 'stocks',
+            'cricket', 'horoscope', 'news', 'guard_agent', 'image_analysis'
+        ],
+        'business_model': 'Freemium Hook Model',
+        'payment_start': 'November 2026',
+        'message': '🔥 Singh Ji AI - Full Auto System Active!',
+    })
+
+
+@app.route('/api/voice/process', methods=['POST'])
+def process_voice():
+    data = request.json
+    transcript = data.get('transcript', '')
+    user_id = data.get('user_id', 'anonymous')
+    country = data.get('country', 'IN')
+
+    trial = trial_manager.get_user_trial(user_id, country)
+    access = trial_manager.check_feature_access(user_id, 'voice')
+
+    if not access['access']:
+        return jsonify({
+            'success': False,
+            'message': access['message'],
+            'upgrade_required': True,
+        })
+
+    result = intent_detector.process_voice_input(transcript)
+    api_response = auto_call_api(result)
+    voice_response = format_voice_response(result['intent'], api_response)
+
+    return jsonify({
+        'success': True,
+        'input': transcript,
+        'intent': result['intent'],
+        'confidence': result['confidence'],
+        'entities': result['entities'],
+        'api_response': api_response,
+        'voice_response': voice_response,
+        'language': result['language'],
+        'should_speak': True,
+        'trial_info': trial['trial_info'],
+    })
+
+
+def auto_call_api(intent_result: Dict) -> Dict:
+    intent = intent_result['intent']
+    entities = intent_result['entities']
+
+    if intent == 'train':
+        return generate_train_data(entities.get('number', '12309'))
+    elif intent == 'mandi':
+        return generate_mandi_data(entities.get('commodity', 'onion'))
+    elif intent == 'weather':
+        return generate_weather_data(entities.get('city', 'Delhi'))
+    elif intent == 'stock':
+        return generate_stock_data(entities.get('symbol', 'RELIANCE'))
+    elif intent == 'cricket':
+        return generate_cricket_data()
+    elif intent == 'horoscope':
+        return generate_horoscope_data(entities.get('sign', 'Mesh'))
+    elif intent == 'news':
+        return generate_news_data()
+    else:
+        return {'message': 'मैं आपकी मदद कैसे कर सकता हूँ?'}
+
+
+def format_voice_response(intent: str, data: Dict) -> str:
+    if intent == 'train':
+        return voice_formatter.format_train_response(data)
+    elif intent == 'mandi':
+        return voice_formatter.format_mandi_response(data)
+    elif intent == 'weather':
+        return voice_formatter.format_weather_response(data)
+    elif intent == 'stock':
+        return voice_formatter.format_stock_response(data)
+    elif intent == 'cricket':
+        return voice_formatter.format_cricket_response(data)
+    elif intent == 'horoscope':
+        return voice_formatter.format_horoscope_response(data)
+    elif intent == 'news':
+        return voice_formatter.format_news_response(data)
+    else:
+        return data.get('message', 'मैं आपकी मदद कैसे कर सकता हूँ?')
+
+
+# Individual API Routes
+@app.route('/api/train/<number>')
+def api_train(number):
+    return jsonify({'success': True, 'data': generate_train_data(number)})
+
+@app.route('/api/mandi/<commodity>')
+def api_mandi(commodity):
+    return jsonify({'success': True, 'data': generate_mandi_data(commodity)})
+
+@app.route('/api/weather/<city>')
+def api_weather(city):
+    return jsonify({'success': True, 'data': generate_weather_data(city)})
+
+@app.route('/api/stock/<symbol>')
+def api_stock(symbol):
+    return jsonify({'success': True, 'data': generate_stock_data(symbol)})
+
+@app.route('/api/cricket/live')
+def api_cricket():
+    return jsonify({'success': True, 'data': generate_cricket_data()})
+
+@app.route('/api/horoscope/<sign>')
+def api_horoscope(sign):
+    return jsonify({'success': True, 'data': generate_horoscope_data(sign)})
+
+@app.route('/api/news/latest')
+def api_news():
+    return jsonify({'success': True, 'data': generate_news_data()})
+
+
+# Guard Agent Routes
+@app.route('/api/vision/analyze', methods=['POST'])
+def api_guard_analyze():
+    data = request.json
+    image_data = data.get('image', '')
+    analysis = guard_agent.analyze_image(image_data.encode() if image_data else b'')
+    alert = guard_agent.generate_alert(analysis)
+
+    return jsonify({
+        'success': True,
+        'analysis': analysis,
+        'alert': alert,
+        'should_vibrate': alert['vibrate'],
+        'should_sound': alert['sound'],
+        'vibration_pattern': alert['vibration_pattern'],
+    })
+
+@app.route('/api/guard/status')
+def api_guard_status():
+    return jsonify({
+        'success': True,
+        'status': 'active',
+        'mode': 'surveillance',
+        'last_scan': datetime.now().isoformat(),
+        'alerts_today': random.randint(0, 5),
+    })
+
+
+# Trial & Premium Routes
+@app.route('/api/trial/info', methods=['POST'])
+def api_trial_info():
+    data = request.json
+    user_id = data.get('user_id', 'anonymous')
+    country = data.get('country', 'IN')
+    trial = trial_manager.get_user_trial(user_id, country)
+
+    return jsonify({
+        'success': True,
+        'trial': trial,
+        'payment_active': TrialConfig.is_payment_active(),
+        'days_until_payment': (TrialConfig.PAYMENT_START_DATE - datetime.now()).days,
+    })
+
+@app.route('/api/premium/upgrade', methods=['POST'])
+def api_premium_upgrade():
+    data = request.json
+    user_id = data.get('user_id', 'anonymous')
+
+    if user_id in trial_manager.users:
+        trial_manager.users[user_id]['is_premium'] = True
+        trial_manager.users[user_id]['trial_active'] = False
+
+    return jsonify({
+        'success': True,
+        'message': '✅ Premium activated!',
+        'features_unlocked': [
+            'unlimited_voice', 'advanced_guard', 'priority_support',
+            'custom_alerts', 'api_access', 'no_ads'
+        ],
+    })
+
+
+# Telegram Webhook
+@app.route('/webhook', methods=['POST'])
+def telegram_webhook():
+    data = request.json
+
+    if 'message' in data:
+        message = data['message']
+        chat_id = message['chat']['id']
+        text = message.get('text', '')
+
+        result = intent_detector.process_voice_input(text)
+        api_response = auto_call_api(result)
+        response_text = format_voice_response(result['intent'], api_response)
+
+        return jsonify({
+            'method': 'sendMessage',
+            'chat_id': chat_id,
+            'text': response_text,
+            'parse_mode': 'HTML',
+        })
+
+    return jsonify({'success': True})
+
+
+# PWA Manifest
+@app.route('/manifest.json')
+def manifest():
+    return jsonify({
+        'name': PWA_APP_NAME,
+        'short_name': PWA_SHORT_NAME,
+        'start_url': '/',
+        'display': 'standalone',
+        'background_color': PWA_BACKGROUND_COLOR,
+        'theme_color': PWA_THEME_COLOR,
+        'orientation': 'portrait',
+        'icons': [
+            {'src': f'/static/icon-{size}x{size}.png', 'sizes': f'{size}x{size}', 'type': 'image/png', 'purpose': 'any maskable'}
+            for size in [72, 96, 128, 144, 152, 192, 384, 512]
+        ],
+        'categories': ['productivity', 'utilities'],
+        'lang': 'hi',
+        'description': 'Singh Ji AI - Your Personal AI Assistant in Hindi',
+    })
+
+
+# Service Worker
+@app.route('/service-worker.js')
+def service_worker():
+    sw_js = """const CACHE_NAME = 'singhji-ai-v1';
+const urlsToCache = ['/', '/static/style.css', '/static/app.js', '/manifest.json'];
+self.addEventListener('install', event => {
+    event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache)));
+});
+self.addEventListener('fetch', event => {
+    event.respondWith(caches.match(event.request).then(response => response || fetch(event.request)));
+});
+self.addEventListener('push', event => {
+    const data = event.data.json();
+    self.registration.showNotification(data.title, {
+        body: data.body, icon: '/static/icon-192x192.png', badge: '/static/badge-72x72.png',
+        vibrate: data.vibrate || [200, 100, 200], data: data.data
+    });
+});
+"""
+    return sw_js, 200, {'Content-Type': 'application/javascript'}
+
+
+# Dashboard HTML
+@app.route('/dashboard')
+def dashboard():
+    return render_template_string(DASHBOARD_HTML)
+
+DASHBOARD_HTML = """
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Singh Ji AI - Full Auto</title>
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#FF6B35">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',sans-serif;background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460);min-height:100vh;color:white}
+.container{max-width:1200px;margin:0 auto;padding:20px}
+.header{text-align:center;padding:40px 20px;background:rgba(255,107,53,0.1);border-radius:20px;margin-bottom:30px;border:1px solid rgba(255,107,53,0.3)}
+.header h1{font-size:2.5em;margin-bottom:10px}
+.header p{color:#aaa;font-size:1.1em}
+.voice-section{background:rgba(255,255,255,0.05);border-radius:20px;padding:30px;margin-bottom:30px;text-align:center;border:2px solid rgba(255,107,53,0.3)}
+.mic-btn{width:120px;height:120px;border-radius:50%;border:none;background:linear-gradient(135deg,#FF6B35,#f7931e);color:white;font-size:3em;cursor:pointer;transition:all 0.3s;box-shadow:0 10px 30px rgba(255,107,53,0.4)}
+.mic-btn:hover{transform:scale(1.1)}
+.mic-btn.recording{animation:pulse 1.5s infinite;background:linear-gradient(135deg,#ff4444,#ff6b6b)}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(255,68,68,0.7)}70%{box-shadow:0 0 0 30px rgba(255,68,68,0)}100%{box-shadow:0 0 0 0 rgba(255,68,68,0)}}
+.status-text{margin-top:20px;font-size:1.2em;color:#FF6B35}
+.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;margin-bottom:30px}
+.feature-card{background:rgba(255,255,255,0.05);border-radius:15px;padding:25px;text-align:center;transition:all 0.3s;border:1px solid rgba(255,255,255,0.1);cursor:pointer}
+.feature-card:hover{transform:translateY(-5px);border-color:#FF6B35;box-shadow:0 10px 30px rgba(255,107,53,0.2)}
+.feature-icon{font-size:3em;margin-bottom:15px}
+.feature-card h3{margin-bottom:10px}
+.feature-card p{color:#aaa;font-size:0.9em}
+.guard-section{background:linear-gradient(135deg,rgba(255,0,0,0.1),rgba(255,107,53,0.1));border-radius:20px;padding:30px;margin-bottom:30px;border:2px solid rgba(255,0,0,0.3)}
+.guard-section h2{color:#ff4444;margin-bottom:20px}
+.upload-area{border:2px dashed rgba(255,255,255,0.3);border-radius:15px;padding:40px;text-align:center;cursor:pointer;transition:all 0.3s}
+.upload-area:hover{border-color:#ff4444;background:rgba(255,0,0,0.05)}
+.alert-box{display:none;background:rgba(255,0,0,0.2);border:2px solid #ff4444;border-radius:15px;padding:20px;margin-top:20px;animation:shake 0.5s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-10px)}75%{transform:translateX(10px)}}
+.trial-banner{background:linear-gradient(135deg,#FF6B35,#f7931e);border-radius:15px;padding:20px;text-align:center;margin-bottom:30px}
+.trial-banner h2{margin-bottom:10px}
+.footer{text-align:center;padding:30px;color:#666}
+.speak-btn{background:rgba(255,107,53,0.2);border:1px solid #FF6B35;color:#FF6B35;padding:10px 20px;border-radius:25px;cursor:pointer;margin-top:15px}
+.response-area{background:rgba(255,255,255,0.05);border-radius:15px;padding:20px;margin-top:20px;min-height:100px;display:none}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>🤖 Singh Ji AI</h1>
+<p>Full Auto System - Voice + Intent + Guard Agent</p>
+</div>
+<div class="trial-banner">
+<h2>🎉 Ultra Max Free Trial Active!</h2>
+<p>Free worldwide until November 2026 | India: 5 months | Rich countries: 2 months</p>
+</div>
+<div class="voice-section">
+<h2>🎤 Voice Command</h2>
+<button class="mic-btn" id="micBtn">🎙️</button>
+<p class="status-text" id="statusText">"Train 12309 kahan hai?" बोलो...</p>
+<div class="response-area" id="responseArea">
+<p id="responseText"></p>
+<button class="speak-btn" id="speakBtn">🔊 बोलो</button>
+</div>
+</div>
+<div class="features-grid">
+<div class="feature-card" onclick="quickCommand('train')"><div class="feature-icon">🚆</div><h3>Train Tracking</h3><p>"Train 12309 kahan hai?"</p></div>
+<div class="feature-card" onclick="quickCommand('mandi')"><div class="feature-icon">🌾</div><h3>Mandi Rates</h3><p>"Pyaj ka bhav kya hai?"</p></div>
+<div class="feature-card" onclick="quickCommand('weather')"><div class="feature-icon">🌤️</div><h3>Weather</h3><p>"Delhi ka mausam kaisa hai?"</p></div>
+<div class="feature-card" onclick="quickCommand('stock')"><div class="feature-icon">📊</div><h3>Stocks</h3><p>"Reliance ka share price?"</p></div>
+<div class="feature-card" onclick="quickCommand('cricket')"><div class="feature-icon">🏏</div><h3>Cricket</h3><p>"Live score batao"</p></div>
+<div class="feature-card" onclick="quickCommand('horoscope')"><div class="feature-icon">🔮</div><h3>Horoscope</h3><p>"Aaj ka rashifal"</p></div>
+<div class="feature-card" onclick="quickCommand('news')"><div class="feature-icon">📰</div><h3>News</h3><p>"Aaj ki khabar sunao"</p></div>
+<div class="feature-card" onclick="quickCommand('chat')"><div class="feature-icon">💬</div><h3>AI Chat</h3><p>"Kuch bhi pooch sakte ho"</p></div>
+</div>
+<div class="guard-section">
+<h2>🛡️ Guard Agent - Image Security</h2>
+<p>Upload CCTV or security image for AI analysis</p>
+<div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInput').click()">
+<p>📸 Click to upload image or drag and drop</p>
+<input type="file" id="fileInput" accept="image/*" style="display:none" onchange="analyzeImage(this)">
+</div>
+<div class="alert-box" id="alertBox">
+<h3>⚠️ Alert!</h3>
+<p id="alertText"></p>
+</div>
+</div>
+<div class="footer">
+<p>🔥 Singh Ji AI v2.0 | Freemium Hook Model | Made with ❤️ for India</p>
+<p>Payment starts: November 2026</p>
+</div>
+</div>
+<script>
+const micBtn=document.getElementById('micBtn');
+const statusText=document.getElementById('statusText');
+const responseArea=document.getElementById('responseArea');
+const responseText=document.getElementById('responseText');
+const speakBtn=document.getElementById('speakBtn');
+const alertBox=document.getElementById('alertBox');
+const alertText=document.getElementById('alertText');
+let recognition;
+let isRecording=false;
+let currentResponse='';
+
+if('webkitSpeechRecognition' in window||'SpeechRecognition' in window){
+const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
+recognition=new SpeechRecognition();
+recognition.continuous=false;
+recognition.interimResults=true;
+recognition.lang='hi-IN';
+recognition.onstart=()=>{isRecording=true;micBtn.classList.add('recording');statusText.textContent='🔴 सुन रहा हूँ...'};
+recognition.onend=()=>{isRecording=false;micBtn.classList.remove('recording');statusText.textContent='"Train 12309 kahan hai?" बोलो...'};
+recognition.onresult=(event)=>{
+let transcript='';
+for(let i=event.resultIndex;i<event.results.length;i++){transcript+=event.results[i][0].transcript}
+statusText.textContent='📝 '+transcript;
+if(event.results[0].isFinal){processVoiceInput(transcript)}
+};
+recognition.onerror=(event)=>{statusText.textContent='❌ Error: '+event.error;isRecording=false;micBtn.classList.remove('recording')};
+}
+
+micBtn.addEventListener('click',()=>{
+if(!recognition){statusText.textContent='❌ Voice recognition not supported';return}
+if(isRecording){recognition.stop()}else{recognition.start()}
+});
+
+async function processVoiceInput(transcript){
+statusText.textContent='⏳ Processing...';
+try{
+const response=await fetch('/api/voice/process',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({transcript:transcript,user_id:'web_user',country:'IN'})});
+const data=await response.json();
+if(data.success){
+currentResponse=data.voice_response;
+responseText.textContent=currentResponse;
+responseArea.style.display='block';
+statusText.textContent='✅ '+data.intent+' detected ('+Math.round(data.confidence*100)+'%)';
+speakText(currentResponse);
+}else{statusText.textContent=data.message}
+}catch(error){statusText.textContent='❌ Error: '+error.message}
+}
+
+function speakText(text){
+if('speechSynthesis' in window){
+window.speechSynthesis.cancel();
+const utterance=new SpeechSynthesisUtterance(text);
+utterance.lang='hi-IN';utterance.rate=1.0;utterance.pitch=1.0;utterance.volume=1.0;
+const voices=window.speechSynthesis.getVoices();
+const hindiVoice=voices.find(v=>v.lang.includes('hi')||v.lang.includes('Hindi'));
+if(hindiVoice){utterance.voice=hindiVoice}
+window.speechSynthesis.speak(utterance);
+}
+}
+
+speakBtn.addEventListener('click',()=>{if(currentResponse){speakText(currentResponse)}});
+
+function quickCommand(type){
+const commands={'train':'Train 12309 kahan hai','mandi':'Pyaj ka bhav kya hai','weather':'Delhi ka mausam kaisa hai','stock':'Reliance ka share price','cricket':'Live score batao','horoscope':'Aaj ka rashifal','news':'Aaj ki khabar sunao','chat':'Namaste Singh Ji'};
+const text=commands[type];statusText.textContent='📝 '+text;processVoiceInput(text);
+}
+
+async function analyzeImage(input){
+const file=input.files[0];if(!file)return;
+const uploadArea=document.getElementById('uploadArea');uploadArea.innerHTML='<p>🔍 Analyzing image...</p>';
+const reader=new FileReader();
+reader.onload=async(e)=>{
+const base64=e.target.result.split(',')[1];
+try{
+const response=await fetch('/api/vision/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({image:base64})});
+const data=await response.json();
+if(data.alert&&data.alert.priority!=='low'){
+alertText.textContent=data.alert.message;alertBox.style.display='block';
+if(navigator.vibrate&&data.alert.vibrate){navigator.vibrate(data.alert.vibration_pattern)}
+speakText(data.alert.message);uploadArea.innerHTML='<p style="color:#ff4444;">⚠️ Alert Generated!</p>';
+}else{uploadArea.innerHTML='<p style="color:#4CAF50;">✅ No threats detected</p>'}
+}catch(error){uploadArea.innerHTML='<p style="color:#ff4444;">❌ Error analyzing image</p>'}
+};
+reader.readAsDataURL(file);
+}
+
+if('serviceWorker' in navigator){navigator.serviceWorker.register('/service-worker.js').then(reg=>console.log('SW registered')).catch(err=>console.log('SW error',err))}
+if('Notification' in window){Notification.requestPermission()}
+window.speechSynthesis.onvoiceschanged=()=>{console.log('Voices loaded')};
+</script>
+</body>
+</html>
+"""
+
+
+# Error Handlers
+@app.errorhandler(404)
+def not_found(error):
+    return jsonify({'success': False, 'error': 'Not found'}), 404
+
+@app.errorhandler(500)
+def internal_error(error):
+    return jsonify({'success': False, 'error': 'Internal server error'}), 500
+
+
+# Main
+if __name__ == '__main__':
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=True)
