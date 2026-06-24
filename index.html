@@ -159,21 +159,43 @@ const FEATURES = {
   vision: {icon:'👁️', title:'Image Analysis', ph:'', url:'/api/vision', type:'upload'}
 };
 
-function openModal(key) {
-  const f = FEATURES[key]; if(!f) return;
-  const modal = document.getElementById('modal');
-  const content = document.getElementById('modal-content');
+<!-- Line 168 ke aaspaas -->
+<script>
+// ... existing code ...
 
-  if(f.type === 'upload') {
-    content.innerHTML = '<h2>'+f.icon+' '+f.title+'</h2><div class="upload-area" onclick="document.getElementById('upfile').click()">📤 Click to upload image</div><input type="file" id="upfile" accept="image/*" style="display:none" onchange="uploadImage()"><div class="feature-result" id="result">Result here...</div>';
-  } else if(f.auto) {
-    content.innerHTML = '<h2>'+f.icon+' '+f.title+'</h2><div class="feature-result" id="result">Loading...</div>';
-    setTimeout(() => executeFeature(key, ''), 300);
-  } else {
-    content.innerHTML = '<h2>'+f.icon+' '+f.title+'</h2><input class="feature-input" id="featInput" placeholder="'+f.ph+'" onkeypress="if(event.key==='Enter')executeFeature(''+key+'',this.value)"><button class="btn btn-primary" onclick="executeFeature(''+key+'',document.getElementById('featInput').value)" style="width:100%">Search</button><div class="feature-result" id="result">Result here...</div>';
-  }
-  modal.classList.add('active');
+function openModal(key) {
+    const f = FEATURES[key]; 
+    if(!f) return;
+    
+    const modal = document.getElementById('modal');
+    const content = document.getElementById('modal-content');
+
+    if(f.type === 'upload') {
+        // 🆕 FIXED: Double quotes use karo ya escape karo
+        const uploadText = key === 'plant' ? '📤 Click to upload plant photo' : '📤 Click to upload image';
+        
+        content.innerHTML = `
+            <h2>${f.icon} ${f.title}</h2>
+            <div class="upload-area" onclick="document.getElementById('upfile').click()">${uploadText}</div>
+            <input type="file" id="upfile" accept="image/*" style="display:none" onchange="${key === 'plant' ? 'uploadPlantImage()' : 'uploadImage()'}">
+            <div class="feature-result" id="result">Result here...</div>
+        `;
+    } else if(f.auto) {
+        content.innerHTML = `<h2>${f.icon} ${f.title}</h2><div class="feature-result" id="result">Loading...</div>`;
+        setTimeout(() => executeFeature(key, ''), 300);
+    } else {
+        content.innerHTML = `
+            <h2>${f.icon} ${f.title}</h2>
+            <input class="feature-input" id="featInput" placeholder="${f.ph}" onkeypress="if(event.key==='Enter')executeFeature('${key}',this.value)">
+            <button class="btn btn-primary" onclick="executeFeature('${key}',document.getElementById('featInput').value)" style="width:100%">Search</button>
+            <div class="feature-result" id="result">Result here...</div>
+        `;
+    }
+    modal.classList.add('active');
 }
+
+// ... rest of code ...
+</script>
 
 function closeModal() { document.getElementById('modal').classList.remove('active'); }
 
