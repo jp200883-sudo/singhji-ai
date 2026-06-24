@@ -170,11 +170,11 @@ async function sendMessage() {
     if(d.success) {
       addMsg(d.response, 'ai');
     } else {
-      throw new Error(d.error);
+      throw new Error(d.error || 'Unknown error');
     }
   } catch(e) {
     hideTyping();
-    addMsg('⚠️ Server busy. Try again!', 'error');
+    addMsg('⚠️ Error: ' + e.message, 'error');
   }
 }
 
@@ -243,7 +243,13 @@ async function executeFeature(key, query) {
     var d = await r.json();
 
     if(key === 'weather') {
-      res.innerHTML = d.error ? '❌ ' + d.error : '🌡️ ' + d.temperature + '°C | ' + d.description + '<br>💧 ' + d.humidity + '% | 💨 ' + d.wind_speed + ' km/h';
+      if(d.error) {
+        res.innerHTML = '❌ ' + d.error;
+      } else if(d.raw) {
+        res.innerHTML = '🌡️ ' + d.raw;
+      } else {
+        res.innerHTML = '🌡️ ' + (d.temperature || 'N/A') + '°C | ' + (d.description || 'N/A') + '<br>💧 ' + (d.humidity || 'N/A') + '% | 💨 ' + (d.wind_speed || 'N/A') + ' km/h';
+      }
     } else if(key === 'stock') {
       res.innerHTML = d.error ? '❌ ' + d.error : '<strong>' + d.symbol + '</strong> ₹' + d.current_price + '<br>' + (d.change >= 0 ? '🟢 ' : '🔴 ') + d.change + ' (' + d.change_percent + '%)';
     } else if(key === 'cricket') {
@@ -253,7 +259,7 @@ async function executeFeature(key, query) {
     } else if(key === 'train') {
       res.innerHTML = d.success ? '🚆 <strong>' + d.train_number + '</strong><br>' + (d.train_name || d.message) + '<br><a href="' + d.ntes_link + '" target="_blank">NTES Link</a>' : '❌ Error';
     } else if(key === 'mandi') {
-      res.innerHTML = JSON.stringify(d).substring(0, 500);
+      res.innerHTML = d.rates ? d.rates.map(function(r) { return '<div>' + r.market + ': ' + r.price + '</div>'; }).join('') : 'No data';
     } else if(key === 'news') {
       res.innerHTML = d.news ? d.news.slice(0, 5).map(function(n) { return '<div><a href="' + n.url + '" target="_blank">' + n.title + '</a></div>'; }).join('') : 'No news';
     }
