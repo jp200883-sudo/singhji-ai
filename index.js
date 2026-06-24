@@ -1,110 +1,176 @@
-// Full Auto Voice System
-const VOICE_CONFIG = {
-    lang: 'hi-IN',
-    rate: 1.0,
-    pitch: 1.0,
-    volume: 1.0
+/**
+ * Singh Ji AI Ultra v4.0 — Frontend API Connect
+ * KELA Mode: Zero phone load, full automation
+ */
+
+// 🔗 API BASE URL — Render pe deploy hua hai
+const API_BASE = "https://singhji-api.onrender.com";  // Tera Render URL
+// Local test ke liye: "http://localhost:5000"
+
+// ⚡ MODULE CONFIG — Kaunsa button kis module ko call karega
+const MODULE_MAP = {
+    'btn-chat':     { module: 'u1', action: 'chat' },
+    'btn-ad':       { module: 'u1', action: 'ad' },
+    'btn-search':   { module: 'u1', action: 'search' },
+    'btn-create':   { module: 'u1', action: 'create' },
+    'btn-imagine':  { module: 'u1', action: 'imagine' },
+    'btn-translate':{ module: 'u1', action: 'translate' },
+    'btn-weather':  { module: 'u1', action: 'weather' },
+    'btn-calc':     { module: 'u1', action: 'calc' },
+    'btn-gender':   { module: 'u2', action: 'detect' },
+    'btn-language': { module: 'u3', action: 'translate' },
+    'btn-telegram': { module: 'u4', action: 'send' },
+    'btn-ramayan':  { module: 'u5', action: 'speak' },
+    'btn-pwa':      { module: 'u6', action: 'install' },
+    'btn-madad':    { module: 'u8', action: 'help' },
+    'btn-haath':    { module: 'u9', action: 'support' },
 };
 
-// Speech Recognition
-function startListening() {
-    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SR) {
-        showToast('❌ Voice not supported in this browser', 'error');
-        return;
-    }
+// 🎯 DOM Ready
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('🧠 Singh Ji AI Frontend Loaded — KELA Mode ON');
     
-    const recognition = new SR();
-    recognition.lang = VOICE_CONFIG.lang;
-    recognition.continuous = false;
-    recognition.interimResults = false;
+    // Sab buttons ko event listener do
+    setupButtons();
     
-    recognition.start();
-    showToast('🎤 Listening... Speak now!', 'success');
+    // Health check karo
+    checkHealth();
     
-    recognition.onresult = async (event) => {
-        const transcript = event.results[0][0].transcript;
-        showToast('✅ Heard: ' + transcript, 'success');
-        
-        // Auto-process
-        await processAutoCommand(transcript);
-    };
-    
-    recognition.onerror = (event) => {
-        showToast('❌ Voice error: ' + event.error, 'error');
-    };
-    
-    recognition.onend = () => {
-        console.log('Voice recognition ended');
-    };
-}
+    // Service Worker register karo
+    registerSW();
+});
 
-// Auto-process command
-async function processAutoCommand(text) {
-    showTyping();
-    
-    try {
-        const response = await fetch(API_BASE_URL + '/api/ai-chat', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({
-                message: text,
-                user_id: getUserId()
-            })
-        });
+// 🔘 Button Setup
+function setupButtons() {
+    Object.keys(MODULE_MAP).forEach(btnId => {
+        const btn = document.getElementById(btnId);
+        if (!btn) return;
         
-        const data = await response.json();
-        hideTyping();
-        
-        if (data.success) {
-            // Display text
-            addMessage(data.response, 'ai');
+        btn.addEventListener('click', async () => {
+            const config = MODULE_MAP[btnId];
+            const input = getInputValue(btnId);
             
-            // Auto-speak result
-            speakResponse(data.response);
+            // Loading state
+            setLoading(btn, true);
+            showOutput('⏳ Soch raha hoon...', 'loading');
             
-            // Show auto-detected badge
-            if (data.auto_feature) {
-                showToast('🤖 Auto-detected: ' + data.intent + ' → ' + data.param, 'success');
+            try {
+                const result = await callAPI(config.module, config.action, input);
+                showOutput(result, 'success');
+            } catch (err) {
+                showOutput(`❌ Error: ${err.message}`, 'error');
+            } finally {
+                setLoading(btn, false);
             }
-        } else {
-            throw new Error(data.error);
-        }
+        });
+    });
+}
+
+// 📝 Input Value Lo
+function getInputValue(btnId) {
+    const inputField = document.getElementById('user-input');
+    if (inputField && inputField.value.trim()) {
+        return inputField.value.trim();
+    }
+    
+    const btn = document.getElementById(btnId);
+    return btn?.dataset.query || btn?.textContent || '';
+}
+
+// 📡 API Call
+async function callAPI(module, action, query) {
+    const url = `${API_BASE}/api/${module}/webhook`;
+    
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            action: action,
+            query: query,
+            timestamp: new Date().toISOString()
+        })
+    });
+    
+    if (!response.ok) {
+        throw new Error(`API Error: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    return data.result || data.message || JSON.stringify(data);
+}
+
+// 💓 Health Check
+async function checkHealth() {
+    try {
+        const res = await fetch(`${API_BASE}/api/health`);
+        const data = await res.json();
+        console.log('✅ API Health:', data.status);
+        showStatus('🟢 Online', 'online');
     } catch (e) {
-        hideTyping();
-        addMessage('❌ Error: ' + e.message, 'error');
-        speakResponse('Sorry, kuch problem ho gayi. Please try again.');
+        console.log('❌ API Offline:', e.message);
+        showStatus('🔴 Offline', 'offline');
     }
 }
 
-// Text-to-Speech with Hindi support
-function speakResponse(text) {
-    // Clean text for speech (remove emojis, URLs)
-    const cleanText = text
-        .replace(/[\u{1F300}-\u{1F9FF}]/gu, '')
-        .replace(/https?:\/\/\S+/g, 'link')
-        .replace(/📍|🌾|🚆|🌤️|📊|🏏|🔮|📰|🛡️|💡|🔗/g, '');
+// 🖥️ Output Dikhao
+function showOutput(text, type) {
+    const output = document.getElementById('output-box');
+    if (!output) return;
     
-    const utterance = new SpeechSynthesisUtterance(cleanText);
-    utterance.lang = VOICE_CONFIG.lang;
-    utterance.rate = VOICE_CONFIG.rate;
-    utterance.pitch = VOICE_CONFIG.pitch;
-    utterance.volume = VOICE_CONFIG.volume;
-    
-    // Voice selection (prefer Hindi voice)
-    const voices = window.speechSynthesis.getVoices();
-    const hindiVoice = voices.find(v => v.lang.includes('hi') || v.lang.includes('Hindi'));
-    if (hindiVoice) {
-        utterance.voice = hindiVoice;
-    }
-    
-    window.speechSynthesis.speak(utterance);
-    
-    // Visual feedback
-    showToast('🔊 Speaking...', 'success');
+    output.innerHTML = text;
+    output.className = `output-box ${type}`;
 }
 
-// Initialize voices
-window.speechSynthesis.onvoiceschanged = () => {
-    console.log('Voices loaded:', window.speechSynthesis.getVoices().length);
-};
+// 📊 Status Dikhao
+function showStatus(text, type) {
+    const status = document.getElementById('status-bar');
+    if (!status) return;
+    
+    status.textContent = text;
+    status.className = `status-bar ${type}`;
+}
+
+// ⏳ Loading State
+function setLoading(btn, isLoading) {
+    if (!btn) return;
+    
+    if (isLoading) {
+        btn.dataset.originalText = btn.textContent;
+        btn.textContent = '⏳...';
+        btn.disabled = true;
+    } else {
+        btn.textContent = btn.dataset.originalText || btn.textContent;
+        btn.disabled = false;
+    }
+}
+
+// 🌐 Language Toggle (Basic)
+function setLanguage(lang) {
+    document.documentElement.lang = lang;
+    localStorage.setItem('preferred-lang', lang);
+    console.log('🌐 Language set to:', lang);
+}
+
+// 🔍 Quick Search Shortcut
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && e.ctrlKey) {
+        const input = document.getElementById('user-input');
+        if (input && input.value.trim()) {
+            document.getElementById('btn-chat')?.click();
+        }
+    }
+});
+
+// 📱 Service Worker Register
+async function registerSW() {
+    if ('serviceWorker' in navigator) {
+        try {
+            const reg = await navigator.serviceWorker.register('/sw.js');
+            console.log('✅ SW Registered:', reg.scope);
+        } catch (err) {
+            console.log('❌ SW Failed:', err);
+        }
+    }
+}
