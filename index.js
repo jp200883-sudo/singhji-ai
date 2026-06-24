@@ -7,25 +7,35 @@
 const API_BASE = "https://singhji-api.onrender.com";  // Tera Render URL
 // Local test ke liye: "http://localhost:5000"
 
-// ⚡ MODULE CONFIG — Kaunsa button kis module ko call karega
-const MODULE_MAP = {
-    'btn-chat':     { module: 'u1', action: 'chat' },
-    'btn-ad':       { module: 'u1', action: 'ad' },
-    'btn-search':   { module: 'u1', action: 'search' },
-    'btn-create':   { module: 'u1', action: 'create' },
-    'btn-imagine':  { module: 'u1', action: 'imagine' },
-    'btn-translate':{ module: 'u1', action: 'translate' },
-    'btn-weather':  { module: 'u1', action: 'weather' },
-    'btn-calc':     { module: 'u1', action: 'calc' },
-    'btn-gender':   { module: 'u2', action: 'detect' },
-    'btn-language': { module: 'u3', action: 'translate' },
-    'btn-telegram': { module: 'u4', action: 'send' },
-    'btn-ramayan':  { module: 'u5', action: 'speak' },
-    'btn-pwa':      { module: 'u6', action: 'install' },
-    'btn-madad':    { module: 'u8', action: 'help' },
-    'btn-haath':    { module: 'u9', action: 'support' },
+/**
+ * Singh Ji AI Ultra v4.0 — Frontend API Connect
+ */
+
+// 🔗 API BASE URL
+const API_BASE = "https://singhji-api.onrender.com";
+
+// ⚡ MODULE CONFIG — FEATURES OBJECT YAHAN ADD KARO!
+const FEATURES = {
+    weather: {icon:'🌤️', title:'Weather', ph:'Enter city...', url:'/api/weather/', get:(q)=>q, method:'GET'},
+    stock: {icon:'📊', title:'Stocks', ph:'Enter symbol (RELIANCE)...', url:'/api/stock/', get:(q)=>q.toUpperCase(), method:'GET'},
+    cricket: {icon:'🏏', title:'Cricket', ph:'', url:'/api/cricket', get:()=>'', method:'GET', auto:true},
+    horoscope: {icon:'🔮', title:'Horoscope', ph:'Enter sign (leo, aries)...', url:'/api/horoscope/', get:(q)=>q.toLowerCase(), method:'GET'},
+    train: {icon:'🚆', title:'Train', ph:'Enter train number...', url:'/api/train/', get:(q)=>q, method:'GET'},
+    mandi: {icon:'🌾', title:'Mandi Rates', ph:'Enter commodity (wheat)...', url:'/api/mandi?commodity=', get:(q)=>q.toLowerCase()+'&limit=5', method:'GET'},
+    news: {icon:'📰', title:'News', ph:'Enter topic...', url:'/api/news?query=', get:(q)=>q, method:'GET'},
+    vision: {icon:'👁️', title:'Image Analysis', ph:'', url:'/api/vision', type:'upload'},
+    plant: {icon:'🌱', title:'Plant ID', ph:'', url:'/api/u11/webhook', type:'upload', action:'identify'}  
 };
 
+// 🎯 DOM Ready
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('🧠 Singh Ji AI Frontend Loaded');
+    setupButtons();
+    checkHealth();
+    registerSW();
+});
+
+// ... baaki functions ...
 // 🎯 DOM Ready
 document.addEventListener('DOMContentLoaded', () => {
     console.log('🧠 Singh Ji AI Frontend Loaded — KELA Mode ON');
