@@ -1,235 +1,554 @@
 <!DOCTYPE html>
-<html>
+<html lang="hi">
 <head>
-<style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body {
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: 'Segoe UI', sans-serif;
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💰 Singh Ji AI Pricing — भारत का अपना AI</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', 'Noto Sans Devanagari', sans-serif;
+            background: linear-gradient(135deg, #0a0a1a 0%, #1a1a3e 50%, #0f0f2e 100%);
+            min-height: 100vh;
+            color: #fff;
+            overflow-x: hidden;
+        }
 
-/* 🎨 LOGO CONTAINER */
-.logo-container {
-    text-align: center;
-    position: relative;
-}
+        /* 🎆 BACKGROUND PARTICLES */
+        .particles {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .particle {
+            position: absolute;
+            width: 4px; height: 4px;
+            background: rgba(233, 69, 96, 0.5);
+            border-radius: 50%;
+            animation: particleFloat 8s infinite;
+        }
+        @keyframes particleFloat {
+            0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(720deg); opacity: 0; }
+        }
 
-/* ❤️ BEATING HEART */
-.heart-wrapper {
-    position: relative;
-    display: inline-block;
-    animation: float 3s ease-in-out infinite;
-}
+        /* 🏠 HEADER */
+        .header {
+            text-align: center;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 1;
+        }
 
-.heart {
-    width: 120px;
-    height: 108px;
-    position: relative;
-    animation: heartbeat 1.2s ease-in-out infinite;
-    filter: drop-shadow(0 0 30px rgba(233, 69, 96, 0.6));
-}
+        /* ❤️ HEART LOGO */
+        .heart-wrapper {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 20px;
+            animation: float 3s ease-in-out infinite;
+        }
+        .heart {
+            width: 80px; height: 72px;
+            position: relative;
+            animation: heartbeat 1.2s ease-in-out infinite;
+            filter: drop-shadow(0 0 20px rgba(233, 69, 96, 0.6));
+        }
+        .heart::before, .heart::after {
+            content: '';
+            width: 40px; height: 64px;
+            position: absolute;
+            left: 40px; top: 0;
+            background: linear-gradient(135deg, #e94560, #ff6b6b);
+            border-radius: 40px 40px 0 0;
+            transform: rotate(-45deg);
+            transform-origin: 0 100%;
+        }
+        .heart::after { left: 0; transform: rotate(45deg); transform-origin: 100% 100%; }
+        .eye-left, .eye-right {
+            position: absolute;
+            width: 10px; height: 12px;
+            background: #1a1a2e;
+            border-radius: 50%;
+            top: 22px;
+            z-index: 10;
+            animation: blink 3s infinite;
+        }
+        .eye-left { left: 26px; }
+        .eye-right { right: 26px; }
+        .eye-left::after, .eye-right::after {
+            content: '';
+            position: absolute;
+            width: 4px; height: 5px;
+            background: #fff;
+            border-radius: 50%;
+            top: 2px; right: 2px;
+        }
+        .smile {
+            position: absolute;
+            width: 20px; height: 10px;
+            border-bottom: 2px solid #1a1a2e;
+            border-radius: 0 0 20px 20px;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+        }
+        .sparkle {
+            position: absolute;
+            width: 15px; height: 15px;
+            z-index: 20;
+        }
+        .sparkle::before, .sparkle::after {
+            content: '';
+            position: absolute;
+            background: linear-gradient(45deg, #ffd700, #ffed4a);
+            border-radius: 50%;
+        }
+        .sparkle::before { width: 15px; height: 4px; top: 5px; left: 0; }
+        .sparkle::after { width: 4px; height: 15px; top: 0; left: 5px; }
+        .sparkle-1 { top: -10px; left: -8px; animation: sparkleFloat 2s infinite; }
+        .sparkle-2 { top: -8px; right: -10px; animation: sparkleFloat 2.5s infinite 0.5s; }
+        .sparkle-3 { bottom: -5px; left: -10px; animation: sparkleFloat 2.2s infinite 1s; }
+        .sparkle-4 { bottom: -8px; right: -8px; animation: sparkleFloat 2.8s infinite 1.5s; }
 
-.heart::before,
-.heart::after {
-    content: '';
-    width: 60px;
-    height: 96px;
-    position: absolute;
-    left: 60px;
-    top: 0;
-    background: linear-gradient(135deg, #e94560, #ff6b6b, #ff4757);
-    border-radius: 60px 60px 0 0;
-    transform: rotate(-45deg);
-    transform-origin: 0 100%;
-    box-shadow: inset -5px -5px 20px rgba(255,255,255,0.3);
-}
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            14% { transform: scale(1.1); }
+            28% { transform: scale(1); }
+            42% { transform: scale(1.1); }
+            70% { transform: scale(1); }
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        @keyframes blink {
+            0%, 90%, 100% { transform: scaleY(1); }
+            95% { transform: scaleY(0.1); }
+        }
+        @keyframes sparkleFloat {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.3); opacity: 0.7; }
+        }
 
-.heart::after {
-    left: 0;
-    transform: rotate(45deg);
-    transform-origin: 100% 100%;
-}
+        .header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(90deg, #e94560, #ff6b6b, #ffd700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 40px rgba(233, 69, 96, 0.3);
+        }
+        .header .tagline {
+            color: #888;
+            margin-top: 10px;
+            font-size: 1.1rem;
+        }
 
-/* 👀 EYES */
-.eye-left, .eye-right {
-    position: absolute;
-    width: 14px;
-    height: 18px;
-    background: #1a1a2e;
-    border-radius: 50%;
-    top: 35px;
-    z-index: 10;
-    animation: blink 3s infinite;
-}
+        /* 🎁 BANNER */
+        .banner {
+            text-align: center;
+            margin: 20px auto;
+            max-width: 600px;
+            position: relative;
+            z-index: 1;
+        }
+        .banner-india {
+            background: linear-gradient(90deg, #ff9933, #fff, #138808);
+            color: #000;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            display: inline-block;
+            animation: bannerPulse 2s infinite;
+            box-shadow: 0 5px 20px rgba(255, 153, 51, 0.4);
+        }
+        .banner-global {
+            background: linear-gradient(90deg, #e94560, #ff6b6b);
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 20px;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            display: inline-block;
+        }
+        @keyframes bannerPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
 
-.eye-left { left: 38px; }
-.eye-right { right: 38px; }
+        /* 💳 PRICING CARDS */
+        .pricing-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            padding: 40px 20px;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 1;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
 
-.eye-left::after, .eye-right::after {
-    content: '';
-    position: absolute;
-    width: 6px;
-    height: 8px;
-    background: #fff;
-    border-radius: 50%;
-    top: 3px;
-    right: 3px;
-}
+        .pricing-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 30px 25px;
+            width: 260px;
+            text-align: center;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(233, 69, 96, 0.5);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        .pricing-card.popular {
+            border-color: #e94560;
+            box-shadow: 0 0 30px rgba(233, 69, 96, 0.3);
+            transform: scale(1.05);
+        }
+        .pricing-card.popular:hover {
+            transform: scale(1.05) translateY(-10px);
+        }
+        .pricing-card.popular::before {
+            content: 'MOST POPULAR';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            background: linear-gradient(90deg, #e94560, #ff6b6b);
+            color: #fff;
+            font-size: 0.75rem;
+            padding: 5px;
+            font-weight: bold;
+        }
+        .pricing-card.india-free::after {
+            content: '🇮🇳 6 MONTHS FREE';
+            position: absolute;
+            top: 30px; right: -30px;
+            background: linear-gradient(90deg, #ff9933, #138808);
+            color: #fff;
+            font-size: 0.7rem;
+            padding: 5px 35px;
+            transform: rotate(45deg);
+            font-weight: bold;
+        }
 
-/* 😊 SMILE */
-.smile {
-    position: absolute;
-    width: 30px;
-    height: 15px;
-    border-bottom: 3px solid #1a1a2e;
-    border-radius: 0 0 30px 30px;
-    bottom: 30px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 10;
-}
+        .plan-icon { font-size: 2.5rem; margin-bottom: 10px; }
+        .plan-name { font-size: 1.3rem; font-weight: bold; margin-bottom: 5px; }
+        .plan-price {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #e94560;
+            margin: 15px 0;
+        }
+        .plan-price .currency { font-size: 1.2rem; vertical-align: top; }
+        .plan-price .period { font-size: 0.9rem; color: #888; }
+        .plan-original {
+            text-decoration: line-through;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        .plan-save {
+            background: rgba(0, 210, 106, 0.2);
+            color: #00d26a;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            margin: 5px 0 15px;
+            display: inline-block;
+        }
 
-/* ✨ 4-POINT SPARKLE */
-.sparkle {
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    z-index: 20;
-}
+        .features-list {
+            text-align: left;
+            list-style: none;
+            margin: 20px 0;
+        }
+        .features-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .features-list li::before {
+            content: '✓';
+            color: #00d26a;
+            font-weight: bold;
+            min-width: 20px;
+        }
+        .features-list li.disabled {
+            color: #666;
+        }
+        .features-list li.disabled::before {
+            content: '✗';
+            color: #ff6b6b;
+        }
 
-.sparkle::before,
-.sparkle::after {
-    content: '';
-    position: absolute;
-    background: linear-gradient(45deg, #ffd700, #ffed4a);
-    border-radius: 50%;
-}
+        .cta-button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 15px;
+        }
+        .cta-button.free {
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .cta-button.paid {
+            background: linear-gradient(135deg, #e94560, #ff6b6b);
+            color: #fff;
+            box-shadow: 0 5px 20px rgba(233, 69, 96, 0.4);
+        }
+        .cta-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(233, 69, 96, 0.6);
+        }
 
-.sparkle::before {
-    width: 20px;
-    height: 6px;
-    top: 7px;
-    left: 0;
-    animation: sparkleRotate 2s linear infinite;
-}
+        /* 📊 STATS */
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            padding: 40px 20px;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 1;
+        }
+        .stat-item {
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #e94560;
+            text-shadow: 0 0 20px rgba(233, 69, 96, 0.5);
+        }
+        .stat-label {
+            color: #888;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
 
-.sparkle::after {
-    width: 6px;
-    height: 20px;
-    top: 0;
-    left: 7px;
-    animation: sparkleRotate 2s linear infinite reverse;
-}
+        /* 🦶 FOOTER */
+        .footer {
+            text-align: center;
+            padding: 30px;
+            color: #666;
+            font-size: 0.9rem;
+            position: relative;
+            z-index: 1;
+        }
+        .footer .highlight { color: #e94560; }
 
-.sparkle-1 { top: -15px; left: -10px; animation: sparkleFloat 2s ease-in-out infinite; }
-.sparkle-2 { top: -10px; right: -15px; animation: sparkleFloat 2.5s ease-in-out infinite 0.5s; }
-.sparkle-3 { bottom: -5px; left: -15px; animation: sparkleFloat 2.2s ease-in-out infinite 1s; }
-.sparkle-4 { bottom: -10px; right: -10px; animation: sparkleFloat 2.8s ease-in-out infinite 1.5s; }
+        @media (max-width: 600px) {
+            .pricing-card { width: 100%; max-width: 350px; }
+            .pricing-card.popular { transform: scale(1); }
+            .pricing-card.popular:hover { transform: scale(1) translateY(-10px); }
+            .header h1 { font-size: 1.8rem; }
+            .stat-number { font-size: 2rem; }
+        }
+    </style>
+<base target="_blank">
+</head>
+<body>
+    <!-- Particles -->
+    <div class="particles" id="particles"></div>
 
-/* 🌟 GLOW RING */
-.glow-ring {
-    position: absolute;
-    width: 160px;
-    height: 160px;
-    border: 2px solid rgba(233, 69, 96, 0.3);
-    border-radius: 50%;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    animation: glowPulse 2s ease-in-out infinite;
-}
-
-.glow-ring::before {
-    content: '';
-    position: absolute;
-    width: 180px;
-    height: 180px;
-    border: 1px solid rgba(233, 69, 96, 0.15);
-    border-radius: 50%;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    animation: glowPulse 2s ease-in-out infinite 0.5s;
-}
-
-/* 📝 TEXT */
-.brand-text {
-    margin-top: 30px;
-    font-size: 2rem;
-    font-weight: bold;
-    background: linear-gradient(90deg, #e94560, #ff6b6b, #ffd700);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    text-shadow: 0 0 40px rgba(233, 69, 96, 0.5);
-    animation: textGlow 2s ease-in-out infinite;
-}
-
-.tagline {
-    margin-top: 10px;
-    color: #888;
-    font-size: 1rem;
-    letter-spacing: 2px;
-}
-
-/* 🔑 ANIMATIONS */
-@keyframes heartbeat {
-    0% { transform: scale(1); }
-    14% { transform: scale(1.1); }
-    28% { transform: scale(1); }
-    42% { transform: scale(1.1); }
-    70% { transform: scale(1); }
-}
-
-@keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-}
-
-@keyframes blink {
-    0%, 90%, 100% { transform: scaleY(1); }
-    95% { transform: scaleY(0.1); }
-}
-
-@keyframes sparkleRotate {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-@keyframes sparkleFloat {
-    0%, 100% { transform: scale(1) rotate(0deg); opacity: 1; }
-    50% { transform: scale(1.3) rotate(180deg); opacity: 0.7; }
-}
-
-@keyframes glowPulse {
-    0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
-    50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.8; }
-}
-
-@keyframes textGlow {
-    0%, 100% { filter: brightness(1); }
-    50% { filter: brightness(1.3); }
-}
-
-<div class="header">
-    <!-- ❤️ HEART LOGO -->
-    <div class="heart-wrapper">
-        <div class="glow-ring"></div>
-        <div class="heart">
-            <div class="eye-left"></div>
-            <div class="eye-right"></div>
-            <div class="smile"></div>
+    <!-- Header -->
+    <div class="header">
+        <div class="heart-wrapper">
+            <div class="heart">
+                <div class="eye-left"></div>
+                <div class="eye-right"></div>
+                <div class="smile"></div>
+            </div>
+            <div class="sparkle sparkle-1"></div>
+            <div class="sparkle sparkle-2"></div>
+            <div class="sparkle sparkle-3"></div>
+            <div class="sparkle sparkle-4"></div>
         </div>
-        <div class="sparkle sparkle-1"></div>
-        <div class="sparkle sparkle-2"></div>
-        <div class="sparkle sparkle-3"></div>
-        <div class="sparkle sparkle-4"></div>
+        <h1>Singh Ji AI</h1>
+        <p class="tagline">ChatGPT से बेहतर — भारत का अपना AI! 🇮🇳</p>
     </div>
-    
-    <h1>Singh Ji AI</h1>
-    <p>भारत का अपना AI ❤️</p>
-</div>
+
+    <!-- Banner -->
+    <div class="banner">
+        <div class="banner-india">🇮🇳 India Special: Ultra Max — 6 MONTHS FREE!</div>
+        <div class="banner-global">🌍 Global: 3 Months Free on All Plans!</div>
+    </div>
+
+    <!-- Pricing Cards -->
+    <div class="pricing-container">
+        <!-- Free -->
+        <div class="pricing-card">
+            <div class="plan-icon">🆓</div>
+            <div class="plan-name">Free</div>
+            <div class="plan-price">
+                <span class="currency">₹</span>0<span class="period">/month</span>
+            </div>
+            <ul class="features-list">
+                <li>Basic Chat</li>
+                <li>Hindi + English</li>
+                <li>AI Image (5/day)</li>
+                <li class="disabled">Voice Chat</li>
+                <li class="disabled">Image Analysis</li>
+                <li class="disabled">Code Generation</li>
+                <li class="disabled">Live Crypto + Stocks</li>
+                <li class="disabled">Priority Support</li>
+                <li class="disabled">Guard Agent (CCTV)</li>
+                <li class="disabled">API Access</li>
+            </ul>
+            <button class="cta-button free">Get Started</button>
+        </div>
+
+        <!-- Basic -->
+        <div class="pricing-card">
+            <div class="plan-icon">⭐</div>
+            <div class="plan-name">Basic</div>
+            <div class="plan-price">
+                <span class="currency">₹</span>49<span class="period">/month</span>
+            </div>
+            <div class="plan-original">₹588 ₹499/year</div>
+            <div class="plan-save">Save 15%</div>
+            <ul class="features-list">
+                <li>Basic Chat</li>
+                <li>Hindi + English</li>
+                <li>AI Image (20/day)</li>
+                <li>Voice Chat</li>
+                <li>Image Analysis (10/day)</li>
+                <li class="disabled">Code Generation</li>
+                <li class="disabled">Live Crypto + Stocks</li>
+                <li class="disabled">Priority Support</li>
+                <li class="disabled">Guard Agent (CCTV)</li>
+                <li class="disabled">API Access</li>
+            </ul>
+            <button class="cta-button paid">Get Basic</button>
+        </div>
+
+        <!-- Pro -->
+        <div class="pricing-card popular">
+            <div class="plan-icon">⚡</div>
+            <div class="plan-name">Pro</div>
+            <div class="plan-price">
+                <span class="currency">₹</span>99<span class="period">/month</span>
+            </div>
+            <div class="plan-original">₹1,188 ₹999/year</div>
+            <div class="plan-save">Save 16%</div>
+            <ul class="features-list">
+                <li>Basic Chat</li>
+                <li>Hindi + English</li>
+                <li>AI Image (Unlimited)</li>
+                <li>Voice Chat</li>
+                <li>Image Analysis (Unlimited)</li>
+                <li>Code Generation</li>
+                <li>Live Crypto + Stocks</li>
+                <li class="disabled">Priority Support</li>
+                <li class="disabled">Guard Agent (CCTV)</li>
+                <li class="disabled">API Access</li>
+            </ul>
+            <button class="cta-button paid">Get Pro</button>
+        </div>
+
+        <!-- Ultra -->
+        <div class="pricing-card">
+            <div class="plan-icon">🚀</div>
+            <div class="plan-name">Ultra</div>
+            <div class="plan-price">
+                <span class="currency">₹</span>199<span class="period">/month</span>
+            </div>
+            <div class="plan-original">₹2,388 ₹1,999/year</div>
+            <div class="plan-save">Save 16%</div>
+            <ul class="features-list">
+                <li>Basic Chat</li>
+                <li>Hindi + English</li>
+                <li>AI Image (Unlimited)</li>
+                <li>Voice Chat</li>
+                <li>Image Analysis (Unlimited)</li>
+                <li>Code Generation</li>
+                <li>Live Crypto + Stocks</li>
+                <li>Priority Support</li>
+                <li class="disabled">Guard Agent (CCTV)</li>
+                <li class="disabled">API Access</li>
+            </ul>
+            <button class="cta-button paid">Get Ultra</button>
+        </div>
+
+        <!-- Ultra Max -->
+        <div class="pricing-card india-free">
+            <div class="plan-icon">👑</div>
+            <div class="plan-name">Ultra Max</div>
+            <div class="plan-price">
+                <span class="currency">₹</span>399<span class="period">/month</span>
+            </div>
+            <div class="plan-original">₹4,788 ₹3,999/year</div>
+            <div class="plan-save">Save 16%</div>
+            <ul class="features-list">
+                <li>Basic Chat</li>
+                <li>Hindi + English + 24 Languages</li>
+                <li>AI Image (Unlimited)</li>
+                <li>Voice Chat</li>
+                <li>Image Analysis (Unlimited)</li>
+                <li>Code Generation</li>
+                <li>Live Crypto + Stocks</li>
+                <li>Priority Support</li>
+                <li>Guard Agent (CCTV)</li>
+                <li>API Access</li>
+            </ul>
+            <button class="cta-button paid">Get Ultra Max</button>
+        </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats">
+        <div class="stat-item">
+            <div class="stat-number">50K+</div>
+            <div class="stat-label">Users</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">2M+</div>
+            <div class="stat-label">Messages</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">4.9★</div>
+            <div class="stat-label">Rating</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">24/7</div>
+            <div class="stat-label">Support</div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>🦁 <span class="highlight">Singh Ji AI Ultra v4.0</span> | KELA Mode</p>
+        <p>"अकेला सही रास्ते पे" ❤️</p>
+    </div>
+
+    <script>
+        // Generate particles
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 30; i++) {
+            const p = document.createElement('div');
+            p.className = 'particle';
+            p.style.left = Math.random() * 100 + '%';
+            p.style.animationDelay = Math.random() * 8 + 's';
+            p.style.animationDuration = (5 + Math.random() * 5) + 's';
+            particlesContainer.appendChild(p);
+        }
+    </script>
+</body>
+</html>
