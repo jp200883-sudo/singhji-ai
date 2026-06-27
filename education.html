@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📚 Singh Ji Education Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root { --gold:#FFD700; --dark-gold:#B8860B; --royal:#1a237e; --deep:#0d1642; --success:#00c853; --glass:rgba(255,255,255,0.08); }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Poppins',sans-serif; background:linear-gradient(135deg,#0d1642,#1a237e,#0d1642); color:#fff; min-height:100vh; }
+        .header { background:linear-gradient(90deg,var(--deep),var(--royal)); padding:15px 25px; display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid var(--gold); box-shadow:0 4px 30px rgba(0,0,0,0.4); }
+        .logo { display:flex; align-items:center; gap:12px; }
+        .logo-icon { width:50px; height:50px; background:linear-gradient(135deg,var(--gold),var(--dark-gold)); border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:24px; box-shadow:0 0 20px rgba(255,215,0,0.4); animation:pulse 2s infinite; }
+        @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.05)} }
+        .logo-text h1 { font-size:20px; font-weight:900; color:var(--gold); }
+        .logo-text p { font-size:11px; color:rgba(255,255,255,0.7); }
+        .btn { padding:10px 20px; border-radius:25px; border:none; font-family:'Poppins'; font-weight:600; cursor:pointer; transition:all 0.3s; display:flex; align-items:center; gap:8px; font-size:13px; }
+        .btn-gold { background:linear-gradient(135deg,var(--gold),var(--dark-gold)); color:var(--deep); }
+        .btn-outline { background:var(--glass); border:1px solid rgba(255,255,255,0.15); color:#fff; }
+        .container { max-width:1400px; margin:0 auto; padding:30px 25px; }
+        .hero-edu { text-align:center; padding:40px 25px 30px; }
+        .hero-edu h2 { font-size:32px; font-weight:900; margin-bottom:10px; }
+        .hero-edu h2 span { color:var(--gold); }
+        .hero-edu p { font-size:15px; color:rgba(255,255,255,0.7); max-width:600px; margin:0 auto; }
+        .search-bar { max-width:600px; margin:25px auto; display:flex; gap:10px; }
+        .search-input { flex:1; background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.15); border-radius:15px; padding:14px 22px; color:#fff; font-family:'Poppins'; font-size:15px; outline:none; }
+        .search-input:focus { border-color:var(--gold); box-shadow:0 0 20px rgba(255,215,0,0.2); }
+        .search-input::placeholder { color:rgba(255,255,255,0.4); }
+        .categories { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px; margin-bottom:30px; }
+        .cat-card { background:var(--glass); border:1px solid rgba(255,255,255,0.15); border-radius:18px; padding:20px; text-align:center; cursor:pointer; transition:all 0.3s; }
+        .cat-card:hover { transform:translateY(-5px); border-color:var(--gold); box-shadow:0 15px 40px rgba(255,215,0,0.1); }
+        .cat-card i { font-size:28px; color:var(--gold); margin-bottom:10px; }
+        .cat-card h4 { font-size:14px; }
+        .section-title { font-size:20px; font-weight:700; margin-bottom:20px; display:flex; align-items:center; gap:10px; }
+        .section-title i { color:var(--gold); }
+        .course-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:18px; margin-bottom:35px; }
+        .course-card { background:var(--glass); border:1px solid rgba(255,255,255,0.15); border-radius:20px; overflow:hidden; transition:all 0.3s; cursor:pointer; }
+        .course-card:hover { transform:translateY(-5px); border-color:var(--gold); box-shadow:0 15px 40px rgba(255,215,0,0.1); }
+        .course-img { height:160px; background:linear-gradient(135deg,#667eea,#764ba2); display:flex; align-items:center; justify-content:center; font-size:48px; }
+        .course-body { padding:20px; }
+        .course-tag { display:inline-block; background:rgba(255,215,0,0.15); color:var(--gold); padding:4px 12px; border-radius:10px; font-size:11px; font-weight:600; margin-bottom:10px; }
+        .course-body h3 { font-size:17px; margin-bottom:8px; }
+        .course-body p { font-size:13px; color:rgba(255,255,255,0.6); margin-bottom:15px; }
+        .course-meta { display:flex; justify-content:space-between; align-items:center; font-size:12px; color:rgba(255,255,255,0.5); }
+        .course-price { font-size:18px; font-weight:700; color:var(--gold); }
+        .exam-section { background:var(--glass); border:1px solid rgba(255,255,255,0.15); border-radius:20px; padding:25px; margin-bottom:30px; }
+        .exam-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px; }
+        .exam-card { background:rgba(0,0,0,0.2); border-radius:14px; padding:18px; text-align:center; cursor:pointer; transition:all 0.3s; border:1px solid transparent; }
+        .exam-card:hover { border-color:var(--gold); transform:translateY(-3px); }
+        .exam-card i { font-size:28px; color:var(--gold); margin-bottom:10px; }
+        .exam-card h4 { font-size:14px; margin-bottom:5px; }
+        .exam-card p { font-size:11px; color:rgba(255,255,255,0.5); }
+        .tutor-section { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:18px; margin-bottom:30px; }
+        .tutor-card { background:var(--glass); border:1px solid rgba(255,255,255,0.15); border-radius:20px; padding:25px; text-align:center; transition:all 0.3s; }
+        .tutor-card:hover { border-color:var(--gold); }
+        .tutor-avatar { width:70px; height:70px; border-radius:50%; background:linear-gradient(135deg,var(--gold),var(--dark-gold)); display:flex; align-items:center; justify-content:center; font-size:30px; margin:0 auto 15px; }
+        .tutor-card h4 { font-size:16px; margin-bottom:5px; }
+        .tutor-card .subject { font-size:12px; color:var(--gold); margin-bottom:10px; }
+        .tutor-card p { font-size:12px; color:rgba(255,255,255,0.6); }
+        .stars { color:var(--gold); margin:8px 0; }
+        .footer { text-align:center; padding:30px; border-top:1px solid rgba(255,255,255,0.1); color:rgba(255,255,255,0.4); font-size:12px; }
+        @media(max-width:600px){ .hero-edu h2{font-size:24px} }
+    </style>
+<base target="_blank">
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <div class="logo-icon">📚</div>
+            <div class="logo-text">
+                <h1>Education Hub</h1>
+                <p>Singh Ji AI Ultra v5.0</p>
+            </div>
+        </div>
+        <div class="header-actions">
+            <button class="btn btn-outline" onclick="window.location.href='index.html'">
+                <i class="fas fa-home"></i> Home
+            </button>
+            <button class="btn btn-gold" onclick="window.location.href='admin.html'">
+                <i class="fas fa-shield-halved"></i> Admin
+            </button>
+        </div>
+    </header>
+
+    <section class="hero-edu">
+        <h2>Learn <span>Anything.</span> Achieve <span>Everything.</span></h2>
+        <p>🎓 AI-powered courses, exam prep, live tutoring & career guidance — all in 26 languages.</p>
+        <div class="search-bar">
+            <input type="text" class="search-input" placeholder="🔍 Search courses, exams, tutors...">
+            <button class="btn btn-gold"><i class="fas fa-search"></i></button>
+        </div>
+    </section>
+
+    <div class="container">
+        <!-- Categories -->
+        <div class="categories">
+            <div class="cat-card"><i class="fas fa-laptop-code"></i><h4>Programming</h4></div>
+            <div class="cat-card"><i class="fas fa-flask"></i><h4>Science</h4></div>
+            <div class="cat-card"><i class="fas fa-calculator"></i><h4>Mathematics</h4></div>
+            <div class="cat-card"><i class="fas fa-book"></i><h4>Languages</h4></div>
+            <div class="cat-card"><i class="fas fa-palette"></i><h4>Arts & Design</h4></div>
+            <div class="cat-card"><i class="fas fa-briefcase"></i><h4>Business</h4></div>
+            <div class="cat-card"><i class="fas fa-heartbeat"></i><h4>Medical</h4></div>
+            <div class="cat-card"><i class="fas fa-gavel"></i><h4>Law</h4></div>
+        </div>
+
+        <!-- Featured Courses -->
+        <h2 class="section-title"><i class="fas fa-star"></i> Featured AI Courses</h2>
+        <div class="course-grid">
+            <div class="course-card">
+                <div class="course-img">🤖</div>
+                <div class="course-body">
+                    <span class="course-tag">BESTSELLER</span>
+                    <h3>Complete AI & Machine Learning</h3>
+                    <p>Master Python, TensorFlow, Neural Networks & real-world AI projects from scratch.</p>
+                    <div class="course-meta">
+                        <span>⏱ 48 hours • 👥 12k students</span>
+                        <span class="course-price">₹499</span>
+                    </div>
+                </div>
+            </div>
+            <div class="course-card">
+                <div class="course-img" style="background:linear-gradient(135deg,#f093fb,#f5576c)">💻</div>
+                <div class="course-body">
+                    <span class="course-tag">NEW</span>
+                    <h3>Full Stack Web Development</h3>
+                    <p>React, Node.js, MongoDB, AWS — build production-ready apps like Singh Ji Ultra!</p>
+                    <div class="course-meta">
+                        <span>⏱ 60 hours • 👥 8k students</span>
+                        <span class="course-price">₹599</span>
+                    </div>
+                </div>
+            </div>
+            <div class="course-card">
+                <div class="course-img" style="background:linear-gradient(135deg,#4facfe,#00f2fe)">📊</div>
+                <div class="course-body">
+                    <span class="course-tag">HOT</span>
+                    <h3>Data Science & Analytics</h3>
+                    <p>Pandas, NumPy, SQL, Tableau — become a data wizard with real datasets.</p>
+                    <div class="course-meta">
+                        <span>⏱ 40 hours • 👥 15k students</span>
+                        <span class="course-price">₹449</span>
+                    </div>
+                </div>
+            </div>
+            <div class="course-card">
+                <div class="course-img" style="background:linear-gradient(135deg,#43e97b,#38f9d7)">🎨</div>
+                <div class="course-body">
+                    <span class="course-tag">POPULAR</span>
+                    <h3>UI/UX Design Masterclass</h3>
+                    <p>Figma, Adobe XD, design systems — create stunning interfaces like this app!</p>
+                    <div class="course-meta">
+                        <span>⏱ 32 hours • 👥 6k students</span>
+                        <span class="course-price">₹399</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Exam Prep -->
+        <div class="exam-section">
+            <h2 class="section-title"><i class="fas fa-graduation-cap"></i> Exam Preparation</h2>
+            <div class="exam-grid">
+                <div class="exam-card"><i class="fas fa-university"></i><h4>UPSC/IAS</h4><p>Civil Services Preparation</p></div>
+                <div class="exam-card"><i class="fas fa-laptop-code"></i><h4>JEE/NEET</h4><p>Engineering & Medical</p></div>
+                <div class="exam-card"><i class="fas fa-briefcase"></i><h4>CAT/MBA</h4><p>Management Entrance</p></div>
+                <div class="exam-card"><i class="fas fa-globe"></i><h4>IELTS/TOEFL</h4><p>English Proficiency</p></div>
+                <div class="exam-card"><i class="fas fa-shield-alt"></i><h4>SSC/Bank PO</h4><p>Government Jobs</p></div>
+                <div class="exam-card"><i class="fas fa-code"></i><h4>GATE</h4><p>PG Engineering</p></div>
+            </div>
+        </div>
+
+        <!-- Live Tutors -->
+        <h2 class="section-title"><i class="fas fa-chalkboard-teacher"></i> AI Live Tutors</h2>
+        <div class="tutor-section">
+            <div class="tutor-card">
+                <div class="tutor-avatar">👨‍🏫</div>
+                <h4>AI Math Tutor</h4>
+                <div class="subject">Mathematics</div>
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <p>24/7 available • Algebra to Calculus • Interactive solving</p>
+                <button class="btn btn-gold" style="margin-top:12px; width:100%; justify-content:center;">Start Session</button>
+            </div>
+            <div class="tutor-card">
+                <div class="tutor-avatar">👩‍🔬</div>
+                <h4>AI Science Tutor</h4>
+                <div class="subject">Physics, Chemistry, Biology</div>
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <p>Concept explanations • Lab simulations • Doubt clearing</p>
+                <button class="btn btn-gold" style="margin-top:12px; width:100%; justify-content:center;">Start Session</button>
+            </div>
+            <div class="tutor-card">
+                <div class="tutor-avatar">👨‍💻</div>
+                <h4>AI Coding Tutor</h4>
+                <div class="subject">Programming</div>
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <p>Python, JS, Java • Code review • Project help</p>
+                <button class="btn btn-gold" style="margin-top:12px; width:100%; justify-content:center;">Start Session</button>
+            </div>
+            <div class="tutor-card">
+                <div class="tutor-avatar">👩‍💼</div>
+                <h4>AI Career Coach</h4>
+                <div class="subject">Career Guidance</div>
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <p>Resume building • Interview prep • Skill roadmap</p>
+                <button class="btn btn-gold" style="margin-top:12px; width:100%; justify-content:center;">Start Session</button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>🍌 Singh Ji AI Ultra v5.0 — Education Hub</p>
+        <p style="margin-top:5px;">"केला मोड ON — केला नहीं होता भाई अकेला!" 🦁</p>
+        <p style="margin-top:5px; font-size:10px;">Phase 5 • 26 Languages • AI-Powered Learning</p>
+    </footer>
+</body>
+</html>
