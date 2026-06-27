@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌍 Singh Ji Global Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root { --gold:#FFD700; --dark-gold:#B8860B; --royal:#1a237e; --deep:#0d1642; --success:#00c853; --glass:rgba(255,255,255,0.08); }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Poppins',sans-serif; background:linear-gradient(135deg,#0d1642,#1a237e,#0d1642); color:#fff; min-height:100vh; }
+        .header { background:linear-gradient(90deg,var(--deep),var(--royal)); padding:15px 25px; display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid var(--gold); box-shadow:0 4px 30px rgba(0,0,0,0.4); }
+        .logo { display:flex; align-items:center; gap:12px; }
+        .logo-icon { width:50px; height:50px; background:linear-gradient(135deg,var(--gold),var(--dark-gold)); border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:24px; box-shadow:0 0 20px rgba(255,215,0,0.4); animation:pulse 2s infinite; }
+        @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.05)} }
+        .logo-text h1 { font-size:20px; font-weight:900; color:var(--gold); }
+        .logo-text p { font-size:11px; color:rgba(255,255,255,0.7); }
+        .btn { padding:10px 20px; border-radius:25px; border:none; font-family:'Poppins'; font-weight:600; cursor:pointer; transition:all 0.3s; display:flex; align-items:center; gap:8px; font-size:13px; }
+        .btn-gold { background:linear-gradient(135deg,var(--gold),var(--dark-gold)); color:var(--deep); }
+        .btn-outline { background:var(--glass); border:1px solid rgba(255,255,255,0.15); color:#fff; }
+        .container { max-width:1400px; margin:0 auto; padding:30px 25px; }
+        .hero-global { text-align:center; padding:40px 25px 30px; }
+        .hero-global h2 { font-size:32px; font-weight:900; margin-bottom:10px; }
+        .hero-global h2 span { color:var(--gold); }
+        .hero-global p { font-size:15px; color:rgba(255,255,255,0.7); max-width:600px; margin:0 auto; }
+        .world-map { background:var(--glass); border:1px solid rgba(255,255,255,0.15); border-radius:24px; padding:30px; margin:25px 0; text-align:center; }
+        .world-map h3 { font-size:18px; margin-bottom:20px; color:var(--gold); }
+        .map-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(100px,1fr)); gap:10px; }
+        .country { background:rgba(0,0,0,0.2); border-radius:12px; padding:15px 10px; text-align:center; transition:all 0.3s; cursor:pointer; border:1px solid transparent; }
+        .country:hover { border-color:var(--gold); transform:scale(1.05); }
+        .country-flag { font-size:28px; margin-bottom:5px; }
+        .country-name { font-size:11px; font-weight:600; }
+        .section-title { font-size:20px; font-weight:700; margin-bottom:20px; display:flex; align-items:center; gap:10px; }
+        .section-title i { color:var(--gold); }
+        .news-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:18px; margin-bottom:35px; }
+        .news-card { background:var(--glass); border:1px solid rgba(255,255,255,0.15); border-radius:20px; padding:22px; transition:all 0.3s; }
+        .news-card:hover { border-color:var(--gold); transform:translateY(-3px); }
+        .news-tag { display:inline-block; background:rgba(255,215,0,0.15); color:var(--gold); padding:3px 10px; border-radius:8px; font-size:10px; font-weight:600; margin-bottom:10px; }
+        .news-card h4 { font-size:15px; margin-bottom:8px; }
+        .news-card p { font-size:12px; color:rgba(255,255,255,0.6); margin-bottom:12px; }
+        .news-meta { font-size:11px; color:rgba(255,255,255,0.4); display:flex; justify-content:space-between; }
+        .converter-section { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:20px; margin-bottom:35px; }
+        .conv-card { background:var(--glass); border:1px solid rgba(255,255,255,0.15); border-radius:20px; padding:25px; }
+        .conv-card h3 { font-size:16px; margin-bottom:15px; display:flex; align-items:center; gap:10px; }
+        .conv-card h3 i { color:var(--gold); }
+        .conv-input-group { display:flex; gap:10px; margin-bottom:12px; align-items:center; }
+        .conv-input { flex:1; background:rgba(0,0,0,0.2); border:1px solid rgba(255,255,255,0.15); border-radius:12px; padding:12px 15px; color:#fff; font-family:'Poppins'; font-size:14px; outline:none; }
+        .conv-input:focus { border-color:var(--gold); }
+        .conv-select { background:rgba(0,0,0,0.2); border:1px solid rgba(255,255,255,0.15); border-radius:12px; padding:12px; color:#fff; font-family:'Poppins'; outline:none; min-width:80px; }
+        .conv-select option { background:var(--royal); }
+        .conv-result { background:rgba(0,200,83,0.1); border:1px solid rgba(0,200,83,0.3); border-radius:12px; padding:15px; text-align:center; font-size:20px; font-weight:700; color:var(--success); margin-top:10px; }
+        .travel-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:18px; margin-bottom:30px; }
+        .travel-card { background:var(--glass); border:1px solid rgba(255,255,255,0.15); border-radius:20px; overflow:hidden; transition:all 0.3s; cursor:pointer; }
+        .travel-card:hover { border-color:var(--gold); transform:translateY(-5px); }
+        .travel-img { height:150px; display:flex; align-items:center; justify-content:center; font-size:60px; }
+        .travel-body { padding:20px; }
+        .travel-body h4 { font-size:16px; margin-bottom:5px; }
+        .travel-body p { font-size:12px; color:rgba(255,255,255,0.6); margin-bottom:12px; }
+        .travel-price { font-size:18px; font-weight:700; color:var(--gold); }
+        .footer { text-align:center; padding:30px; border-top:1px solid rgba(255,255,255,0.1); color:rgba(255,255,255,0.4); font-size:12px; }
+        @media(max-width:600px){ .hero-global h2{font-size:24px} }
+    </style>
+<base target="_blank">
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <div class="logo-icon">🌍</div>
+            <div class="logo-text">
+                <h1>Global Hub</h1>
+                <p>Singh Ji AI Ultra v5.0</p>
+            </div>
+        </div>
+        <div class="header-actions">
+            <button class="btn btn-outline" onclick="window.location.href='index.html'">
+                <i class="fas fa-home"></i> Home
+            </button>
+            <button class="btn btn-gold" onclick="window.location.href='admin.html'">
+                <i class="fas fa-shield-halved"></i> Admin
+            </button>
+        </div>
+    </header>
+
+    <section class="hero-global">
+        <h2>Connect With The <span>World.</span></h2>
+        <p>🌍 Global news, real-time translation, currency exchange, travel bookings & international connectivity — all in 26 languages.</p>
+    </section>
+
+    <div class="container">
+        <!-- World Map -->
+        <div class="world-map">
+            <h3>🌐 Connected Countries</h3>
+            <div class="map-grid">
+                <div class="country"><div class="country-flag">🇮🇳</div><div class="country-name">India</div></div>
+                <div class="country"><div class="country-flag">🇺🇸</div><div class="country-name">USA</div></div>
+                <div class="country"><div class="country-flag">🇬🇧</div><div class="country-name">UK</div></div>
+                <div class="country"><div class="country-flag">🇦🇪</div><div class="country-name">UAE</div></div>
+                <div class="country"><div class="country-flag">🇸🇬</div><div class="country-name">Singapore</div></div>
+                <div class="country"><div class="country-flag">🇯🇵</div><div class="country-name">Japan</div></div>
+                <div class="country"><div class="country-flag">🇰🇷</div><div class="country-name">Korea</div></div>
+                <div class="country"><div class="country-flag">🇩🇪</div><div class="country-name">Germany</div></div>
+                <div class="country"><div class="country-flag">🇫🇷</div><div class="country-name">France</div></div>
+                <div class="country"><div class="country-flag">🇦🇺</div><div class="country-name">Australia</div></div>
+                <div class="country"><div class="country-flag">🇨🇦</div><div class="country-name">Canada</div></div>
+                <div class="country"><div class="country-flag">🇧🇷</div><div class="country-name">Brazil</div></div>
+            </div>
+        </div>
+
+        <!-- Global News -->
+        <h2 class="section-title"><i class="fas fa-newspaper"></i> Global News Feed</h2>
+        <div class="news-grid">
+            <div class="news-card">
+                <span class="news-tag">🇮🇳 INDIA</span>
+                <h4>ISRO's Next Moon Mission Announced</h4>
+                <p>Chandrayaan-4 mission details revealed with international collaboration plans...</p>
+                <div class="news-meta"><span>2 hours ago</span><span>🔥 Trending</span></div>
+            </div>
+            <div class="news-card">
+                <span class="news-tag">🌍 WORLD</span>
+                <h4>Global AI Summit 2026: Key Takeaways</h4>
+                <p>World leaders discuss AI regulation, ethics, and the future of human-AI collaboration...</p>
+                <div class="news-meta"><span>4 hours ago</span><span>📰 News</span></div>
+            </div>
+            <div class="news-card">
+                <span class="news-tag">💰 BUSINESS</span>
+                <h4>Rupee Hits New High Against Dollar</h4>
+                <p>Indian economy shows strong growth signals as INR strengthens in global markets...</p>
+                <div class="news-meta"><span>6 hours ago</span><span>📈 Finance</span></div>
+            </div>
+            <div class="news-card">
+                <span class="news-tag">🏏 SPORTS</span>
+                <h4>India Wins Cricket World Cup 2026!</h4>
+                <p>Historic victory at Lord's as Team India lifts the trophy after thrilling final...</p>
+                <div class="news-meta"><span>8 hours ago</span><span>🏆 Sports</span></div>
+            </div>
+        </div>
+
+        <!-- Currency & Translation -->
+        <div class="converter-section">
+            <div class="conv-card">
+                <h3><i class="fas fa-exchange-alt"></i> Currency Converter</h3>
+                <div class="conv-input-group">
+                    <input type="number" class="conv-input" id="currAmount" value="1000" oninput="convertCurrency()">
+                    <select class="conv-select" id="fromCurr" onchange="convertCurrency()">
+                        <option value="INR">🇮🇳 INR</option>
+                        <option value="USD">🇺🇸 USD</option>
+                        <option value="EUR">🇪🇺 EUR</option>
+                        <option value="GBP">🇬🇧 GBP</option>
+                        <option value="JPY">🇯🇵 JPY</option>
+                        <option value="AED">🇦🇪 AED</option>
+                    </select>
+                </div>
+                <div style="text-align:center; font-size:20px; color:var(--gold);">↓</div>
+                <div class="conv-input-group">
+                    <select class="conv-select" id="toCurr" onchange="convertCurrency()">
+                        <option value="USD">🇺🇸 USD</option>
+                        <option value="INR">🇮🇳 INR</option>
+                        <option value="EUR">🇪🇺 EUR</option>
+                        <option value="GBP">🇬🇧 GBP</option>
+                        <option value="JPY">🇯🇵 JPY</option>
+                        <option value="AED">🇦🇪 AED</option>
+                    </select>
+                </div>
+                <div class="conv-result" id="currResult">$11.90</div>
+            </div>
+            <div class="conv-card">
+                <h3><i class="fas fa-language"></i> AI Translator (26 Languages)</h3>
+                <textarea class="conv-input" id="transInput" rows="3" placeholder="Type in any language..." oninput="translateText()" style="width:100%; resize:none;"></textarea>
+                <div style="display:flex; gap:10px; margin:10px 0;">
+                    <select class="conv-select" id="fromLang" style="flex:1;">
+                        <option value="auto">🔍 Auto Detect</option>
+                        <option value="hi">🇮🇳 Hindi</option>
+                        <option value="en">🇬🇧 English</option>
+                        <option value="pa">🦁 Punjabi</option>
+                    </select>
+                    <span style="color:var(--gold); font-size:18px;">→</span>
+                    <select class="conv-select" id="toLang" style="flex:1;">
+                        <option value="en">🇬🇧 English</option>
+                        <option value="hi">🇮🇳 Hindi</option>
+                        <option value="pa">🦁 Punjabi</option>
+                        <option value="es">🇪🇸 Spanish</option>
+                        <option value="fr">🇫🇷 French</option>
+                        <option value="ja">🇯🇵 Japanese</option>
+                    </select>
+                </div>
+                <div class="conv-result" id="transResult" style="font-size:14px; min-height:50px; display:flex; align-items:center; justify-content:center;">Translation will appear here...</div>
+            </div>
+        </div>
+
+        <!-- Travel Deals -->
+        <h2 class="section-title"><i class="fas fa-plane"></i> Travel Deals</h2>
+        <div class="travel-grid">
+            <div class="travel-card">
+                <div class="travel-img" style="background:linear-gradient(135deg,#667eea,#764ba2)">🇯🇵</div>
+                <div class="travel-body">
+                    <h4>Tokyo, Japan</h4>
+                    <p>7 days • Flight + Hotel • Cherry Blossom Season</p>
+                    <div class="travel-price">₹89,999</div>
+                </div>
+            </div>
+            <div class="travel-card">
+                <div class="travel-img" style="background:linear-gradient(135deg,#f093fb,#f5576c)">🇦🇪</div>
+                <div class="travel-body">
+                    <h4>Dubai, UAE</h4>
+                    <p>5 days • All Inclusive • Burj Khalifa Tour</p>
+                    <div class="travel-price">₹45,999</div>
+                </div>
+            </div>
+            <div class="travel-card">
+                <div class="travel-img" style="background:linear-gradient(135deg,#4facfe,#00f2fe)">🇬🇧</div>
+                <div class="travel-body">
+                    <h4>London, UK</h4>
+                    <p>6 days • Flight + Stay • Thames Cruise</p>
+                    <div class="travel-price">₹1,25,000</div>
+                </div>
+            </div>
+            <div class="travel-card">
+                <div class="travel-img" style="background:linear-gradient(135deg,#43e97b,#38f9d7)">🇸🇬</div>
+                <div class="travel-body">
+                    <h4>Singapore</h4>
+                    <p>4 days • Universal Studios • Gardens by Bay</p>
+                    <div class="travel-price">₹52,999</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>🍌 Singh Ji AI Ultra v5.0 — Global Hub</p>
+        <p style="margin-top:5px;">"केला मोड ON — केला नहीं होता भाई अकेला!" 🦁</p>
+        <p style="margin-top:5px; font-size:10px;">Phase 6 • 26 Languages • Global Connectivity</p>
+    </footer>
+
+    <script>
+        const rates = { INR:1, USD:0.0119, EUR:0.0110, GBP:0.0093, JPY:1.85, AED:0.0437 };
+        function convertCurrency() {
+            const amt = parseFloat(document.getElementById('currAmount').value) || 0;
+            const from = document.getElementById('fromCurr').value;
+            const to = document.getElementById('toCurr').value;
+            const inr = amt / rates[from];
+            const result = inr * rates[to];
+            const symbols = { INR:'₹', USD:'$', EUR:'€', GBP:'£', JPY:'¥', AED:'د.إ' };
+            document.getElementById('currResult').textContent = symbols[to] + result.toFixed(2);
+        }
+        function translateText() {
+            const text = document.getElementById('transInput').value;
+            const to = document.getElementById('toLang').value;
+            if(!text) { document.getElementById('transResult').textContent = 'Translation will appear here...'; return; }
+            // Simulated translation
+            const demos = {
+                en: text,
+                hi: '[हिंदी अनुवाद] ' + text,
+                pa: '[ਪੰਜਾਬੀ ਅਨੁਵਾਦ] ' + text,
+                es: '[Traducción] ' + text,
+                fr: '[Traduction] ' + text,
+                ja: '[翻訳] ' + text
+            };
+            document.getElementById('transResult').textContent = demos[to] || text;
+        }
+    </script>
+</body>
+</html>
