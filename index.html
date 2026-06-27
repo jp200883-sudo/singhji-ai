@@ -3,627 +3,217 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🏦 Singh Ji Banking Hub</title>
+    <title>📚 Singh Ji Education Hub</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        :root {
-            --gold: #FFD700;
-            --dark-gold: #B8860B;
-            --royal-blue: #1a237e;
-            --deep-blue: #0d1642;
-            --success: #00c853;
-            --danger: #ff1744;
-            --glass: rgba(255,255,255,0.08);
-            --glass-border: rgba(255,255,255,0.15);
-        }
+        :root { --gold:#FFD700; --dark-gold:#B8860B; --royal:#1a237e; --deep:#0d1642; --success:#00c853; --glass:rgba(255,255,255,0.08); }
         * { margin:0; padding:0; box-sizing:border-box; }
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #0d1642 0%, #1a237e 50%, #0d1642 100%);
-            color: #fff;
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-        /* Animated background particles */
-        .particles {
-            position: fixed; top:0; left:0; width:100%; height:100%;
-            pointer-events: none; z-index: 0;
-            overflow: hidden;
-        }
-        .particle {
-            position: absolute; width: 4px; height: 4px;
-            background: var(--gold); border-radius: 50%;
-            animation: float 15s infinite;
-            opacity: 0.3;
-        }
-        @keyframes float {
-            0%,100% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-            10% { opacity: 0.3; }
-            90% { opacity: 0.3; }
-            50% { transform: translateY(-10vh) rotate(180deg); }
-        }
-        /* Header */
-        .header {
-            background: linear-gradient(90deg, var(--deep-blue), var(--royal-blue));
-            padding: 15px 25px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 4px 30px rgba(0,0,0,0.4);
-            position: relative; z-index: 10;
-            border-bottom: 2px solid var(--gold);
-        }
-        .logo {
-            display: flex; align-items: center; gap: 12px;
-        }
-        .logo-icon {
-            width: 50px; height: 50px;
-            background: linear-gradient(135deg, var(--gold), var(--dark-gold));
-            border-radius: 12px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 24px;
-            box-shadow: 0 0 20px rgba(255,215,0,0.4);
-            animation: pulse 2s infinite;
-        }
-        @keyframes pulse {
-            0%,100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-        .logo-text h1 { font-size: 22px; font-weight: 900; color: var(--gold); letter-spacing: 1px; }
-        .logo-text p { font-size: 11px; color: rgba(255,255,255,0.7); }
-        .header-actions {
-            display: flex; gap: 15px; align-items: center;
-        }
-        .lang-select {
-            background: var(--glass); border: 1px solid var(--glass-border);
-            color: #fff; padding: 8px 15px; border-radius: 25px;
-            font-family: 'Poppins'; cursor: pointer; outline: none;
-        }
-        .lang-select option { background: var(--royal-blue); }
-        .user-badge {
-            display: flex; align-items: center; gap: 8px;
-            background: var(--glass); border: 1px solid var(--glass-border);
-            padding: 8px 18px; border-radius: 25px;
-        }
-        .user-badge i { color: var(--gold); }
-        /* Balance Card */
-        .balance-section {
-            padding: 30px 25px 10px; position: relative; z-index: 5;
-        }
-        .balance-card {
-            background: linear-gradient(135deg, rgba(255,215,0,0.15), rgba(26,35,126,0.3));
-            border: 2px solid var(--gold);
-            border-radius: 24px;
-            padding: 30px;
-            backdrop-filter: blur(20px);
-            box-shadow: 0 20px 60px rgba(255,215,0,0.1), inset 0 1px 0 rgba(255,255,255,0.1);
-            position: relative;
-            overflow: hidden;
-        }
-        .balance-card::before {
-            content: ''; position: absolute; top: -50%; right: -20%;
-            width: 300px; height: 300px;
-            background: radial-gradient(circle, rgba(255,215,0,0.1), transparent 70%);
-            animation: rotate 20s linear infinite;
-        }
-        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        .balance-label { font-size: 14px; color: rgba(255,255,255,0.7); text-transform: uppercase; letter-spacing: 2px; }
-        .balance-amount {
-            font-size: 48px; font-weight: 900; color: var(--gold);
-            margin: 10px 0; text-shadow: 0 0 30px rgba(255,215,0,0.3);
-        }
-        .balance-amount span { font-size: 24px; vertical-align: top; }
-        .balance-actions {
-            display: flex; gap: 12px; margin-top: 20px; flex-wrap: wrap;
-        }
-        .btn {
-            padding: 12px 24px; border-radius: 12px; border: none;
-            font-family: 'Poppins'; font-weight: 600; font-size: 14px;
-            cursor: pointer; transition: all 0.3s ease;
-            display: flex; align-items: center; gap: 8px;
-        }
-        .btn-gold {
-            background: linear-gradient(135deg, var(--gold), var(--dark-gold));
-            color: var(--deep-blue);
-            box-shadow: 0 4px 20px rgba(255,215,0,0.3);
-        }
-        .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(255,215,0,0.5); }
-        .btn-outline {
-            background: var(--glass); border: 1px solid var(--glass-border);
-            color: #fff;
-        }
-        .btn-outline:hover { background: rgba(255,255,255,0.15); }
-        /* Quick Actions Grid */
-        .quick-actions {
-            padding: 20px 25px; position: relative; z-index: 5;
-        }
-        .section-title {
-            font-size: 18px; font-weight: 700; margin-bottom: 20px;
-            display: flex; align-items: center; gap: 10px;
-        }
-        .section-title i { color: var(--gold); }
-        .actions-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 15px;
-        }
-        .action-card {
-            background: var(--glass);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            padding: 25px 15px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-        }
-        .action-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--gold);
-            box-shadow: 0 10px 40px rgba(255,215,0,0.15);
-        }
-        .action-icon {
-            width: 60px; height: 60px;
-            border-radius: 16px;
-            display: flex; align-items: center; justify-content: center;
-            margin: 0 auto 12px;
-            font-size: 24px;
-        }
-        .icon-upi { background: linear-gradient(135deg, #667eea, #764ba2); }
-        .icon-transfer { background: linear-gradient(135deg, #f093fb, #f5576c); }
-        .icon-bill { background: linear-gradient(135deg, #4facfe, #00f2fe); }
-        .icon-recharge { background: linear-gradient(135deg, #43e97b, #38f9d7); }
-        .icon-loan { background: linear-gradient(135deg, #fa709a, #fee140); }
-        .icon-invest { background: linear-gradient(135deg, #a8edea, #fed6e3); }
-        .icon-insurance { background: linear-gradient(135deg, #ffecd2, #fcb69f); }
-        .icon-card { background: linear-gradient(135deg, #ff9a9e, #fecfef); }
-        .action-card h3 { font-size: 14px; font-weight: 600; }
-        .action-card p { font-size: 11px; color: rgba(255,255,255,0.6); margin-top: 4px; }
-        /* UPI Section */
-        .upi-section {
-            padding: 20px 25px; position: relative; z-index: 5;
-        }
-        .upi-card {
-            background: var(--glass);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            padding: 25px;
-            backdrop-filter: blur(10px);
-        }
-        .upi-input-group {
-            display: flex; gap: 12px; margin-bottom: 15px; flex-wrap: wrap;
-        }
-        .upi-input {
-            flex: 1; min-width: 200px;
-            background: rgba(0,0,0,0.2);
-            border: 1px solid var(--glass-border);
-            border-radius: 12px;
-            padding: 14px 18px;
-            color: #fff; font-family: 'Poppins'; font-size: 15px;
-            outline: none; transition: all 0.3s;
-        }
-        .upi-input:focus { border-color: var(--gold); box-shadow: 0 0 15px rgba(255,215,0,0.2); }
-        .upi-input::placeholder { color: rgba(255,255,255,0.4); }
-        /* Recent Transactions */
-        .transactions-section {
-            padding: 20px 25px 40px; position: relative; z-index: 5;
-        }
-        .tx-list {
-            background: var(--glass);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            overflow: hidden;
-            backdrop-filter: blur(10px);
-        }
-        .tx-item {
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 18px 25px;
-            border-bottom: 1px solid var(--glass-border);
-            transition: all 0.3s;
-        }
-        .tx-item:hover { background: rgba(255,255,255,0.05); }
-        .tx-item:last-child { border-bottom: none; }
-        .tx-left { display: flex; align-items: center; gap: 15px; }
-        .tx-icon {
-            width: 48px; height: 48px; border-radius: 14px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 20px;
-        }
-        .tx-sent { background: linear-gradient(135deg, rgba(255,23,68,0.2), rgba(255,23,68,0.1)); color: var(--danger); }
-        .tx-received { background: linear-gradient(135deg, rgba(0,200,83,0.2), rgba(0,200,83,0.1)); color: var(--success); }
-        .tx-info h4 { font-size: 15px; font-weight: 600; }
-        .tx-info p { font-size: 12px; color: rgba(255,255,255,0.5); }
-        .tx-amount { font-size: 18px; font-weight: 700; }
-        .tx-amount.sent { color: var(--danger); }
-        .tx-amount.received { color: var(--success); }
-        /* Modal */
-        .modal-overlay {
-            display: none; position: fixed; top:0; left:0; width:100%; height:100%;
-            background: rgba(0,0,0,0.7); backdrop-filter: blur(10px);
-            z-index: 1000; justify-content: center; align-items: center;
-            padding: 20px;
-        }
-        .modal-overlay.active { display: flex; }
-        .modal {
-            background: linear-gradient(135deg, var(--deep-blue), var(--royal-blue));
-            border: 2px solid var(--gold);
-            border-radius: 24px;
-            padding: 35px;
-            max-width: 450px; width: 100%;
-            box-shadow: 0 30px 80px rgba(0,0,0,0.5);
-            animation: modalIn 0.4s ease;
-        }
-        @keyframes modalIn {
-            from { opacity: 0; transform: scale(0.9) translateY(20px); }
-            to { opacity: 1; transform: scale(1) translateY(0); }
-        }
-        .modal h2 { font-size: 22px; margin-bottom: 20px; color: var(--gold); }
-        .modal-close {
-            position: absolute; top: 15px; right: 20px;
-            background: none; border: none; color: #fff;
-            font-size: 24px; cursor: pointer;
-        }
-        /* Footer */
-        .footer {
-            text-align: center; padding: 25px;
-            border-top: 1px solid var(--glass-border);
-            color: rgba(255,255,255,0.4); font-size: 12px;
-            position: relative; z-index: 5;
-        }
-        .footer .banana { font-size: 16px; }
-        /* Responsive */
-        @media (max-width: 600px) {
-            .balance-amount { font-size: 36px; }
-            .actions-grid { grid-template-columns: repeat(2, 1fr); }
-            .header { flex-wrap: wrap; gap: 10px; }
-        }
-        /* Loading */
-        .loading {
-            display: none;
-            width: 20px; height: 20px;
-            border: 2px solid var(--gold);
-            border-top-color: transparent;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
+        body { font-family:'Poppins',sans-serif; background:linear-gradient(135deg,#0d1642,#1a237e,#0d1642); color:#fff; min-height:100vh; }
+        .header { background:linear-gradient(90deg,var(--deep),var(--royal)); padding:15px 25px; display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid var(--gold); box-shadow:0 4px 30px rgba(0,0,0,0.4); }
+        .logo { display:flex; align-items:center; gap:12px; }
+        .logo-icon { width:50px; height:50px; background:linear-gradient(135deg,var(--gold),var(--dark-gold)); border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:24px; box-shadow:0 0 20px rgba(255,215,0,0.4); animation:pulse 2s infinite; }
+        @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.05)} }
+        .logo-text h1 { font-size:20px; font-weight:900; color:var(--gold); }
+        .logo-text p { font-size:11px; color:rgba(255,255,255,0.7); }
+        .btn { padding:10px 20px; border-radius:25px; border:none; font-family:'Poppins'; font-weight:600; cursor:pointer; transition:all 0.3s; display:flex; align-items:center; gap:8px; font-size:13px; }
+        .btn-gold { background:linear-gradient(135deg,var(--gold),var(--dark-gold)); color:var(--deep); }
+        .btn-outline { background:var(--glass); border:1px solid rgba(255,255,255,0.15); color:#fff; }
+        .container { max-width:1400px; margin:0 auto; padding:30px 25px; }
+        .hero-edu { text-align:center; padding:40px 25px 30px; }
+        .hero-edu h2 { font-size:32px; font-weight:900; margin-bottom:10px; }
+        .hero-edu h2 span { color:var(--gold); }
+        .hero-edu p { font-size:15px; color:rgba(255,255,255,0.7); max-width:600px; margin:0 auto; }
+        .search-bar { max-width:600px; margin:25px auto; display:flex; gap:10px; }
+        .search-input { flex:1; background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.15); border-radius:15px; padding:14px 22px; color:#fff; font-family:'Poppins'; font-size:15px; outline:none; }
+        .search-input:focus { border-color:var(--gold); box-shadow:0 0 20px rgba(255,215,0,0.2); }
+        .search-input::placeholder { color:rgba(255,255,255,0.4); }
+        .categories { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px; margin-bottom:30px; }
+        .cat-card { background:var(--glass); border:1px solid rgba(255,255,255,0.15); border-radius:18px; padding:20px; text-align:center; cursor:pointer; transition:all 0.3s; }
+        .cat-card:hover { transform:translateY(-5px); border-color:var(--gold); box-shadow:0 15px 40px rgba(255,215,0,0.1); }
+        .cat-card i { font-size:28px; color:var(--gold); margin-bottom:10px; }
+        .cat-card h4 { font-size:14px; }
+        .section-title { font-size:20px; font-weight:700; margin-bottom:20px; display:flex; align-items:center; gap:10px; }
+        .section-title i { color:var(--gold); }
+        .course-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:18px; margin-bottom:35px; }
+        .course-card { background:var(--glass); border:1px solid rgba(255,255,255,0.15); border-radius:20px; overflow:hidden; transition:all 0.3s; cursor:pointer; }
+        .course-card:hover { transform:translateY(-5px); border-color:var(--gold); box-shadow:0 15px 40px rgba(255,215,0,0.1); }
+        .course-img { height:160px; background:linear-gradient(135deg,#667eea,#764ba2); display:flex; align-items:center; justify-content:center; font-size:48px; }
+        .course-body { padding:20px; }
+        .course-tag { display:inline-block; background:rgba(255,215,0,0.15); color:var(--gold); padding:4px 12px; border-radius:10px; font-size:11px; font-weight:600; margin-bottom:10px; }
+        .course-body h3 { font-size:17px; margin-bottom:8px; }
+        .course-body p { font-size:13px; color:rgba(255,255,255,0.6); margin-bottom:15px; }
+        .course-meta { display:flex; justify-content:space-between; align-items:center; font-size:12px; color:rgba(255,255,255,0.5); }
+        .course-price { font-size:18px; font-weight:700; color:var(--gold); }
+        .exam-section { background:var(--glass); border:1px solid rgba(255,255,255,0.15); border-radius:20px; padding:25px; margin-bottom:30px; }
+        .exam-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px; }
+        .exam-card { background:rgba(0,0,0,0.2); border-radius:14px; padding:18px; text-align:center; cursor:pointer; transition:all 0.3s; border:1px solid transparent; }
+        .exam-card:hover { border-color:var(--gold); transform:translateY(-3px); }
+        .exam-card i { font-size:28px; color:var(--gold); margin-bottom:10px; }
+        .exam-card h4 { font-size:14px; margin-bottom:5px; }
+        .exam-card p { font-size:11px; color:rgba(255,255,255,0.5); }
+        .tutor-section { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:18px; margin-bottom:30px; }
+        .tutor-card { background:var(--glass); border:1px solid rgba(255,255,255,0.15); border-radius:20px; padding:25px; text-align:center; transition:all 0.3s; }
+        .tutor-card:hover { border-color:var(--gold); }
+        .tutor-avatar { width:70px; height:70px; border-radius:50%; background:linear-gradient(135deg,var(--gold),var(--dark-gold)); display:flex; align-items:center; justify-content:center; font-size:30px; margin:0 auto 15px; }
+        .tutor-card h4 { font-size:16px; margin-bottom:5px; }
+        .tutor-card .subject { font-size:12px; color:var(--gold); margin-bottom:10px; }
+        .tutor-card p { font-size:12px; color:rgba(255,255,255,0.6); }
+        .stars { color:var(--gold); margin:8px 0; }
+        .footer { text-align:center; padding:30px; border-top:1px solid rgba(255,255,255,0.1); color:rgba(255,255,255,0.4); font-size:12px; }
+        @media(max-width:600px){ .hero-edu h2{font-size:24px} }
     </style>
 <base target="_blank">
 </head>
 <body>
-    <div class="particles" id="particles"></div>
-
-    <!-- Header -->
     <header class="header">
         <div class="logo">
-            <div class="logo-icon">🏦</div>
+            <div class="logo-icon">📚</div>
             <div class="logo-text">
-                <h1>🏦 Singh Ji Banking</h1>
-                <p>Secure • Fast • 24/7</p>
+                <h1>Education Hub</h1>
+                <p>Singh Ji AI Ultra v5.0</p>
             </div>
         </div>
         <div class="header-actions">
-            <select class="lang-select" id="langSelect" onchange="changeLang()">
-                <option value="hi">🇮🇳 हिंदी</option>
-                <option value="en">🇬🇧 English</option>
-                <option value="pa">🦁 ਪੰਜਾਬੀ</option>
-                <option value="bn">🇧🇩 বাংলা</option>
-                <option value="te">🇮🇳 తెలుగు</option>
-                <option value="ta">🇮🇳 தமிழ்</option>
-                <option value="mr">🇮🇳 मराठी</option>
-                <option value="gu">🇮🇳 ગુજરાતી</option>
-                <option value="kn">🇮🇳 ಕನ್ನಡ</option>
-                <option value="ml">🇮🇳 മലയാളം</option>
-                <option value="ur">🇵🇰 اردو</option>
-                <option value="or">🇮🇳 ଓଡ଼ିଆ</option>
-                <option value="as">🇮🇳 অসমীয়া</option>
-                <option value="ne">🇳🇵 नेपाली</option>
-                <option value="si">🇱🇰 සිංහල</option>
-                <option value="my">🇲🇲 မြန်မာ</option>
-                <option value="th">🇹🇭 ไทย</option>
-                <option value="vi">🇻🇳 Tiếng Việt</option>
-                <option value="id">🇮🇩 Bahasa</option>
-                <option value="ms">🇲🇾 Melayu</option>
-                <option value="zh">🇨🇳 中文</option>
-                <option value="ja">🇯🇵 日本語</option>
-                <option value="ko">🇰🇷 한국어</option>
-                <option value="ar">🇸🇦 العربية</option>
-                <option value="fr">🇫🇷 Français</option>
-                <option value="es">🇪🇸 Español</option>
-            </select>
-            <div class="user-badge">
-                <i class="fas fa-crown"></i>
-                <span id="userName">सिंह जी</span>
-            </div>
             <button class="btn btn-outline" onclick="window.location.href='index.html'">
                 <i class="fas fa-home"></i> Home
+            </button>
+            <button class="btn btn-gold" onclick="window.location.href='admin.html'">
+                <i class="fas fa-shield-halved"></i> Admin
             </button>
         </div>
     </header>
 
-    <!-- Balance Section -->
-    <section class="balance-section">
-        <div class="balance-card">
-            <div class="balance-label" id="balanceLabel">Total Balance</div>
-            <div class="balance-amount">
-                <span>₹</span><span id="balanceAmount">2,45,780.50</span>
-            </div>
-            <div style="display:flex; gap:20px; margin-top:10px; flex-wrap:wrap;">
-                <div>
-                    <p style="font-size:12px; color:rgba(255,255,255,0.5);">UPI ID</p>
-                    <p style="font-size:14px; font-weight:600; color:var(--gold);">singhji@paytm</p>
-                </div>
-                <div>
-                    <p style="font-size:12px; color:rgba(255,255,255,0.5);">Account</p>
-                    <p style="font-size:14px; font-weight:600;">****4521</p>
-                </div>
-                <div>
-                    <p style="font-size:12px; color:rgba(255,255,255,0.5);">IFSC</p>
-                    <p style="font-size:14px; font-weight:600;">SBIN0001234</p>
-                </div>
-            </div>
-            <div class="balance-actions">
-                <button class="btn btn-gold" onclick="openModal('send')">
-                    <i class="fas fa-paper-plane"></i> <span id="btnSend">Send Money</span>
-                </button>
-                <button class="btn btn-outline" onclick="openModal('request')">
-                    <i class="fas fa-hand-holding-dollar"></i> <span id="btnRequest">Request</span>
-                </button>
-                <button class="btn btn-outline" onclick="openModal('scan')">
-                    <i class="fas fa-qrcode"></i> <span id="btnScan">Scan QR</span>
-                </button>
-                <button class="btn btn-outline" onclick="refreshBalance()">
-                    <i class="fas fa-rotate"></i> <span id="btnRefresh">Refresh</span>
-                    <div class="loading" id="refreshLoader"></div>
-                </button>
-            </div>
+    <section class="hero-edu">
+        <h2>Learn <span>Anything.</span> Achieve <span>Everything.</span></h2>
+        <p>🎓 AI-powered courses, exam prep, live tutoring & career guidance — all in 26 languages.</p>
+        <div class="search-bar">
+            <input type="text" class="search-input" placeholder="🔍 Search courses, exams, tutors...">
+            <button class="btn btn-gold"><i class="fas fa-search"></i></button>
         </div>
     </section>
 
-    <!-- Quick Actions -->
-    <section class="quick-actions">
-        <h2 class="section-title"><i class="fas fa-bolt"></i> <span id="quickTitle">Quick Actions</span></h2>
-        <div class="actions-grid">
-            <div class="action-card" onclick="openModal('upi')">
-                <div class="action-icon icon-upi"><i class="fas fa-mobile-alt"></i></div>
-                <h3 id="actUPI">UPI Pay</h3>
-                <p id="actUPIDesc">Instant transfer</p>
+    <div class="container">
+        <!-- Categories -->
+        <div class="categories">
+            <div class="cat-card"><i class="fas fa-laptop-code"></i><h4>Programming</h4></div>
+            <div class="cat-card"><i class="fas fa-flask"></i><h4>Science</h4></div>
+            <div class="cat-card"><i class="fas fa-calculator"></i><h4>Mathematics</h4></div>
+            <div class="cat-card"><i class="fas fa-book"></i><h4>Languages</h4></div>
+            <div class="cat-card"><i class="fas fa-palette"></i><h4>Arts & Design</h4></div>
+            <div class="cat-card"><i class="fas fa-briefcase"></i><h4>Business</h4></div>
+            <div class="cat-card"><i class="fas fa-heartbeat"></i><h4>Medical</h4></div>
+            <div class="cat-card"><i class="fas fa-gavel"></i><h4>Law</h4></div>
+        </div>
+
+        <!-- Featured Courses -->
+        <h2 class="section-title"><i class="fas fa-star"></i> Featured AI Courses</h2>
+        <div class="course-grid">
+            <div class="course-card">
+                <div class="course-img">🤖</div>
+                <div class="course-body">
+                    <span class="course-tag">BESTSELLER</span>
+                    <h3>Complete AI & Machine Learning</h3>
+                    <p>Master Python, TensorFlow, Neural Networks & real-world AI projects from scratch.</p>
+                    <div class="course-meta">
+                        <span>⏱ 48 hours • 👥 12k students</span>
+                        <span class="course-price">₹499</span>
+                    </div>
+                </div>
             </div>
-            <div class="action-card" onclick="openModal('transfer')">
-                <div class="action-icon icon-transfer"><i class="fas fa-exchange-alt"></i></div>
-                <h3 id="actTransfer">Bank Transfer</h3>
-                <p id="actTransferDesc">NEFT/IMPS/RTGS</p>
+            <div class="course-card">
+                <div class="course-img" style="background:linear-gradient(135deg,#f093fb,#f5576c)">💻</div>
+                <div class="course-body">
+                    <span class="course-tag">NEW</span>
+                    <h3>Full Stack Web Development</h3>
+                    <p>React, Node.js, MongoDB, AWS — build production-ready apps like Singh Ji Ultra!</p>
+                    <div class="course-meta">
+                        <span>⏱ 60 hours • 👥 8k students</span>
+                        <span class="course-price">₹599</span>
+                    </div>
+                </div>
             </div>
-            <div class="action-card" onclick="openModal('bill')">
-                <div class="action-icon icon-bill"><i class="fas fa-file-invoice"></i></div>
-                <h3 id="actBill">Pay Bills</h3>
-                <p id="actBillDesc">Electricity, Gas</p>
+            <div class="course-card">
+                <div class="course-img" style="background:linear-gradient(135deg,#4facfe,#00f2fe)">📊</div>
+                <div class="course-body">
+                    <span class="course-tag">HOT</span>
+                    <h3>Data Science & Analytics</h3>
+                    <p>Pandas, NumPy, SQL, Tableau — become a data wizard with real datasets.</p>
+                    <div class="course-meta">
+                        <span>⏱ 40 hours • 👥 15k students</span>
+                        <span class="course-price">₹449</span>
+                    </div>
+                </div>
             </div>
-            <div class="action-card" onclick="openModal('recharge')">
-                <div class="action-icon icon-recharge"><i class="fas fa-mobile"></i></div>
-                <h3 id="actRecharge">Recharge</h3>
-                <p id="actRechargeDesc">Mobile, DTH</p>
-            </div>
-            <div class="action-card" onclick="openModal('loan')">
-                <div class="action-icon icon-loan"><i class="fas fa-hand-holding-usd"></i></div>
-                <h3 id="actLoan">Loans</h3>
-                <p id="actLoanDesc">Personal, Gold</p>
-            </div>
-            <div class="action-card" onclick="openModal('invest')">
-                <div class="action-icon icon-invest"><i class="fas fa-chart-line"></i></div>
-                <h3 id="actInvest">Invest</h3>
-                <p id="actInvestDesc">Stocks, Mutual</p>
-            </div>
-            <div class="action-card" onclick="openModal('insurance')">
-                <div class="action-icon icon-insurance"><i class="fas fa-shield-alt"></i></div>
-                <h3 id="actInsurance">Insurance</h3>
-                <p id="actInsuranceDesc">Life, Health</p>
-            </div>
-            <div class="action-card" onclick="openModal('card')">
-                <div class="action-icon icon-card"><i class="fas fa-credit-card"></i></div>
-                <h3 id="actCard">Cards</h3>
-                <p id="actCardDesc">Manage cards</p>
+            <div class="course-card">
+                <div class="course-img" style="background:linear-gradient(135deg,#43e97b,#38f9d7)">🎨</div>
+                <div class="course-body">
+                    <span class="course-tag">POPULAR</span>
+                    <h3>UI/UX Design Masterclass</h3>
+                    <p>Figma, Adobe XD, design systems — create stunning interfaces like this app!</p>
+                    <div class="course-meta">
+                        <span>⏱ 32 hours • 👥 6k students</span>
+                        <span class="course-price">₹399</span>
+                    </div>
+                </div>
             </div>
         </div>
-    </section>
 
-    <!-- UPI Quick Pay -->
-    <section class="upi-section">
-        <h2 class="section-title"><i class="fas fa-bolt"></i> <span id="upiTitle">Quick UPI Pay</span></h2>
-        <div class="upi-card">
-            <div class="upi-input-group">
-                <input type="text" class="upi-input" id="upiId" placeholder="Enter UPI ID (e.g. name@upi)">
-                <input type="number" class="upi-input" id="upiAmount" placeholder="Amount (₹)" style="max-width:150px;">
-                <button class="btn btn-gold" onclick="upiPay()">
-                    <i class="fas fa-paper-plane"></i> <span id="btnPay">Pay Now</span>
-                </button>
-            </div>
-            <div style="display:flex; gap:10px; flex-wrap:wrap;">
-                <span style="font-size:12px; color:rgba(255,255,255,0.5);">Recent:</span>
-                <span class="btn btn-outline" style="padding:6px 14px; font-size:12px;" onclick="fillUPI('ram@paytm')">ram@paytm</span>
-                <span class="btn btn-outline" style="padding:6px 14px; font-size:12px;" onclick="fillUPI('sharma@upi')">sharma@upi</span>
-                <span class="btn btn-outline" style="padding:6px 14px; font-size:12px;" onclick="fillUPI('electricity@bijli')">electricity@bijli</span>
+        <!-- Exam Prep -->
+        <div class="exam-section">
+            <h2 class="section-title"><i class="fas fa-graduation-cap"></i> Exam Preparation</h2>
+            <div class="exam-grid">
+                <div class="exam-card"><i class="fas fa-university"></i><h4>UPSC/IAS</h4><p>Civil Services Preparation</p></div>
+                <div class="exam-card"><i class="fas fa-laptop-code"></i><h4>JEE/NEET</h4><p>Engineering & Medical</p></div>
+                <div class="exam-card"><i class="fas fa-briefcase"></i><h4>CAT/MBA</h4><p>Management Entrance</p></div>
+                <div class="exam-card"><i class="fas fa-globe"></i><h4>IELTS/TOEFL</h4><p>English Proficiency</p></div>
+                <div class="exam-card"><i class="fas fa-shield-alt"></i><h4>SSC/Bank PO</h4><p>Government Jobs</p></div>
+                <div class="exam-card"><i class="fas fa-code"></i><h4>GATE</h4><p>PG Engineering</p></div>
             </div>
         </div>
-    </section>
 
-    <!-- Recent Transactions -->
-    <section class="transactions-section">
-        <h2 class="section-title"><i class="fas fa-list"></i> <span id="txTitle">Recent Transactions</span></h2>
-        <div class="tx-list" id="txList">
-            <div class="tx-item">
-                <div class="tx-left">
-                    <div class="tx-icon tx-sent"><i class="fas fa-arrow-up"></i></div>
-                    <div class="tx-info">
-                        <h4>Swiggy Food Order</h4>
-                        <p>UPI • Today, 2:30 PM</p>
-                    </div>
-                </div>
-                <div class="tx-amount sent">-₹450.00</div>
+        <!-- Live Tutors -->
+        <h2 class="section-title"><i class="fas fa-chalkboard-teacher"></i> AI Live Tutors</h2>
+        <div class="tutor-section">
+            <div class="tutor-card">
+                <div class="tutor-avatar">👨‍🏫</div>
+                <h4>AI Math Tutor</h4>
+                <div class="subject">Mathematics</div>
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <p>24/7 available • Algebra to Calculus • Interactive solving</p>
+                <button class="btn btn-gold" style="margin-top:12px; width:100%; justify-content:center;">Start Session</button>
             </div>
-            <div class="tx-item">
-                <div class="tx-left">
-                    <div class="tx-icon tx-received"><i class="fas fa-arrow-down"></i></div>
-                    <div class="tx-info">
-                        <h4>Rajesh Kumar</h4>
-                        <p>UPI • Today, 11:00 AM</p>
-                    </div>
-                </div>
-                <div class="tx-amount received">+₹2,000.00</div>
+            <div class="tutor-card">
+                <div class="tutor-avatar">👩‍🔬</div>
+                <h4>AI Science Tutor</h4>
+                <div class="subject">Physics, Chemistry, Biology</div>
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <p>Concept explanations • Lab simulations • Doubt clearing</p>
+                <button class="btn btn-gold" style="margin-top:12px; width:100%; justify-content:center;">Start Session</button>
             </div>
-            <div class="tx-item">
-                <div class="tx-left">
-                    <div class="tx-icon tx-sent"><i class="fas fa-bolt"></i></div>
-                    <div class="tx-info">
-                        <h4>Electricity Bill</h4>
-                        <p>Bill Pay • Yesterday</p>
-                    </div>
-                </div>
-                <div class="tx-amount sent">-₹1,250.00</div>
+            <div class="tutor-card">
+                <div class="tutor-avatar">👨‍💻</div>
+                <h4>AI Coding Tutor</h4>
+                <div class="subject">Programming</div>
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <p>Python, JS, Java • Code review • Project help</p>
+                <button class="btn btn-gold" style="margin-top:12px; width:100%; justify-content:center;">Start Session</button>
             </div>
-            <div class="tx-item">
-                <div class="tx-left">
-                    <div class="tx-icon tx-received"><i class="fas fa-arrow-down"></i></div>
-                    <div class="tx-info">
-                        <h4>Salary Credit</h4>
-                        <p>IMPS • 25 Jun 2026</p>
-                    </div>
-                </div>
-                <div class="tx-amount received">+₹45,000.00</div>
-            </div>
-            <div class="tx-item">
-                <div class="tx-left">
-                    <div class="tx-icon tx-sent"><i class="fas fa-mobile-alt"></i></div>
-                    <div class="tx-info">
-                        <h4>Mobile Recharge</h4>
-                        <p>Recharge • 24 Jun 2026</p>
-                    </div>
-                </div>
-                <div class="tx-amount sent">-₹299.00</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <p><span class="banana">🍌</span> Singh Ji AI Ultra v5.0 — Banking Hub</p>
-        <p style="margin-top:5px;">"केला मोड ON — केला नहीं होता भाई अकेला!" 🦁</p>
-        <p style="margin-top:5px; font-size:10px;">Powered by Singh Ji API • Render Backend • 2026</p>
-    </footer>
-
-    <!-- Modal -->
-    <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
-        <div class="modal" onclick="event.stopPropagation()">
-            <h2 id="modalTitle">Action</h2>
-            <div id="modalContent">
-                <p style="color:rgba(255,255,255,0.7); margin-bottom:20px;">This feature will connect to your Singh Ji API backend.</p>
-                <div class="upi-input-group" style="flex-direction:column;">
-                    <input type="text" class="upi-input" placeholder="Enter details...">
-                    <input type="number" class="upi-input" placeholder="Amount">
-                </div>
-                <button class="btn btn-gold" style="width:100%; margin-top:15px; justify-content:center;">
-                    <i class="fas fa-check"></i> Confirm
-                </button>
+            <div class="tutor-card">
+                <div class="tutor-avatar">👩‍💼</div>
+                <h4>AI Career Coach</h4>
+                <div class="subject">Career Guidance</div>
+                <div class="stars">⭐⭐⭐⭐⭐</div>
+                <p>Resume building • Interview prep • Skill roadmap</p>
+                <button class="btn btn-gold" style="margin-top:12px; width:100%; justify-content:center;">Start Session</button>
             </div>
         </div>
     </div>
 
-    <script>
-        // Create particles
-        const particlesContainer = document.getElementById('particles');
-        for(let i=0; i<30; i++) {
-            const p = document.createElement('div');
-            p.className = 'particle';
-            p.style.left = Math.random() * 100 + '%';
-            p.style.animationDelay = Math.random() * 15 + 's';
-            p.style.animationDuration = (10 + Math.random() * 10) + 's';
-            particlesContainer.appendChild(p);
-        }
-
-        // Language data
-        const langData = {
-            hi: { balanceLabel:'कुल बैलेंस', btnSend:'पैसे भेजें', btnRequest:'मांगें', btnScan:'QR स्कैन', btnRefresh:'रिफ्रेश',
-                  quickTitle:'त्वरित कार्रवाई', actUPI:'UPI भुगतान', actUPIDesc:'तुरंत ट्रांसफर',
-                  actTransfer:'बैंक ट्रांसफर', actTransferDesc:'NEFT/IMPS/RTGS',
-                  actBill:'बिल भुगतान', actBillDesc:'बिजली, गैस',
-                  actRecharge:'रिचार्ज', actRechargeDesc:'मोबाइल, DTH',
-                  actLoan:'लोन', actLoanDesc:'पर्सनल, गोल्ड',
-                  actInvest:'निवेश', actInvestDesc:'स्टॉक्स, म्यूचुअल',
-                  actInsurance:'बीमा', actInsuranceDesc:'लाइफ, हेल्थ',
-                  actCard:'कार्ड्स', actCardDesc:'मैनेज कार्ड्स',
-                  upiTitle:'त्वरित UPI भुगतान', btnPay:'भुगतान करें', txTitle:'हाल के लेनदेन', userName:'सिंह जी' },
-            en: { balanceLabel:'Total Balance', btnSend:'Send Money', btnRequest:'Request', btnScan:'Scan QR', btnRefresh:'Refresh',
-                  quickTitle:'Quick Actions', actUPI:'UPI Pay', actUPIDesc:'Instant transfer',
-                  actTransfer:'Bank Transfer', actTransferDesc:'NEFT/IMPS/RTGS',
-                  actBill:'Pay Bills', actBillDesc:'Electricity, Gas',
-                  actRecharge:'Recharge', actRechargeDesc:'Mobile, DTH',
-                  actLoan:'Loans', actLoanDesc:'Personal, Gold',
-                  actInvest:'Invest', actInvestDesc:'Stocks, Mutual',
-                  actInsurance:'Insurance', actInsuranceDesc:'Life, Health',
-                  actCard:'Cards', actCardDesc:'Manage cards',
-                  upiTitle:'Quick UPI Pay', btnPay:'Pay Now', txTitle:'Recent Transactions', userName:'Singh Ji' },
-            pa: { balanceLabel:'ਕੁੱਲ ਬੈਲੰਸ', btnSend:'ਪੈਸੇ ਭੇਜੋ', btnRequest:'ਮੰਗੋ', btnScan:'QR ਸਕੈਨ', btnRefresh:'ਰਿਫ੍ਰੈਸ਼',
-                  quickTitle:'ਤੁਰੰਤ ਕਾਰਵਾਈ', actUPI:'UPI ਭੁਗਤਾਨ', actUPIDesc:'ਤੁਰੰਤ ਟ੍ਰਾਂਸਫਰ',
-                  btnPay:'ਭੁਗਤਾਨ ਕਰੋ', txTitle:'ਹਾਲੀਆ ਲੇਨ-ਦੇਨ', userName:'ਸਿੰਘ ਜੀ' },
-        };
-
-        function changeLang() {
-            const lang = document.getElementById('langSelect').value;
-            const data = langData[lang] || langData['en'];
-            Object.keys(data).forEach(key => {
-                const el = document.getElementById(key);
-                if(el) el.textContent = data[key];
-            });
-        }
-
-        function openModal(type) {
-            const titles = {
-                send: '💸 Send Money', request: '🤲 Request Money', scan: '📷 Scan QR Code',
-                upi: '⚡ UPI Payment', transfer: '🏦 Bank Transfer', bill: '📄 Pay Bills',
-                recharge: '📱 Mobile Recharge', loan: '💰 Apply for Loan',
-                invest: '📈 Invest Now', insurance: '🛡️ Buy Insurance', card: '💳 Manage Cards'
-            };
-            document.getElementById('modalTitle').textContent = titles[type] || 'Action';
-            document.getElementById('modalOverlay').classList.add('active');
-        }
-
-        function closeModal(e) {
-            if(e.target === document.getElementById('modalOverlay')) {
-                document.getElementById('modalOverlay').classList.remove('active');
-            }
-        }
-
-        function fillUPI(id) {
-            document.getElementById('upiId').value = id;
-            document.getElementById('upiAmount').focus();
-        }
-
-        function upiPay() {
-            const id = document.getElementById('upiId').value;
-            const amt = document.getElementById('upiAmount').value;
-            if(!id || !amt) {
-                alert('Please enter UPI ID and Amount');
-                return;
-            }
-            alert(`🔥 UPI Payment Initiated!\nTo: ${id}\nAmount: ₹${amt}\n\n(This will connect to your Singh Ji API backend)`);
-        }
-
-        function refreshBalance() {
-            const loader = document.getElementById('refreshLoader');
-            loader.style.display = 'inline-block';
-            setTimeout(() => {
-                loader.style.display = 'none';
-                // Simulate API call
-                const newBal = (245780.50 + Math.random() * 1000 - 500).toFixed(2);
-                document.getElementById('balanceAmount').textContent = parseFloat(newBal).toLocaleString('en-IN');
-            }, 1500);
-        }
-
-        // Keyboard shortcut
-        document.addEventListener('keydown', (e) => {
-            if(e.key === 'Escape') document.getElementById('modalOverlay').classList.remove('active');
-        });
-    </script>
+    <footer class="footer">
+        <p>🍌 Singh Ji AI Ultra v5.0 — Education Hub</p>
+        <p style="margin-top:5px;">"केला मोड ON — केला नहीं होता भाई अकेला!" 🦁</p>
+        <p style="margin-top:5px; font-size:10px;">Phase 5 • 26 Languages • AI-Powered Learning</p>
+    </footer>
 </body>
 </html>
