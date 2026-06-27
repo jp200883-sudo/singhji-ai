@@ -1,0 +1,184 @@
+/* ==================== SINGH JI AI ULTRA v5.0 ==================== */
+/* 🙏 Jai Shri Ram | 👑 JP Singh Ji Kanpur | 🍌 KELA Mode ON */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    color: white;
+    min-height: 100vh;
+}
+
+/* ==================== HEADER ==================== */
+.main-header {
+    text-align: center;
+    padding: 30px 20px;
+    background: linear-gradient(90deg, #ff6b6b, #feca57, #48dbfb, #ff9ff3);
+    background-size: 300% 300%;
+    animation: gradient 5s ease infinite;
+}
+
+@keyframes gradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.logo {
+    font-size: 32px;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.owner {
+    font-size: 18px;
+    margin-top: 10px;
+    opacity: 0.9;
+}
+
+.status {
+    font-size: 16px;
+    margin-top: 5px;
+    background: rgba(0,255,0,0.2);
+    display: inline-block;
+    padding: 5px 15px;
+    border-radius: 20px;
+}
+
+/* ==================== HUB SECTIONS ==================== */
+.hub-section {
+    padding: 40px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.hub-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.hub-header h2 {
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.hub-header p {
+    font-size: 16px;
+    opacity: 0.8;
+}
+
+/* ==================== HUB GRID ==================== */
+.hub-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+/* ==================== HUB CARDS ==================== */
+.hub-card {
+    border-radius: 20px;
+    padding: 30px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid rgba(255,255,255,0.1);
+}
+
+.hub-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+}
+
+.card-icon {
+    font-size: 50px;
+    margin-bottom: 15px;
+}
+
+.hub-card h3 {
+    font-size: 18px;
+    margin-bottom: 8px;
+}
+
+.hub-card p {
+    font-size: 14px;
+    opacity: 0.9;
+    margin-bottom: 15px;
+}
+
+.btn-enter {
+    background: white;
+    border: none;
+    padding: 10px 30px;
+    border-radius: 25px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-enter:hover {
+    transform: scale(1.1);
+}
+
+/* ==================== CARD COLORS ==================== */
+.music-card { background: linear-gradient(135deg, #667eea, #764ba2); }
+.music-card .btn-enter { color: #667eea; }
+
+.video-card { background: linear-gradient(135deg, #f093fb, #f5576c); }
+.video-card .btn-enter { color: #f5576c; }
+
+.ramayan-card { background: linear-gradient(135deg, #fa709a, #fee140); }
+.ramayan-card .btn-enter { color: #fa709a; }
+
+.gaming-card { background: linear-gradient(135deg, #30cfd0, #330867); }
+.gaming-card .btn-enter { color: #330867; }
+
+.food-card { background: linear-gradient(135deg, #ff6b6b, #feca57); }
+.food-card .btn-enter { color: #ff6b6b; }
+
+.fashion-card { background: linear-gradient(135deg, #a8edea, #fed6e3); }
+.fashion-card .btn-enter { color: #333; }
+
+.health-card { background: linear-gradient(135deg, #d299c2, #fef9d7); }
+.health-card .btn-enter { color: #333; }
+
+.travel-card { background: linear-gradient(135deg, #89f7fe, #66a6ff); }
+.travel-card .btn-enter { color: #66a6ff; }
+
+.shopping-card { background: linear-gradient(135deg, #ffecd2, #fcb69f); }
+.shopping-card .btn-enter { color: #333; }
+
+/* ==================== COMING SOON ==================== */
+.coming-soon {
+    opacity: 0.5;
+    filter: grayscale(0.8);
+}
+
+.coming-soon .hub-header h2::after {
+    content: " ⏳";
+}
+
+/* ==================== FOOTER ==================== */
+.main-footer {
+    text-align: center;
+    padding: 30px 20px;
+    background: rgba(0,0,0,0.3);
+    margin-top: 40px;
+}
+
+.main-footer p {
+    margin: 5px 0;
+    opacity: 0.8;
+}
+
+/* ==================== RESPONSIVE ==================== */
+@media (max-width: 768px) {
+    .logo { font-size: 24px; }
+    .hub-header h2 { font-size: 22px; }
+    .hub-grid { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+    .card-icon { font-size: 40px; }
+}
