@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Singh Ji AI - Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #f97316;
+            --primary-dark: #ea580c;
+            --secondary: #1e293b;
+            --accent: #22c55e;
+            --danger: #ef4444;
+            --warning: #eab308;
+        }
+
+        body {
+            background: #0f172a;
+            color: #e2e8f0;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        .sidebar {
+            background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+            border-right: 1px solid #334155;
+        }
+
+        .nav-item {
+            transition: all 0.3s ease;
+            border-radius: 12px;
+            margin: 4px 12px;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .card {
+            background: linear-gradient(145deg, #1e293b 0%, #334155 100%);
+            border: 1px solid #475569;
+            border-radius: 16px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(249, 115, 22, 0.15);
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border: 1px solid #334155;
+            border-radius: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, #f97316, #ea580c);
+        }
+
+        .progress-bar {
+            background: #334155;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #f97316, #ea580c);
+            border-radius: 10px;
+            transition: width 1s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+            border: none;
+            border-radius: 12px;
+            padding: 12px 24px;
+            color: white;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(249, 115, 22, 0.4);
+        }
+
+        .video-row {
+            transition: all 0.3s ease;
+            border-radius: 12px;
+        }
+
+        .video-row:hover {
+            background: #334155;
+            transform: scale(1.01);
+        }
+
+        .platform-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-seedance { background: #fef3c7; color: #92400e; }
+        .badge-kling { background: #dbeafe; color: #1e40af; }
+        .badge-hailuo { background: #fce7f3; color: #9d174d; }
+        .badge-luma { background: #d1fae5; color: #065f46; }
+        .badge-pika { background: #e0e7ff; color: #3730a3; }
+        .badge-veo { background: #f3e8ff; color: #6b21a8; }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+            animation: pulse 2s infinite;
+        }
+
+        .status-active { background: #22c55e; }
+        .status-pending { background: #eab308; }
+        .status-failed { background: #ef4444; }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .chart-container {
+            background: #1e293b;
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid #334155;
+        }
+
+        .tab-btn {
+            padding: 10px 20px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #f97316, #ea580c);
+            color: white;
+        }
+
+        .notification {
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .quota-ring {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: conic-gradient(#f97316 var(--quota-percent), #334155 0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .quota-ring::before {
+            content: '';
+            position: absolute;
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background: #1e293b;
+        }
+
+        .quota-text {
+            position: relative;
+            z-index: 1;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #475569;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #f97316;
+        }
+    </style>
+<base target="_blank">
+</head>
+<body class="min-h-screen">
+    <div class="flex">
+        <!-- Sidebar -->
+        <aside class="sidebar w-72 h-screen fixed left-0 top-0 overflow-y-auto">
+            <div class="p-6">
+                <div class="flex items-center gap-3 mb-8">
+                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center">
+                        <i class="fas fa-bolt text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold text-white">Singh Ji AI</h1>
+                        <p class="text-xs text-gray-400">Video Aggregator v7.0</p>
+                    </div>
+                </div>
+
+                <nav class="space-y-2">
+                    <a href="#overview" class="nav-item active flex items-center gap-3 px-4 py-3 text-gray-300">
+                        <i class="fas fa-chart-line w-5"></i>
+                        <span>Overview</span>
+                    </a>
+                    <a href="#youtube" class="nav-item flex items-center gap-3 px-4 py-3 text-gray-300">
+                        <i class="fab fa-youtube w-5 text-red-500"></i>
+                        <span>YouTube Creator</span>
+                        <span class="ml-auto bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">LIVE</span>
+                    </a>
+                    <a href="#videos" class="nav-item flex items-center gap-3 px-4 py-3 text-gray-300">
+                        <i class="fas fa-video w-5"></i>
+                        <span>Video Pipeline</span>
+                    </a>
+                    <a href="#platforms" class="nav-item flex items-center gap-3 px-4 py-3 text-gray-300">
+                        <i class="fas fa-plug w-5"></i>
+                        <span>Platform Connectors</span>
+                    </a>
+                    <a href="#watermark" class="nav-item flex items-center gap-3 px-4 py-3 text-gray-300">
+                        <i class="fas fa-eraser w-5"></i>
+                        <span>Watermark Remover</span>
+                    </a>
+                    <a href="#delivery" class="nav-item flex items-center gap-3 px-4 py-3 text-gray-300">
+                        <i class="fas fa-cloud-upload-alt w-5"></i>
+                        <span>CDN Delivery</span>
+                    </a>
+                    <a href="#analytics" class="nav-item flex items-center gap-3 px-4 py-3 text-gray-300">
+                        <i class="fas fa-chart-bar w-5"></i>
+                        <span>Analytics</span>
+                    </a>
+                    <a href="#scheduler" class="nav-item flex items-center gap-3 px-4 py-3 text-gray-300">
+                        <i class="fas fa-calendar-alt w-5"></i>
+                        <span>Scheduler</span>
+                    </a>
+                    <a href="#settings" class="nav-item flex items-center gap-3 px-4 py-3 text-gray-300">
+                        <i class="fas fa-cog w-5"></i>
+                        <span>Settings</span>
+                    </a>
+                </nav>
+            </div>
+
+            <div class="p-6 mt-auto border-t border-gray-700">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-orange-400 to-red-500 flex items-center justify-center">
+                        <span class="text-white font-bold">SJ</span>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium text-white">Admin Singh</p>
+                        <p class="text-xs text-gray-400">Super Admin</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="ml-72 flex-1 p-8">
+            <!-- Header -->
+            <div class="flex justify-between items-center mb-8">
+                <div>
+                    <h2 class="text-3xl font-bold text-white">Dashboard Overview</h2>
+                    <p class="text-gray-400 mt-1">Real-time video aggregation & YouTube analytics</p>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="relative">
+                        <i class="fas fa-bell text-gray-400 text-xl cursor-pointer hover:text-orange-500"></i>
+                        <span class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full text-xs flex items-center justify-center">3</span>
+                    </div>
+                    <button class="btn-primary" onclick="generateVideo()">
+                        <i class="fas fa-magic mr-2"></i>Generate Video
+                    </button>
+                </div>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="stat-card p-6">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-gray-400 text-sm">Total Videos</p>
+                            <h3 class="text-3xl font-bold text-white mt-2">1,247</h3>
+                            <p class="text-green-400 text-sm mt-1">
+                                <i class="fas fa-arrow-up mr-1"></i>+23% this month
+                            </p>
+                        </div>
+                        <div class="w-12 h-12 rounded-xl bg-orange-500/20 flex items-center justify-center">
+                            <i class="fas fa-video text-orange-500 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stat-card p-6">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-gray-400 text-sm">YouTube Views</p>
+                            <h3 class="text-3xl font-bold text-white mt-2">89.4K</h3>
+                            <p class="text-green-400 text-sm mt-1">
+                                <i class="fas fa-arrow-up mr-1"></i>+156% this month
+                            </p>
+                        </div>
+                        <div class="w-12 h-12 rounded-xl bg-red-500/20 flex items-center justify-center">
+                            <i class="fab fa-youtube text-red-500 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stat-card p-6">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-gray-400 text-sm">Active Platforms</p>
+                            <h3 class="text-3xl font-bold text-white mt-2">4/6</h3>
+                            <p class="text-yellow-400 text-sm mt-1">
+                                <i class="fas fa-exclamation-triangle mr-1"></i>2 low credits
+                            </p>
+                        </div>
+                        <div class="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center">
+                            <i class="fas fa-plug text-blue-500 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stat-card p-6">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-gray-400 text-sm">CDN Bandwidth</p>
+                            <h3 class="text-3xl font-bold text-white mt-2">1.2 TB</h3>
+                            <p class="text-gray-400 text-sm mt-1">Bunny Stream</p>
+                        </div>
+                        <div class="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center">
+                            <i class="fas fa-cloud text-purple-500 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- YouTube Analytics Section -->
+            <div id="youtube" class="mb-8">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-2xl font-bold text-white">
+                        <i class="fab fa-youtube text-red-500 mr-2"></i>YouTube Analytics
+                    </h3>
+                    <div class="flex gap-2">
+                        <button class="tab-btn active" onclick="switchTab('views')">Views</button>
+                        <button class="tab-btn" onclick="switchTab('engagement')">Engagement</button>
+                        <button class="tab-btn" onclick="switchTab('revenue')">Revenue</button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Main Chart -->
+                    <div class="lg:col-span-2 chart-container">
+                        <div class="flex justify-between items-center mb-4">
+                            <h4 class="text-lg font-semibold text-white">Views Over Time</h4>
+                            <select class="bg-gray-700 text-white rounded-lg px-3 py-1 text-sm border border-gray-600">
+                                <option>Last 7 Days</option>
+                                <option>Last 30 Days</option>
+                                <option>Last 90 Days</option>
+                            </select>
+                        </div>
+                        <canvas id="viewsChart" height="200"></canvas>
+                    </div>
+
+                    <!-- Side Stats -->
+                    <div class="space-y-4">
+                        <div class="card p-5">
+                            <h4 class="text-gray-400 text-sm mb-3">Channel Health</h4>
+                            <div class="space-y-3">
+                                <div>
+                                    <div class="flex justify-between text-sm mb-1">
+                                        <span class="text-gray-300">Subscribers</span>
+                                        <span class="text-white font-semibold">12.4K</span>
+                                    </div>
+                                    <div class="progress-bar h-2">
+                                        <div class="progress-fill h-2" style="width: 62%"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-sm mb-1">
+                                        <span class="text-gray-300">Watch Time</span>
+                                        <span class="text-white font-semibold">4.2K hrs</span>
+                                    </div>
+                                    <div class="progress-bar h-2">
+                                        <div class="progress-fill h-2" style="width: 45%"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-sm mb-1">
+                                        <span class="text-gray-300">CTR</span>
+                                        <span class="text-white font-semibold">8.7%</span>
+                                    </div>
+                                    <div class="progress-bar h-2">
+                                        <div class="progress-fill h-2" style="width: 87%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card p-5">
+                            <h4 class="text-gray-400 text-sm mb-3">YouTube Quota</h4>
+                            <div class="flex items-center justify-center">
+                                <div class="quota-ring" style="--quota-percent: 48%">
+                                    <span class="quota-text text-white">48%</span>
+                                </div>
+                            </div>
+                            <p class="text-center text-gray-400 text-sm mt-3">
+                                4,800 / 10,000 units used<br>
+                                <span class="text-orange-400">~3 uploads remaining today</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Platform Status -->
+            <div id="platforms" class="mb-8">
+                <h3 class="text-2xl font-bold text-white mb-6">
+                    <i class="fas fa-server text-orange-500 mr-2"></i>Platform Status
+                </h3>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Seedance -->
+                    <div class="card p-5">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-lg bg-yellow-500/20 flex items-center justify-center">
+                                    <i class="fas fa-seedling text-yellow-500"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-white font-semibold">Seedance 2.0</h4>
+                                    <span class="status-dot status-active"></span>
+                                    <span class="text-green-400 text-sm">Active</span>
+                                </div>
+                            </div>
+                            <span class="platform-badge badge-seedance">100/day</span>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-400">Credits Left</span>
+                                <span class="text-white">87/100</span>
+                            </div>
+                            <div class="progress-bar h-2">
+                                <div class="progress-fill h-2" style="width: 87%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Kling -->
+                    <div class="card p-5">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center">
+                                    <i class="fas fa-bolt text-blue-500"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-white font-semibold">Kling AI</h4>
+                                    <span class="status-dot status-active"></span>
+                                    <span class="text-green-400 text-sm">Active</span>
+                                </div>
+                            </div>
+                            <span class="platform-badge badge-kling">66/day</span>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-400">Credits Left</span>
+                                <span class="text-white">12/66</span>
+                            </div>
+                            <div class="progress-bar h-2">
+                                <div class="progress-fill h-2 bg-red-500" style="width: 18%"></div>
+                            </div>
+                            <p class="text-red-400 text-xs">⚠️ Low credits! Refill soon.</p>
+                        </div>
+                    </div>
+
+                    <!-- Hailuo -->
+                    <div class="card p-5">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-lg bg-pink-500/20 flex items-center justify-center">
+                                    <i class="fas fa-wave-square text-pink-500"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-white font-semibold">Hailuo AI</h4>
+                                    <span class="status-dot status-active"></span>
+                                    <span class="text-green-400 text-sm">Active</span>
+                                </div>
+                            </div>
+                            <span class="platform-badge badge-hailuo">3/day</span>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-400">Credits Left</span>
+                                <span class="text-white">1/3</span>
+                            </div>
+                            <div class="progress-bar h-2">
+                                <div class="progress-fill h-2 bg-red-500" style="width: 33%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Luma -->
+                    <div class="card p-5">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-lg bg-green-500/20 flex items-center justify-center">
+                                    <i class="fas fa-sun text-green-500"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-white font-semibold">Luma Ray</h4>
+                                    <span class="status-dot status-active"></span>
+                                    <span class="text-green-400 text-sm">Active</span>
+                                </div>
+                            </div>
+                            <span class="platform-badge badge-luma">8/month</span>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-400">Credits Left</span>
+                                <span class="text-white">5/8</span>
+                            </div>
+                            <div class="progress-bar h-2">
+                                <div class="progress-fill h-2" style="width: 62%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pika -->
+                    <div class="card p-5">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-lg bg-indigo-500/20 flex items-center justify-center">
+                                    <i class="fas fa-paw text-indigo-500"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-white font-semibold">Pika Labs</h4>
+                                    <span class="status-dot status-pending"></span>
+                                    <span class="text-yellow-400 text-sm">Pending</span>
+                                </div>
+                            </div>
+                            <span class="platform-badge badge-pika">150 credits</span>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-400">Credits Left</span>
+                                <span class="text-white">--</span>
+                            </div>
+                            <div class="progress-bar h-2">
+                                <div class="progress-fill h-2 bg-gray-500" style="width: 0%"></div>
+                            </div>
+                            <p class="text-yellow-400 text-xs">⏳ API key pending setup</p>
+                        </div>
+                    </div>
+
+                    <!-- Veo -->
+                    <div class="card p-5">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center">
+                                    <i class="fab fa-google text-purple-500"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-white font-semibold">Google Veo</h4>
+                                    <span class="status-dot status-active"></span>
+                                    <span class="text-green-400 text-sm">Active</span>
+                                </div>
+                            </div>
+                            <span class="platform-badge badge-veo">10/month</span>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-400">Credits Left</span>
+                                <span class="text-white">8/10</span>
+                            </div>
+                            <div class="progress-bar h-2">
+                                <div class="progress-fill h-2" style="width: 80%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Videos Table -->
+            <div id="videos" class="mb-8">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-2xl font-bold text-white">
+                        <i class="fas fa-film text-orange-500 mr-2"></i>Recent Videos
+                    </h3>
+                    <div class="flex gap-2">
+                        <input type="text" placeholder="Search videos..." 
+                               class="bg-gray-700 text-white rounded-lg px-4 py-2 text-sm border border-gray-600 focus:border-orange-500 focus:outline-none">
+                        <button class="bg-gray-700 text-white rounded-lg px-4 py-2 text-sm hover:bg-gray-600">
+                            <i class="fas fa-filter mr-1"></i>Filter
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card overflow-hidden">
+                    <table class="w-full">
+                        <thead class="bg-gray-800/50">
+                            <tr>
+                                <th class="text-left text-gray-400 text-sm font-medium p-4">Video</th>
+                                <th class="text-left text-gray-400 text-sm font-medium p-4">Platform</th>
+                                <th class="text-left text-gray-400 text-sm font-medium p-4">Status</th>
+                                <th class="text-left text-gray-400 text-sm font-medium p-4">Views</th>
+                                <th class="text-left text-gray-400 text-sm font-medium p-4">Duration</th>
+                                <th class="text-left text-gray-400 text-sm font-medium p-4">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-700">
+                            <tr class="video-row">
+                                <td class="p-4">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-16 h-10 rounded-lg bg-gray-700 flex items-center justify-center">
+                                            <i class="fas fa-play text-gray-500"></i>
+                                        </div>
+                                        <div>
+                                            <p class="text-white font-medium text-sm">AI se Paise Kaise Kamaye 2026</p>
+                                            <p class="text-gray-500 text-xs">Generated 2 hours ago</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="p-4"><span class="platform-badge badge-seedance">Seedance</span></td>
+                                <td class="p-4"><span class="text-green-400 text-sm"><i class="fas fa-check-circle mr-1"></i>Published</span></td>
+                                <td class="p-4 text-white">1,234</td>
+                                <td class="p-4 text-gray-400">2:45</td>
+                                <td class="p-4">
+                                    <div class="flex gap-2">
+                                        <button class="text-blue-400 hover:text-blue-300"><i class="fas fa-eye"></i></button>
+                                        <button class="text-green-400 hover:text-green-300"><i class="fas fa-download"></i></button>
+                                        <button class="text-red-400 hover:text-red-300"><i class="fas fa-trash"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="video-row">
+                                <td class="p-4">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-16 h-10 rounded-lg bg-gray-700 flex items-center justify-center">
+                                            <i class="fas fa-play text-gray-500"></i>
+                                        </div>
+                                        <div>
+                                            <p class="text-white font-medium text-sm">Top 5 AI Tools India</p>
+                                            <p class="text-gray-500 text-xs">Generated 5 hours ago</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="p-4"><span class="platform-badge badge-kling">Kling</span></td>
+                                <td class="p-4"><span class="text-yellow-400 text-sm"><i class="fas fa-clock mr-1"></i>Processing</span></td>
+                                <td class="p-4 text-gray-500">--</td>
+                                <td class="p-4 text-gray-400">1:30</td>
+                                <td class="p-4">
+                                    <div class="flex gap-2">
+                                        <button class="text-blue-400 hover:text-blue-300"><i class="fas fa-eye"></i></button>
+                                        <button class="text-gray-500 cursor-not-allowed"><i class="fas fa-download"></i></button>
+                                        <button class="text-red-400 hover:text-red-300"><i class="fas fa-trash"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="video-row">
+                                <td class="p-4">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-16 h-10 rounded-lg bg-gray-700 flex items-center justify-center">
+                                            <i class="fas fa-play text-gray-500"></i>
+                                        </div>
+                                        <div>
+                                            <p class="text-white font-medium text-sm">Morning Motivation Routine</p>
+                                            <p class="text-gray-500 text-xs">Generated 1 day ago</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="p-4"><span class="platform-badge badge-luma">Luma</span></td>
+                                <td class="p-4"><span class="text-green-400 text-sm"><i class="fas fa-check-circle mr-1"></i>Published</span></td>
+                                <td class="p-4 text-white">5,678</td>
+                                <td class="p-4 text-gray-400">3:15</td>
+                                <td class="p-4">
+                                    <div class="flex gap-2">
+                                        <button class="text-blue-400 hover:text-blue-300"><i class="fas fa-eye"></i></button>
+                                        <button class="text-green-400 hover:text-green-300"><i class="fas fa-download"></i></button>
+                                        <button class="text-red-400 hover:text-red-300"><i class="fas fa-trash"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Scheduler Calendar -->
+            <div id="scheduler" class="mb-8">
+                <h3 class="text-2xl font-bold text-white mb-6">
+                    <i class="fas fa-calendar-alt text-orange-500 mr-2"></i>Content Scheduler
+                </h3>
+
+                <div class="card p-6">
+                    <div class="grid grid-cols-7 gap-2 mb-4">
+                        <div class="text-center text-gray-400 text-sm py-2">Mon</div>
+                        <div class="text-center text-gray-400 text-sm py-2">Tue</div>
+                        <div class="text-center text-gray-400 text-sm py-2">Wed</div>
+                        <div class="text-center text-gray-400 text-sm py-2">Thu</div>
+                        <div class="text-center text-gray-400 text-sm py-2">Fri</div>
+                        <div class="text-center text-gray-400 text-sm py-2">Sat</div>
+                        <div class="text-center text-gray-400 text-sm py-2">Sun</div>
+                    </div>
+
+                    <div class="grid grid-cols-7 gap-2">
+                        <!-- Week 1 -->
+                        <div class="bg-gray-800 rounded-lg p-3 min-h-[100px]">
+                            <span class="text-gray-500 text-sm">1</span>
+                        </div>
+                        <div class="bg-gray-800 rounded-lg p-3 min-h-[100px]">
+                            <span class="text-gray-500 text-sm">2</span>
+                            <div class="mt-2 bg-orange-500/20 rounded px-2 py-1 text-xs text-orange-400 truncate">
+                                AI Tools Video
+                            </div>
+                        </div>
+                        <div class="bg-gray-800 rounded-lg p-3 min-h-[100px]">
+                            <span class="text-gray-500 text-sm">3</span>
+                        </div>
+                        <div class="bg-gray-800 rounded-lg p-3 min-h-[100px]">
+                            <span class="text-gray-500 text-sm">4</span>
+                            <div class="mt-2 bg-green-500/20 rounded px-2 py-1 text-xs text-green-400 truncate">
+                                Motivation
+                            </div>
+                        </div>
+                        <div class="bg-gray-800 rounded-lg p-3 min-h-[100px]">
+                            <span class="text-gray-500 text-sm">5</span>
+                        </div>
+                        <div class="bg-gray-800 rounded-lg p-3 min-h-[100px]">
+                            <span class="text-gray-500 text-sm">6</span>
+                            <div class="mt-2 bg-blue-500/20 rounded px-2 py-1 text-xs text-blue-400 truncate">
+                                Tech Review
+                            </div>
+                        </div>
+                        <div class="bg-gray-800 rounded-lg p-3 min-h-[100px]">
+                            <span class="text-gray-500 text-sm">7</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Watermark Remover Panel -->
+            <div id="watermark" class="mb-8">
+                <h3 class="text-2xl font-bold text-white mb-6">
+                    <i class="fas fa-eraser text-orange-500 mr-2"></i>Watermark Remover
+                </h3>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="card p-6">
+                        <h4 class="text-white font-semibold mb-4">Upload Video</h4>
+                        <div class="border-2 border-dashed border-gray-600 rounded-xl p-8 text-center hover:border-orange-500 transition-colors cursor-pointer" 
+                             onclick="document.getElementById('watermarkInput').click()">
+                            <i class="fas fa-cloud-upload-alt text-4xl text-gray-500 mb-4"></i>
+                            <p class="text-gray-400">Click to upload or drag & drop</p>
+                            <p class="text-gray-600 text-sm mt-2">MP4, MOV, AVI (Max 500MB)</p>
+                            <input type="file" id="watermarkInput" class="hidden" accept="video/*">
+                        </div>
+
+                        <div class="mt-4">
+                            <label class="text-gray-400 text-sm">Source Platform</label>
+                            <select class="w-full bg-gray-700 text-white rounded-lg px-4 py-2 mt-1 border border-gray-600">
+                                <option value="seedance">Seedance 2.0</option>
+                                <option value="kling">Kling AI</option>
+                                <option value="hailuo">Hailuo AI</option>
+                                <option value="luma">Luma Ray</option>
+                                <option value="pika">Pika Labs</option>
+                                <option value="veo">Google Veo</option>
+                            </select>
+                        </div>
+
+                        <button class="btn-primary w-full mt-4" onclick="removeWatermark()">
+                            <i class="fas fa-magic mr-2"></i>Remove Watermark
+                        </button>
+                    </div>
+
+                    <div class="card p-6">
+                        <h4 class="text-white font-semibold mb-4">Removal History</h4>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between p-3 bg-gray-800 rounded-lg">
+                                <div class="flex items-center gap-3">
+                                    <i class="fas fa-check-circle text-green-400"></i>
+                                    <div>
+                                        <p class="text-white text-sm">video_seedance_001.mp4</p>
+                                        <p class="text-gray-500 text-xs">WaveSpeed AI • 2 min ago</p>
+                                    </div>
+                                </div>
+                                <button class="text-green-400 hover:text-green-300"><i class="fas fa-download"></i></button>
+                            </div>
+                            <div class="flex items-center justify-between p-3 bg-gray-800 rounded-lg">
+                                <div class="flex items-center gap-3">
+                                    <i class="fas fa-check-circle text-green-400"></i>
+                                    <div>
+                                        <p class="text-white text-sm">video_kling_042.mp4</p>
+                                        <p class="text-gray-500 text-xs">Manual Inpaint • 1 hour ago</p>
+                                    </div>
+                                </div>
+                                <button class="text-green-400 hover:text-green-300"><i class="fas fa-download"></i></button>
+                            </div>
+                            <div class="flex items-center justify-between p-3 bg-gray-800 rounded-lg">
+                                <div class="flex items-center gap-3">
+                                    <i class="fas fa-times-circle text-red-400"></i>
+                                    <div>
+                                        <p class="text-white text-sm">video_hailuo_015.mp4</p>
+                                        <p class="text-gray-500 text-xs">Failed • 3 hours ago</p>
+                                    </div>
+                                </div>
+                                <button class="text-orange-400 hover:text-orange-300"><i class="fas fa-redo"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CDN Delivery Panel -->
+            <div id="delivery" class="mb-8">
+                <h3 class="text-2xl font-bold text-white mb-6">
+                    <i class="fas fa-cloud-upload-alt text-orange-500 mr-2"></i>CDN Delivery
+                </h3>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="card p-6">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-orange-500/20 flex items-center justify-center">
+                                <i class="fas fa-rocket text-orange-500 text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-semibold">Bunny Stream</h4>
+                                <span class="text-green-400 text-sm">● Active</span>
+                            </div>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-400">Storage Used</span>
+                                <span class="text-white">45.2 GB</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-400">Bandwidth</span>
+                                <span class="text-white">1.2 TB</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-400">Cost</span>
+                                <span class="text-green-400">$28/mo</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card p-6">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center">
+                                <i class="fab fa-cloudflare text-purple-500 text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-semibold">Cloudflare R2</h4>
+                                <span class="text-green-400 text-sm">● Active</span>
+                            </div>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-400">Storage Used</span>
+                                <span class="text-white">12.8 GB</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-400">Egress</span>
+                                <span class="text-white">Free</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-400">Cost</span>
+                                <span class="text-green-400">$5/mo</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card p-6">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center">
+                                <i class="fas fa-stream text-blue-500 text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-semibold">Cloudflare Stream</h4>
+                                <span class="text-gray-500 text-sm">○ Standby</span>
+                            </div>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-400">Minutes Stored</span>
+                                <span class="text-white">0</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-400">Minutes Delivered</span>
+                                <span class="text-white">0</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-400">Cost</span>
+                                <span class="text-gray-400">$0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Views Chart
+        const ctx = document.getElementById('viewsChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [{
+                    label: 'Views',
+                    data: [1200, 1900, 1500, 2200, 2800, 3500, 3100],
+                    borderColor: '#f97316',
+                    backgroundColor: 'rgba(249, 115, 22, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }, {
+                    label: 'Subscribers',
+                    data: [50, 80, 60, 120, 150, 200, 180],
+                    borderColor: '#22c55e',
+                    backgroundColor: 'rgba(34, 197, 94, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        labels: { color: '#e2e8f0' }
+                    }
+                },
+                scales: {
+                    y: {
+                        ticks: { color: '#94a3b8' },
+                        grid: { color: '#334155' }
+                    },
+                    x: {
+                        ticks: { color: '#94a3b8' },
+                        grid: { color: '#334155' }
+                    }
+                }
+            }
+        });
+
+        // Tab switching
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        // Generate video
+        function generateVideo() {
+            alert('Video generation pipeline start ho raha hai! 🎬');
+        }
+
+        // Remove watermark
+        function removeWatermark() {
+            alert('Watermark removal shuru! Processing... 🧹');
+        }
+
+        // Nav item click
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
