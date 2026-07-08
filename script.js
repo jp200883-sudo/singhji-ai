@@ -1,277 +1,127 @@
-// ==================== SINGH JI AI ULTRA v5.0 ====================
+// ==================== SINGH JI AI ULTRA v7.0 ====================
 // 🙏 Jai Shri Ram | 👑 JP Singh Ji Kanpur | 🍌 KELA Mode ON
-// केला नहीं होता भाई अकेला!
 
-// ==================== API BASE URL ====================
-const API_URL = "https://singhji-api.onrender.com";
+// ==================== HYBRID API SETUP ====================
+// Primary: Railway (24/7 live)
+// Fallback: Render (has all API keys but 15min sleep)
+const API_URL_PRIMARY = "https://singhji-api-production-85ca.up.railway.app";
+const API_URL_FALLBACK = "https://singhji-api.onrender.com";
+const API_URL = API_URL_PRIMARY; // Default to Railway
 
-// ==================== 🎵 MUSIC ====================
-function openMusic() {
-    window.location.href = "#music-section";
-    console.log("🎵 Music Hub opened");
-}
-
-async function searchMusic(query) {
+// ==================== HYBRID FETCH ====================
+async function hybridFetch(endpoint, options = {}) {
+    // Try Railway first
     try {
-        const response = await fetch(`${API_URL}/entertainment/music/search?query=${query}`);
-        const data = await response.json();
-        console.log("🎵 Music search:", data);
-        return data;
-    } catch (error) {
-        console.error("❌ Music search error:", error);
-    }
-}
-
-async function getTrendingMusic() {
-    try {
-        const response = await fetch(`${API_URL}/entertainment/music/trending`);
-        const data = await response.json();
-        console.log("🔥 Trending music:", data);
-        return data;
-    } catch (error) {
-        console.error("❌ Trending music error:", error);
-    }
-}
-
-// ==================== 🎬 VIDEO ====================
-function openVideo() {
-    window.location.href = "#video-section";
-    console.log("🎬 Video Hub opened");
-}
-
-async function searchVideo(query) {
-    try {
-        const response = await fetch(`${API_URL}/entertainment/video/search?query=${query}`);
-        const data = await response.json();
-        console.log("🎬 Video search:", data);
-        return data;
-    } catch (error) {
-        console.error("❌ Video search error:", error);
-    }
-}
-
-async function getVideoCatalog(category) {
-    try {
-        const url = category 
-            ? `${API_URL}/entertainment/video/catalog?category=${category}`
-            : `${API_URL}/entertainment/video/catalog`;
-        const response = await fetch(url);
-        const data = await response.json();
-        console.log("📂 Video catalog:", data);
-        return data;
-    } catch (error) {
-        console.error("❌ Video catalog error:", error);
-    }
-}
-
-async function getLiveTV() {
-    try {
-        const response = await fetch(`${API_URL}/entertainment/video/livetv`);
-        const data = await response.json();
-        console.log("📺 Live TV:", data);
-        return data;
-    } catch (error) {
-        console.error("❌ Live TV error:", error);
-    }
-}
-
-// ==================== 📖 RAMAYAN & PUJA ====================
-function openRamayan() {
-    window.location.href = "#ramayan-section";
-    console.log("📖 Ramayan Hub opened");
-}
-
-async function getRamayanChapters() {
-    try {
-        const response = await fetch(`${API_URL}/entertainment/ramayan/chapters`);
-        const data = await response.json();
-        console.log("📖 Ramayan chapters:", data);
-        return data;
-    } catch (error) {
-        console.error("❌ Ramayan error:", error);
-    }
-}
-
-async function getRamayanAudio(kand, chapter) {
-    try {
-        const response = await fetch(`${API_URL}/entertainment/ramayan/audio/${kand}/${chapter}`);
-        const data = await response.json();
-        console.log("🎵 Ramayan audio:", data);
-        return data;
-    } catch (error) {
-        console.error("❌ Ramayan audio error:", error);
-    }
-}
-
-async function getBhagwatChapters() {
-    try {
-        const response = await fetch(`${API_URL}/entertainment/ramayan/bhagwat/chapters`);
-        const data = await response.json();
-        console.log("🙏 Bhagwat Gita:", data);
-        return data;
-    } catch (error) {
-        console.error("❌ Bhagwat error:", error);
-    }
-}
-
-async function getPujaList() {
-    try {
-        const response = await fetch(`${API_URL}/entertainment/ramayan/puja`);
-        const data = await response.json();
-        console.log("🙏 Puja list:", data);
-        return data;
-    } catch (error) {
-        console.error("❌ Puja error:", error);
-    }
-}
-
-async function getAartiCollection() {
-    try {
-        const response = await fetch(`${API_URL}/entertainment/ramayan/aarti`);
-        const data = await response.json();
-        console.log("🔔 Aarti collection:", data);
-        return data;
-    } catch (error) {
-        console.error("❌ Aarti error:", error);
-    }
-}
-
-async function getPanchang() {
-    try {
-        const response = await fetch(`${API_URL}/entertainment/ramayan/panchang`);
-        const data = await response.json();
-        console.log("📅 Panchang:", data);
-        return data;
-    } catch (error) {
-        console.error("❌ Panchang error:", error);
-    }
-}
-
-// ==================== 🎮 GAMING ====================
-function openGaming() {
-    window.location.href = "#gaming-section";
-    console.log("🎮 Gaming Hub opened");
-}
-
-async function getGamingMap() {
-    try {
-        const response = await fetch(`${API_URL}/entertainment/gaming/map`);
-        const data = await response.json();
-        console.log("🗺️ Gaming map:", data);
-        return data;
-    } catch (error) {
-        console.error("❌ Gaming map error:", error);
-    }
-}
-
-async function playGame(gameId) {
-    try {
-        const response = await fetch(`${API_URL}/entertainment/gaming/play/${gameId}`);
-        const data = await response.json();
-        console.log("🎮 Play game:", data);
-        return data;
-    } catch (error) {
-        console.error("❌ Play game error:", error);
-    }
-}
-
-async function getLeaderboard() {
-    try {
-        const response = await fetch(`${API_URL}/entertainment/gaming/leaderboard`);
-        const data = await response.json();
-        console.log("🏆 Leaderboard:", data);
-        return data;
-    } catch (error) {
-        console.error("❌ Leaderboard error:", error);
-    }
-}
-
-async function submitScore(gameId, playerName, score) {
-    try {
-        const response = await fetch(`${API_URL}/entertainment/gaming/score?game_id=${gameId}&player_name=${playerName}&score=${score}`, {
-            method: 'POST'
+        const response = await fetch(`${API_URL_PRIMARY}${endpoint}`, {
+            ...options,
+            signal: AbortSignal.timeout(8000) // 8 second timeout
         });
-        const data = await response.json();
-        console.log("🎯 Score submitted:", data);
-        return data;
-    } catch (error) {
-        console.error("❌ Score submit error:", error);
+        if (response.ok) {
+            const data = await response.json();
+            data._source = "Railway";
+            return data;
+        }
+    } catch (e) {
+        console.log("Railway failed, trying Render fallback...");
     }
-}
-
-async function getDailyReward() {
+    
+    // Fallback to Render
     try {
-        const response = await fetch(`${API_URL}/entertainment/gaming/daily_reward`);
-        const data = await response.json();
-        console.log("🎁 Daily reward:", data);
-        return data;
-    } catch (error) {
-        console.error("❌ Daily reward error:", error);
+        const response = await fetch(`${API_URL_FALLBACK}${endpoint}`, {
+            ...options,
+            signal: AbortSignal.timeout(15000) // 15 second timeout (Render may be sleeping)
+        });
+        if (response.ok) {
+            const data = await response.json();
+            data._source = "Render (Fallback)";
+            return data;
+        }
+    } catch (e) {
+        console.error("Both APIs failed:", e);
     }
+    
+    return { error: "Both APIs unavailable", _source: "none" };
 }
 
-// ==================== 🍔 LIFESTYLE (PHASE 3) ====================
-function openFood() {
-    window.location.href = "#food-section";
-    console.log("🍕 Food Hub opened");
+// ==================== 🌡️ WEATHER ====================
+async function getWeather(city) {
+    const data = await hybridFetch(`/api/weather/${encodeURIComponent(city)}`);
+    console.log("🌡️ Weather:", data);
+    return data;
 }
 
-function openFashion() {
-    window.location.href = "#fashion-section";
-    console.log("👗 Fashion Hub opened");
+// ==================== 📰 NEWS ====================
+async function getNews() {
+    const data = await hybridFetch("/api/news/latest");
+    console.log("📰 News:", data);
+    return data;
 }
 
-function openHealth() {
-    window.location.href = "#health-section";
-    console.log("💊 Health Hub opened");
+// ==================== 🤖 SWARM ====================
+async function getSwarmStatus() {
+    const data = await hybridFetch("/api/swarm/");
+    console.log("🤖 Swarm:", data);
+    return data;
 }
 
-function openTravel() {
-    window.location.href = "#travel-section";
-    console.log("✈️ Travel Hub opened");
+async function executeAgent(agentId, task) {
+    const data = await hybridFetch(`/api/swarm/agent/${agentId}/execute`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ task })
+    });
+    console.log("🤖 Agent executed:", data);
+    return data;
 }
 
-function openShopping() {
-    window.location.href = "#shopping-section";
-    console.log("🛒 Shopping Hub opened");
+// ==================== 💰 TAX CALCULATOR ====================
+async function calculateTax(income, regime = "new") {
+    const data = await hybridFetch("/api/retirement/tax-calculate", {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ income, regime })
+    });
+    console.log("💰 Tax:", data);
+    return data;
+}
+
+// ==================== 🧠 MEMORY ====================
+async function saveMemory(key, value) {
+    const data = await hybridFetch("/api/memory/", {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ key, value })
+    });
+    console.log("🧠 Memory saved:", data);
+    return data;
+}
+
+async function getMemory(key) {
+    const data = await hybridFetch(`/api/memory/${encodeURIComponent(key)}`);
+    console.log("🧠 Memory:", data);
+    return data;
 }
 
 // ==================== 📊 SYSTEM STATUS ====================
 async function checkSystemStatus() {
-    try {
-        const response = await fetch(`${API_URL}/status`);
-        const data = await response.json();
-        console.log("📊 System status:", data);
-        return data;
-    } catch (error) {
-        console.error("❌ Status check error:", error);
-    }
+    const data = await hybridFetch("/api/status");
+    console.log("📊 Status:", data);
+    return data;
 }
 
 // ==================== 🔔 AUTO CHECK ON LOAD ====================
 document.addEventListener('DOMContentLoaded', function() {
-    console.log("🙏 Singh Ji AI Ultra v5.0 Loaded!");
+    console.log("🙏 Singh Ji AI Ultra v7.0 Hybrid Loaded!");
     console.log("👑 JP Singh Ji Kanpur");
-    console.log("🍌 KELA Mode ON — केला नहीं होता भाई अकेला!");
+    console.log("🍌 KELA Mode ON");
+    console.log("🔗 Primary API:", API_URL_PRIMARY);
+    console.log("🔗 Fallback API:", API_URL_FALLBACK);
     
-    // Auto check system status
     checkSystemStatus();
 });
 
-// ==================== 🎯 UTILITY FUNCTIONS ====================
-function showLoading() {
-    console.log("⏳ Loading...");
-}
-
-function hideLoading() {
-    console.log("✅ Loaded!");
-}
-
-function showError(message) {
-    console.error("❌ Error:", message);
-    alert("❌ " + message);
-}
-
-function showSuccess(message) {
-    console.log("✅ Success:", message);
-}
+// ==================== 🎯 UTILITY ====================
+function showLoading() { console.log("⏳ Loading..."); }
+function hideLoading() { console.log("✅ Loaded!"); }
+function showError(msg) { console.error("❌", msg); alert("❌ " + msg); }
+function showSuccess(msg) { console.log("✅", msg); }
