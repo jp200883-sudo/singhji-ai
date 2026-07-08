@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Railway Dashboard — Singh Ji AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--gold:#FFD700;--dark-gold:#B8860B;--royal:#1a237e;--deep:#0d1642;--success:#00c853;--warn:#ffc107;--danger:#ff5252;--glass:rgba(255,255,255,0.06);--border:rgba(255,255,255,0.12);}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+body{background:linear-gradient(135deg,#0d1642,#1a237e 50%,#0d1642);color:#fff;min-height:100vh;}
+.header{background:linear-gradient(90deg,var(--deep),var(--royal));padding:16px 28px;display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid var(--gold);position:sticky;top:0;z-index:10;}
+.logo{display:flex;align-items:center;gap:12px;}
+.logo-icon{width:50px;height:50px;border-radius:14px;background:linear-gradient(135deg,var(--gold),var(--dark-gold));display:flex;align-items:center;justify-content:center;font-weight:900;color:var(--deep);font-size:20px;}
+.logo-text h1{font-size:20px;font-weight:800;color:var(--gold);letter-spacing:0.5px;}
+.logo-text p{font-size:11px;color:rgba(255,255,255,0.55);}
+.back-btn{background:var(--glass);border:1px solid var(--border);color:#fff;padding:9px 18px;border-radius:22px;font-size:12px;font-weight:600;cursor:pointer;transition:.2s;text-decoration:none;display:inline-block;}
+.back-btn:hover{background:rgba(255,255,255,0.12);}
+.hero{text-align:center;padding:44px 20px 24px;}
+.hero h2{font-size:30px;font-weight:900;margin-bottom:8px;}
+.hero h2 span{color:var(--gold);}
+.hero p{font-size:14px;color:rgba(255,255,255,0.6);max-width:560px;margin:0 auto;}
+.status-row{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin:26px 0 8px;}
+.pill{background:var(--glass);border:1px solid var(--border);border-radius:30px;padding:8px 18px;font-size:12.5px;display:flex;align-items:center;gap:8px;}
+.dot{width:8px;height:8px;border-radius:50%;}
+.dot.live{background:var(--success);animation:blink 1.6s infinite;}
+.dot.down{background:var(--danger);}
+.dot.checking{background:var(--warn);animation:blink 0.8s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.modules-wrap{max-width:1300px;margin:0 auto;padding:30px 24px 60px;}
+.modules-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:18px;flex-wrap:wrap;gap:8px;}
+.modules-head h3{font-size:16px;color:rgba(255,255,255,0.85);font-weight:700;}
+.modules-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;}
+.mod-card{background:var(--glass);border:1px solid var(--border);border-radius:16px;padding:20px;transition:.25s;position:relative;overflow:hidden;}
+.mod-card:hover{border-color:var(--gold);transform:translateY(-3px);}
+.mod-card h3{font-size:16px;font-weight:700;color:var(--gold);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.mod-card p{font-size:12px;color:rgba(255,255,255,0.6);margin-bottom:8px;}
+.input-group{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;}
+input,select{background:rgba(255,255,255,0.08);border:1px solid var(--border);color:#fff;padding:10px 14px;border-radius:10px;font-size:13px;flex:1;min-width:120px;}
+input::placeholder{color:rgba(255,255,255,0.3);}
+select option{background:var(--deep);color:#fff;}
+.btn{background:linear-gradient(135deg,var(--gold),var(--dark-gold));color:var(--deep);border:none;padding:10px 20px;border-radius:22px;font-size:12px;font-weight:700;cursor:pointer;transition:.2s;}
+.btn:hover{transform:scale(1.05);box-shadow:0 5px 20px rgba(255,215,0,0.3);}
+.btn-secondary{background:var(--glass);color:#fff;border:1px solid var(--border);}
+.output{background:rgba(0,0,0,0.3);border-radius:10px;padding:15px;margin-top:12px;font-family:monospace;font-size:11.5px;min-height:60px;max-height:200px;overflow-y:auto;white-space:pre-wrap;word-break:break-word;}
+.loading{color:var(--gold);animation:pulse 1s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
+.footer{text-align:center;padding:26px;border-top:1px solid var(--border);color:rgba(255,255,255,0.35);font-size:11.5px;}
+@media(max-width:600px){.hero h2{font-size:22px}.header{padding:14px 16px}.modules-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="logo">
+    <div class="logo-icon">SJ</div>
+    <div class="logo-text">
+      <h1>Railway Dashboard</h1>
+      <p>330 Agents | Tax | Memory | Admin</p>
+    </div>
+  </div>
+  <a href="index.html" class="back-btn">← Back to Main</a>
+</header>
+
+<section class="hero">
+  <h2>🦁 <span>Sarwan 330</span> Agent Swarm</h2>
+  <p>Railway server se real-time data — 330 agents, tax calculator, memory store, admin stats.</p>
+  <div class="status-row">
+    <div class="pill"><span class="dot checking" id="railwayDot"></span><span id="railwayText">Checking...</span></div>
+    <div class="pill"><span class="dot checking" id="agentDot"></span><span id="agentText">Agents: --</span></div>
+  </div>
+</section>
+
+<section class="modules-wrap">
+  <div class="modules-head"><h3>🐝 330 Agent Swarm</h3></div>
+  <div class="modules-grid">
+    <div class="mod-card">
+      <h3>📊 Swarm Status</h3>
+      <p>Total agents, active count, queue status</p>
+      <button class="btn" onclick="getSwarmStatus()">Check Status</button>
+      <div class="output" id="swarmOutput">Click to check...</div>
+    </div>
+    <div class="mod-card">
+      <h3>⚡ Execute Agent</h3>
+      <p>Send task to any active agent</p>
+      <div class="input-group">
+        <input type="text" id="agentId" placeholder="Agent ID (e.g. agent_001)" value="agent_001">
+        <input type="text" id="agentTask" placeholder="Task" value="system_check">
+      </div>
+      <button class="btn" onclick="executeAgent()">Execute</button>
+      <div class="output" id="executeOutput">Click to execute...</div>
+    </div>
+    <div class="mod-card">
+      <h3>📢 Broadcast</h3>
+      <p>Send message to all active agents</p>
+      <input type="text" id="broadcastMsg" placeholder="Message" value="hello_agents">
+      <button class="btn" onclick="broadcast()">Broadcast</button>
+      <div class="output" id="broadcastOutput">Click to broadcast...</div>
+    </div>
+  </div>
+
+  <div class="modules-head" style="margin-top:30px;"><h3>💰 Tax Calculator</h3></div>
+  <div class="modules-grid">
+    <div class="mod-card">
+      <h3>🧮 Income Tax</h3>
+      <p>New regime / Old regime comparison</p>
+      <div class="input-group">
+        <input type="number" id="income" placeholder="Annual Income" value="1200000">
+        <select id="regime">
+          <option value="new">New Regime</option>
+          <option value="old">Old Regime</option>
+        </select>
+      </div>
+      <button class="btn" onclick="calculateTax()">Calculate</button>
+      <div class="output" id="taxOutput">Enter income & click...</div>
+    </div>
+  </div>
+
+  <div class="modules-head" style="margin-top:30px;"><h3>🧠 Memory Store</h3></div>
+  <div class="modules-grid">
+    <div class="mod-card">
+      <h3>💾 Save Memory</h3>
+      <div class="input-group">
+        <input type="text" id="memKey" placeholder="Key" value="user_001">
+        <input type="text" id="memValue" placeholder="Value" value="test_data">
+      </div>
+      <button class="btn" onclick="saveMemory()">Save</button>
+      <div class="output" id="saveOutput">Click to save...</div>
+    </div>
+    <div class="mod-card">
+      <h3>📂 View Memory</h3>
+      <button class="btn" onclick="getMemory()">Load All</button>
+      <div class="output" id="memoryOutput">Click to load...</div>
+    </div>
+  </div>
+
+  <div class="modules-head" style="margin-top:30px;"><h3>👑 Admin</h3></div>
+  <div class="modules-grid">
+    <div class="mod-card">
+      <h3>📈 System Stats</h3>
+      <p>Modules, agents, memory, load</p>
+      <button class="btn" onclick="getAdminStats()">Load Stats</button>
+      <div class="output" id="adminOutput">Click to load...</div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  Railway: singhji-api-production-85ca.up.railway.app &nbsp;|&nbsp; Made in India &nbsp;|&nbsp; UPI: jp200883@sbi
+</footer>
+
+<script>
+const RAILWAY_API = "https://singhji-api-production-85ca.up.railway.app";
+
+async function checkRailway(){
+  const dot = document.getElementById('railwayDot');
+  const text = document.getElementById('railwayText');
+  const agentDot = document.getElementById('agentDot');
+  const agentText = document.getElementById('agentText');
+  
+  try{
+    const res = await fetch(`${RAILWAY_API}/health`, {cache:"no-store"});
+    const data = await res.json();
+    dot.className = "dot live";
+    text.textContent = `Railway LIVE`;
+    agentDot.className = "dot live";
+    agentText.textContent = `Agents: ${data.agents || 0}/330`;
+  }catch(e){
+    dot.className = "dot down";
+    text.textContent = "Railway Offline";
+    agentDot.className = "dot down";
+    agentText.textContent = "Agents: --";
+  }
+}
+
+async function getSwarmStatus(){
+  const out = document.getElementById('swarmOutput');
+  out.innerHTML = '<span class="loading">Loading...</span>';
+  try{
+    const res = await fetch(`${RAILWAY_API}/api/swarm/`);
+    const data = await res.json();
+    out.innerHTML = `Total: ${data.total}\nActive: ${data.active}\nQueued: ${data.queued}\nPhase: ${data.current_phase}\nMax: ${data.max_concurrent}`;
+  }catch(e){out.innerHTML = `Error: ${e.message}`;}
+}
+
+async function executeAgent(){
+  const out = document.getElementById('executeOutput');
+  const id = document.getElementById('agentId').value;
+  const task = document.getElementById('agentTask').value;
+  out.innerHTML = '<span class="loading">Executing...</span>';
+  try{
+    const res = await fetch(`${RAILWAY_API}/api/swarm/agent/${id}/execute`, {
+      method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({task})
+    });
+    const data = await res.json();
+    out.innerHTML = `ID: ${data.agent_id}\nTask: ${data.task}\nStatus: ${data.status}\nCompleted: ${data.tasks_completed}`;
+  }catch(e){out.innerHTML = `Error: ${e.message}`;}
+}
+
+async function broadcast(){
+  const out = document.getElementById('broadcastOutput');
+  const msg = document.getElementById('broadcastMsg').value;
+  out.innerHTML = '<span class="loading">Broadcasting...</span>';
+  try{
+    const res = await fetch(`${RAILWAY_API}/api/swarm/broadcast`, {
+      method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({message:msg})
+    });
+    const data = await res.json();
+    out.innerHTML = `Recipients: ${data.recipients}\nMessage: ${data.message}`;
+  }catch(e){out.innerHTML = `Error: ${e.message}`;}
+}
+
+async function calculateTax(){
+  const out = document.getElementById('taxOutput');
+  const income = parseFloat(document.getElementById('income').value) || 0;
+  const regime = document.getElementById('regime').value;
+  if(!income){out.innerHTML='Enter income';return;}
+  out.innerHTML = '<span class="loading">Calculating...</span>';
+  try{
+    const res = await fetch(`${RAILWAY_API}/api/retirement/tax-calculate`, {
+      method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({income,regime})
+    });
+    const data = await res.json();
+    out.innerHTML = `Income: ₹${data.income?.toLocaleString()}\nRegime: ${data.regime?.toUpperCase()}\nTax: ₹${data.tax?.toLocaleString()}\nCess: ₹${data.cess?.toLocaleString()}\nTotal: ₹${data.total?.toLocaleString()}\nTake Home: ₹${data.take_home?.toLocaleString()}`;
+  }catch(e){out.innerHTML = `Error: ${e.message}`;}
+}
+
+async function saveMemory(){
+  const out = document.getElementById('saveOutput');
+  const key = document.getElementById('memKey').value;
+  const value = document.getElementById('memValue').value;
+  out.innerHTML = '<span class="loading">Saving...</span>';
+  try{
+    const res = await fetch(`${RAILWAY_API}/api/memory/`, {
+      method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({key,value})
+    });
+    const data = await res.json();
+    out.innerHTML = `Saved: ${data.key}\nTotal: ${data.total}`;
+  }catch(e){out.innerHTML = `Error: ${e.message}`;}
+}
+
+async function getMemory(){
+  const out = document.getElementById('memoryOutput');
+  out.innerHTML = '<span class="loading">Loading...</span>';
+  try{
+    const res = await fetch(`${RAILWAY_API}/api/memory/`);
+    const data = await res.json();
+    out.innerHTML = `Records: ${data.records}\nKeys: ${data.keys?.join(', ') || 'None'}`;
+  }catch(e){out.innerHTML = `Error: ${e.message}`;}
+}
+
+async function getAdminStats(){
+  const out = document.getElementById('adminOutput');
+  out.innerHTML = '<span class="loading">Loading...</span>';
+  try{
+    const res = await fetch(`${RAILWAY_API}/api/admin/stats`);
+    const data = await res.json();
+    out.innerHTML = `Modules: ${data.modules}\nMemory: ${data.memory}\nAgents: ${data.agents_active}\nQueued: ${data.agents_queued}\nPhase: ${data.phase}\nLoad: ${data.load}`;
+  }catch(e){out.innerHTML = `Error: ${e.message}`;}
+}
+
+checkRailway();
+setInterval(checkRailway, 30000);
+</script>
+</body>
+</html>
