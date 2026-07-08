@@ -7,85 +7,149 @@
     <meta name="theme-color" content="#1a1a2e">
     <title>🦁 Singh Ji AI Ultra v7.0</title>
     <style>
+        /* ==================== BASE ==================== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
             color: #fff;
             min-height: 100vh;
         }
-        
-        /* ==================== HEADER ==================== */
+
+        /* ==================== HEADER (v5.0 Style + Gold) ==================== */
         .main-header {
             text-align: center;
             padding: 30px 20px;
-            background: linear-gradient(90deg, #ffd700, #ff8c00, #ffd700);
-            background-size: 300% 300%;
+            background: linear-gradient(90deg, #ffd700, #ff8c00, #ffd700, #ff6b6b, #feca57);
+            background-size: 400% 400%;
             animation: gradient 5s ease infinite;
             position: relative;
             overflow: hidden;
         }
-        
+
+        .main-header::before {
+            content: "🦁";
+            position: absolute;
+            font-size: 120px;
+            opacity: 0.1;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
         @keyframes gradient {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
-        
+
         .logo {
-            font-size: 32px;
+            font-size: 36px;
             font-weight: bold;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
             color: #1a1a2e;
+            position: relative;
+            z-index: 1;
         }
-        
+
         .owner {
-            font-size: 18px;
-            margin-top: 10px;
+            font-size: 20px;
+            margin-top: 8px;
             color: #1a1a2e;
             font-weight: bold;
+            position: relative;
+            z-index: 1;
         }
-        
+
         .tagline {
             font-size: 14px;
             margin-top: 5px;
             color: #333;
+            position: relative;
+            z-index: 1;
         }
-        
+
+        .kela-mode {
+            font-size: 12px;
+            margin-top: 5px;
+            color: #1a1a2e;
+            font-style: italic;
+            position: relative;
+            z-index: 1;
+        }
+
         /* ==================== NAVIGATION ==================== */
         .nav-bar {
-            background: rgba(0,0,0,0.3);
-            padding: 10px;
+            background: rgba(0,0,0,0.4);
+            padding: 12px 10px;
             text-align: center;
             position: sticky;
             top: 0;
             z-index: 100;
             backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,215,0,0.2);
         }
-        
+
         .nav-bar a {
             color: #ffd700;
             text-decoration: none;
-            padding: 8px 15px;
-            margin: 0 5px;
+            padding: 8px 14px;
+            margin: 3px;
             border-radius: 20px;
             transition: all 0.3s;
             display: inline-block;
+            font-size: 14px;
+            border: 1px solid transparent;
         }
-        
+
         .nav-bar a:hover {
             background: rgba(255,215,0,0.2);
+            border-color: #ffd700;
             transform: scale(1.05);
         }
-        
+
         /* ==================== CONTAINER ==================== */
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
         }
-        
+
+        /* ==================== SECTION HEADERS ==================== */
+        .section-header {
+            text-align: center;
+            margin: 40px 0 25px;
+            padding: 18px;
+            background: linear-gradient(135deg, rgba(255,215,0,0.1), rgba(255,140,0,0.1));
+            border-radius: 15px;
+            border: 1px solid rgba(255,215,0,0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section-header::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #ffd700, transparent);
+        }
+
+        .section-header h2 {
+            color: #ffd700;
+            font-size: 26px;
+            text-shadow: 0 0 10px rgba(255,215,0,0.3);
+        }
+
+        .section-header p {
+            color: #aaa;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
         /* ==================== SERVER STATUS ==================== */
         .server-status {
             display: grid;
@@ -93,20 +157,23 @@
             gap: 15px;
             margin-bottom: 30px;
         }
-        
+
         .status-card {
             background: rgba(255,255,255,0.05);
             border-radius: 15px;
             padding: 20px;
             border: 1px solid rgba(255,255,255,0.1);
             transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
         }
-        
+
         .status-card:hover {
             border-color: #ffd700;
             transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(255,215,0,0.1);
         }
-        
+
         .status-card h3 {
             color: #ffd700;
             margin-bottom: 10px;
@@ -115,59 +182,63 @@
             gap: 10px;
             font-size: 16px;
         }
-        
+
         .status-dot {
             width: 12px;
             height: 12px;
             border-radius: 50%;
             display: inline-block;
+            animation: blink 2s infinite;
         }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
         .online { background: #00ff88; box-shadow: 0 0 10px #00ff88; }
-        .offline { background: #ff4444; }
-        .sleeping { background: #ffaa00; }
-        
-        /* ==================== SECTION HEADERS ==================== */
-        .section-header {
-            text-align: center;
-            margin: 40px 0 20px;
-            padding: 15px;
-            background: rgba(255,215,0,0.1);
-            border-radius: 15px;
-            border: 1px solid rgba(255,215,0,0.3);
-        }
-        
-        .section-header h2 {
-            color: #ffd700;
-            font-size: 24px;
-        }
-        
-        .section-header p {
-            color: #aaa;
-            font-size: 14px;
-            margin-top: 5px;
-        }
-        
+        .offline { background: #ff4444; box-shadow: 0 0 10px #ff4444; }
+        .sleeping { background: #ffaa00; box-shadow: 0 0 10px #ffaa00; }
+
         /* ==================== MODULES GRID ==================== */
         .modules-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 20px;
         }
-        
+
         .module-card {
             background: rgba(255,255,255,0.05);
             border-radius: 15px;
             padding: 20px;
             border: 1px solid rgba(255,255,255,0.1);
             transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
         }
-        
+
+        .module-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #ffd700, #ff8c00);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .module-card:hover::before {
+            opacity: 1;
+        }
+
         .module-card:hover {
             transform: translateY(-5px);
-            border-color: #ffd700;
-            box-shadow: 0 10px 30px rgba(255,215,0,0.1);
+            border-color: rgba(255,215,0,0.3);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
         }
-        
+
         .module-card h3 {
             color: #ffd700;
             margin-bottom: 15px;
@@ -176,8 +247,20 @@
             align-items: center;
             gap: 10px;
         }
-        
-        .module-card input, .module-card select, .module-card textarea {
+
+        .module-card .tier-info {
+            color: #888;
+            font-size: 11px;
+            margin-bottom: 10px;
+            padding: 4px 10px;
+            background: rgba(255,215,0,0.1);
+            border-radius: 10px;
+            display: inline-block;
+        }
+
+        .module-card input, 
+        .module-card select, 
+        .module-card textarea {
             padding: 10px;
             border-radius: 8px;
             border: 1px solid rgba(255,255,255,0.2);
@@ -186,17 +269,26 @@
             width: 100%;
             margin-bottom: 10px;
             font-size: 14px;
+            transition: all 0.3s;
         }
-        
+
+        .module-card input:focus, 
+        .module-card select:focus, 
+        .module-card textarea:focus {
+            border-color: #ffd700;
+            outline: none;
+            box-shadow: 0 0 10px rgba(255,215,0,0.2);
+        }
+
         .module-card input::placeholder {
             color: #888;
         }
-        
+
         .module-card textarea {
             min-height: 80px;
             resize: vertical;
         }
-        
+
         /* ==================== BUTTONS ==================== */
         .btn {
             background: linear-gradient(135deg, #ffd700, #ff8c00);
@@ -206,31 +298,39 @@
             border-radius: 25px;
             cursor: pointer;
             font-weight: bold;
-            margin: 5px;
+            margin: 5px 3px;
             transition: all 0.3s;
             font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
         }
-        
+
         .btn:hover {
             transform: scale(1.05);
             box-shadow: 0 5px 20px rgba(255,215,0,0.3);
         }
-        
+
         .btn-secondary {
             background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
         }
-        
+
         .btn-success {
             background: linear-gradient(135deg, #00ff88, #00cc6a);
             color: #1a1a2e;
         }
-        
+
         .btn-danger {
             background: linear-gradient(135deg, #ff4444, #cc0000);
             color: white;
         }
-        
+
+        .btn-info {
+            background: linear-gradient(135deg, #48dbfb, #0abde3);
+            color: #1a1a2e;
+        }
+
         /* ==================== OUTPUT BOX ==================== */
         .output {
             background: rgba(0,0,0,0.3);
@@ -241,37 +341,37 @@
             font-size: 0.9em;
             overflow-x: auto;
             border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s;
         }
-        
+
+        .output:hover {
+            border-color: rgba(255,215,0,0.2);
+        }
+
         .output img {
             max-width: 100%;
             border-radius: 10px;
             margin-top: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
         }
-        
+
         .loading {
             color: #ffd700;
-            animation: pulse 1s infinite;
+            animation: pulse 1.5s infinite;
         }
-        
+
         @keyframes pulse {
             0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
+            50% { opacity: 0.3; }
         }
-        
-        /* ==================== HUB SECTIONS (from v5) ==================== */
-        .hub-section {
-            padding: 40px 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
+
+        /* ==================== HUB GRID (v5.0 Style) ==================== */
         .hub-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 20px;
         }
-        
+
         .hub-card {
             border-radius: 20px;
             padding: 30px 20px;
@@ -282,29 +382,55 @@
             text-decoration: none;
             color: white;
             display: block;
+            position: relative;
+            overflow: hidden;
         }
-        
+
+        .hub-card::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: rotate(45deg);
+            transition: all 0.5s;
+            opacity: 0;
+        }
+
+        .hub-card:hover::before {
+            opacity: 1;
+            animation: shine 0.5s ease;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
         .hub-card:hover {
             transform: translateY(-10px) scale(1.02);
             box-shadow: 0 20px 40px rgba(0,0,0,0.3);
         }
-        
+
         .card-icon {
             font-size: 50px;
             margin-bottom: 15px;
+            display: block;
         }
-        
+
         .hub-card h3 {
             font-size: 18px;
             margin-bottom: 8px;
         }
-        
+
         .hub-card p {
             font-size: 14px;
             opacity: 0.9;
             margin-bottom: 15px;
         }
-        
+
         .btn-enter {
             background: white;
             border: none;
@@ -315,54 +441,121 @@
             transition: all 0.3s;
             color: #333;
         }
-        
+
         .btn-enter:hover {
             transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
-        
-        /* Card Colors */
+
+        /* ==================== CARD COLORS ==================== */
         .music-card { background: linear-gradient(135deg, #667eea, #764ba2); }
+        .music-card .btn-enter { color: #667eea; }
+
         .video-card { background: linear-gradient(135deg, #f093fb, #f5576c); }
+        .video-card .btn-enter { color: #f5576c; }
+
         .ramayan-card { background: linear-gradient(135deg, #fa709a, #fee140); }
+        .ramayan-card .btn-enter { color: #fa709a; }
+
         .gaming-card { background: linear-gradient(135deg, #30cfd0, #330867); }
+        .gaming-card .btn-enter { color: #330867; }
+
         .food-card { background: linear-gradient(135deg, #ff6b6b, #feca57); }
+        .food-card .btn-enter { color: #ff6b6b; }
+
         .fashion-card { background: linear-gradient(135deg, #a8edea, #fed6e3); color: #333; }
+        .fashion-card .btn-enter { color: #333; }
+
         .health-card { background: linear-gradient(135deg, #d299c2, #fef9d7); color: #333; }
+        .health-card .btn-enter { color: #333; }
+
         .travel-card { background: linear-gradient(135deg, #89f7fe, #66a6ff); }
+        .travel-card .btn-enter { color: #66a6ff; }
+
         .shopping-card { background: linear-gradient(135deg, #ffecd2, #fcb69f); color: #333; }
+        .shopping-card .btn-enter { color: #333; }
+
         .banking-card { background: linear-gradient(135deg, #11998e, #38ef7d); }
+        .banking-card .btn-enter { color: #11998e; }
+
         .education-card { background: linear-gradient(135deg, #fc5c7d, #6a82fb); }
+        .education-card .btn-enter { color: #fc5c7d; }
+
         .payment-card { background: linear-gradient(135deg, #f7971e, #ffd200); color: #333; }
+        .payment-card .btn-enter { color: #f7971e; }
+
         .aavishkar-card { background: linear-gradient(135deg, #9b59b6, #e74c3c); }
+        .aavishkar-card .btn-enter { color: #9b59b6; }
+
         .trishul-card { background: linear-gradient(135deg, #2c3e50, #3498db); }
-        
+        .trishul-card .btn-enter { color: #2c3e50; }
+
+        .admin-card { background: linear-gradient(135deg, #ffd700, #ff8c00); color: #1a1a2e; }
+        .admin-card .btn-enter { color: #ff8c00; }
+
         /* ==================== FOOTER ==================== */
         .main-footer {
             text-align: center;
-            padding: 30px 20px;
-            background: rgba(0,0,0,0.3);
-            margin-top: 40px;
+            padding: 40px 20px;
+            background: rgba(0,0,0,0.4);
+            margin-top: 50px;
+            border-top: 1px solid rgba(255,215,0,0.2);
         }
-        
+
         .main-footer p {
-            margin: 5px 0;
+            margin: 8px 0;
             opacity: 0.8;
+            font-size: 14px;
         }
-        
+
+        .main-footer .heart {
+            color: #ff4444;
+            animation: heartbeat 1.5s infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        /* ==================== SCROLLBAR ==================== */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1a1a2e;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #ffd700;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ff8c00;
+        }
+
         /* ==================== RESPONSIVE ==================== */
         @media (max-width: 768px) {
-            .logo { font-size: 24px; }
+            .logo { font-size: 26px; }
+            .owner { font-size: 16px; }
             .modules-grid { grid-template-columns: 1fr; }
             .hub-grid { grid-template-columns: repeat(2, 1fr); }
-            .nav-bar a { padding: 6px 10px; font-size: 12px; }
+            .nav-bar a { padding: 6px 10px; font-size: 12px; margin: 2px; }
             .card-icon { font-size: 40px; }
+            .section-header h2 { font-size: 20px; }
+            .btn { padding: 8px 16px; font-size: 13px; }
         }
-        
+
         @media (max-width: 480px) {
             .hub-grid { grid-template-columns: 1fr; }
-            .section-header h2 { font-size: 20px; }
+            .main-header { padding: 20px 15px; }
+            .logo { font-size: 22px; }
+            .container { padding: 15px; }
         }
     </style>
+<base target="_blank">
 </head>
 <body>
     <!-- ==================== HEADER ==================== -->
@@ -370,8 +563,9 @@
         <div class="logo">🦁 Singh Ji AI Ultra v7.0</div>
         <div class="owner">👑 JP Singh Ji Kanpur</div>
         <div class="tagline">60 Modules | 330 Agent Swarm | 26 Languages | India Super App</div>
+        <div class="kela-mode">🍌 KELA Mode ON — केला नहीं होता भाई अकेला!</div>
     </div>
-    
+
     <!-- ==================== NAVIGATION ==================== -->
     <div class="nav-bar">
         <a href="#dashboard">📊 Dashboard</a>
@@ -382,7 +576,7 @@
         <a href="education.html">📚 Education</a>
         <a href="payment.html">💰 Payment</a>
     </div>
-    
+
     <div class="container">
         <!-- ==================== SERVER STATUS ==================== -->
         <div class="server-status" id="dashboard">
@@ -402,19 +596,19 @@
                 <p>Hybrid API Active</p>
             </div>
         </div>
-        
+
         <!-- ==================== AI TOOLS SECTION ==================== -->
         <div class="section-header" id="ai-tools">
             <h2>🤖 AI Tools</h2>
             <p>Image Generation | Memory | Swarm | Tax Calculator</p>
         </div>
-        
+
         <div class="modules-grid">
             <!-- 🖼️ AAVISHKAR IMAGE AI -->
             <div class="module-card">
                 <h3>🖼️ Aavishkar — Image AI</h3>
-                <p style="color:#aaa;font-size:12px;margin-bottom:10px;">🥇 ZSky AI → 🥈 Pollinations → 🥉 Picsum</p>
-                <input type="text" id="imgPrompt" placeholder="e.g., beautiful temple in India">
+                <div class="tier-info">🥇 ZSky AI → 🥈 Pollinations → 🥉 Picsum</div>
+                <input type="text" id="imgPrompt" placeholder="e.g., beautiful temple in India, Lord Krishna">
                 <select id="imgStyle">
                     <option value="realistic">Realistic Photo</option>
                     <option value="anime">Anime/Manga</option>
@@ -432,34 +626,37 @@
                     <p style="color:#888;">Enter prompt and click Generate...</p>
                 </div>
             </div>
-            
+
             <!-- 🧠 TRISHUL MEMORY -->
             <div class="module-card">
                 <h3>🧠 Trishul — Supermemory</h3>
-                <input type="text" id="trishulKey" placeholder="Key (e.g., user_pref)">
+                <div class="tier-info">AI Memory Layer — Save | Get | Search</div>
+                <input type="text" id="trishulKey" placeholder="Key (e.g., user_pref, name, address)">
                 <textarea id="trishulValue" placeholder="Value (JSON or text)"></textarea>
-                <button class="btn btn-success" onclick="trishulSave()">💾 Save Memory</button>
-                <button class="btn btn-secondary" onclick="trishulGet()">📖 Get Memory</button>
-                <button class="btn" onclick="trishulSearch()">🔍 Search</button>
+                <button class="btn btn-success" onclick="trishulSave()">💾 Save</button>
+                <button class="btn btn-secondary" onclick="trishulGet()">📖 Get</button>
+                <button class="btn btn-info" onclick="trishulSearch()">🔍 Search</button>
                 <div class="output" id="trishul-output">
                     <p style="color:#888;">Use buttons to manage memory...</p>
                 </div>
             </div>
-            
+
             <!-- 🐝 330 AGENT SWARM -->
             <div class="module-card">
                 <h3>🐝 330 Agent Swarm</h3>
-                <button class="btn btn-secondary" onclick="getSwarmStatus()">📊 Swarm Status</button>
+                <div class="tier-info">Sarwan 330 — Core | Service | Specialized</div>
+                <button class="btn btn-secondary" onclick="getSwarmStatus()">📊 Status</button>
                 <button class="btn" onclick="executeAgent()">🤖 Test Agent</button>
                 <button class="btn btn-success" onclick="broadcastAgents()">📢 Broadcast</button>
                 <div class="output" id="swarm-output">
                     <p style="color:#888;">Click button to check swarm...</p>
                 </div>
             </div>
-            
+
             <!-- 💰 TAX CALCULATOR (Offline) -->
             <div class="module-card">
-                <h3>💰 Tax Calculator (Offline)</h3>
+                <h3>💰 Tax Calculator</h3>
+                <div class="tier-info">Offline — No Internet Needed!</div>
                 <input type="number" id="income-input" placeholder="Annual Income (₹)">
                 <select id="regime-select">
                     <option value="new">New Regime (FY 2025-26)</option>
@@ -471,130 +668,155 @@
                     <p style="color:#888;">Enter income and click calculate...</p>
                 </div>
             </div>
-            
+
             <!-- 🌤️ WEATHER -->
             <div class="module-card">
                 <h3>🌤️ Weather</h3>
-                <input type="text" id="city-input" placeholder="Enter city (e.g. Kanpur)">
+                <div class="tier-info">Hybrid API — Render → Railway</div>
+                <input type="text" id="city-input" placeholder="Enter city (e.g. Kanpur, Delhi)">
                 <button class="btn" onclick="getWeather()">🌡️ Get Weather</button>
                 <div class="output" id="weather-output">
                     <p style="color:#888;">Enter city and click button...</p>
                 </div>
             </div>
-            
+
             <!-- 📰 NEWS -->
             <div class="module-card">
                 <h3>📰 Latest News</h3>
+                <div class="tier-info">Hybrid API — Auto Fallback</div>
                 <button class="btn" onclick="getNews()">📰 Fetch News</button>
                 <div class="output" id="news-output">
                     <p style="color:#888;">Click button to get news...</p>
                 </div>
             </div>
         </div>
-        
+
         <!-- ==================== HUBS SECTION ==================== -->
         <div class="section-header" id="hubs">
             <h2>🎯 Quick Access Hubs</h2>
-            <p>Banking | Education | Payment | More</p>
+            <p>Banking | Education | Payment | AI Tools</p>
         </div>
-        
+
         <div class="hub-grid">
             <a href="banking.html" class="hub-card banking-card">
-                <div class="card-icon">🏦</div>
+                <span class="card-icon">🏦</span>
                 <h3>Banking</h3>
                 <p>Loans, FD, Insurance</p>
                 <button class="btn-enter">Enter →</button>
             </a>
-            
+
             <a href="education.html" class="hub-card education-card">
-                <div class="card-icon">📚</div>
+                <span class="card-icon">📚</span>
                 <h3>Education</h3>
                 <p>Courses, Exams, Jobs</p>
                 <button class="btn-enter">Enter →</button>
             </a>
-            
+
             <a href="payment.html" class="hub-card payment-card">
-                <div class="card-icon">💰</div>
+                <span class="card-icon">💰</span>
                 <h3>Payment</h3>
                 <p>UPI, QR, Wallet</p>
                 <button class="btn-enter">Enter →</button>
             </a>
-            
+
             <div class="hub-card aavishkar-card" onclick="scrollToAI()">
-                <div class="card-icon">🎨</div>
+                <span class="card-icon">🎨</span>
                 <h3>Aavishkar AI</h3>
                 <p>Image & Video Gen</p>
                 <button class="btn-enter">Open →</button>
             </div>
-            
+
             <div class="hub-card trishul-card" onclick="scrollToMemory()">
-                <div class="card-icon">🧠</div>
+                <span class="card-icon">🧠</span>
                 <h3>Trishul Memory</h3>
                 <p>AI Memory Store</p>
                 <button class="btn-enter">Open →</button>
             </div>
+
+            <div class="hub-card admin-card" onclick="scrollToAdmin()">
+                <span class="card-icon">👑</span>
+                <h3>Admin Panel</h3>
+                <p>System Control</p>
+                <button class="btn-enter">Open →</button>
+            </div>
         </div>
-        
+
         <!-- ==================== ENTERTAINMENT SECTION ==================== -->
         <div class="section-header" id="entertainment">
             <h2>🎬 Entertainment</h2>
             <p>Music | Video | Ramayan | Gaming</p>
         </div>
-        
+
         <div class="hub-grid">
-            <a href="#music" class="hub-card music-card">
-                <div class="card-icon">🎵</div>
+            <div class="hub-card music-card">
+                <span class="card-icon">🎵</span>
                 <h3>Music</h3>
-                <p>Search & Play</p>
-                <button class="btn-enter">Coming Soon</button>
-            </a>
-            
-            <a href="#video" class="hub-card video-card">
-                <div class="card-icon">🎬</div>
+                <p>Search & Play Songs</p>
+                <button class="btn-enter">Coming Soon ⏳</button>
+            </div>
+
+            <div class="hub-card video-card">
+                <span class="card-icon">🎬</span>
                 <h3>Video</h3>
                 <p>Movies & Live TV</p>
-                <button class="btn-enter">Coming Soon</button>
-            </a>
-            
-            <a href="#ramayan" class="hub-card ramayan-card">
-                <div class="card-icon">📖</div>
+                <button class="btn-enter">Coming Soon ⏳</button>
+            </div>
+
+            <div class="hub-card ramayan-card">
+                <span class="card-icon">📖</span>
                 <h3>Ramayan</h3>
                 <p>Audio & Chapters</p>
-                <button class="btn-enter">Coming Soon</button>
-            </a>
-            
-            <a href="#gaming" class="hub-card gaming-card">
-                <div class="card-icon">🎮</div>
+                <button class="btn-enter">Coming Soon ⏳</button>
+            </div>
+
+            <div class="hub-card gaming-card">
+                <span class="card-icon">🎮</span>
                 <h3>Gaming</h3>
                 <p>Play & Leaderboard</p>
-                <button class="btn-enter">Coming Soon</button>
-            </a>
+                <button class="btn-enter">Coming Soon ⏳</button>
+            </div>
+
+            <div class="hub-card food-card">
+                <span class="card-icon">🍕</span>
+                <h3>Food</h3>
+                <p>Recipes & Order</p>
+                <button class="btn-enter">Coming Soon ⏳</button>
+            </div>
+
+            <div class="hub-card fashion-card">
+                <span class="card-icon">👗</span>
+                <h3>Fashion</h3>
+                <p>Style & Trends</p>
+                <button class="btn-enter">Coming Soon ⏳</button>
+            </div>
         </div>
-        
+
         <!-- ==================== ADMIN SECTION ==================== -->
-        <div class="section-header">
+        <div class="section-header" id="admin">
             <h2>👑 Admin Dashboard</h2>
-            <p>System Stats & Control</p>
+            <p>System Stats & Health Check</p>
         </div>
-        
+
         <div class="modules-grid">
             <div class="module-card">
                 <h3>📊 System Stats</h3>
+                <div class="tier-info">Render + Railway + GitHub Pages</div>
                 <button class="btn btn-secondary" onclick="getAdminStats()">📊 Load Stats</button>
                 <button class="btn btn-success" onclick="checkSystemHealth()">🏥 Health Check</button>
+                <button class="btn btn-info" onclick="checkAllModules()">🔍 Check Modules</button>
                 <div class="output" id="admin-output">
                     <p style="color:#888;">Click for system stats...</p>
                 </div>
             </div>
         </div>
     </div>
-    
+
     <!-- ==================== FOOTER ==================== -->
     <div class="main-footer">
-        <p>🦁 Singh Ji AI Ultra v7.0 | Made with ❤️ in India</p>
-        <p>👑 JP Singh Ji Kanpur | 🍌 KELA Mode ON</p>
-        <p>🎨 Render + 🚂 Railway + 🌐 GitHub Pages Hybrid</p>
-        <p style="margin-top:10px;color:#666;">© 2026 Singh Ji AI. All rights reserved.</p>
+        <p>🦁 Singh Ji AI Ultra v7.0 | Made with <span class="heart">❤️</span> in India</p>
+        <p>👑 JP Singh Ji Kanpur | 🍌 KELA Mode ON — केला नहीं होता भाई अकेला!</p>
+        <p>🎨 Render + 🚂 Railway + 🌐 GitHub Pages Hybrid Architecture</p>
+        <p style="margin-top:15px;color:#666;font-size:12px;">© 2026 Singh Ji AI. All rights reserved. | UPI: jp200883@sbi</p>
     </div>
 
     <!-- ==================== JAVASCRIPT ==================== -->
@@ -602,11 +824,10 @@
         // 🦁 HYBRID API CONFIGURATION
         const RENDER_API = "https://singhji-api.onrender.com";
         const RAILWAY_API = "https://singhji-api-production-85ca.up.railway.app";
-        
-        // Track which server is active
+
         let renderActive = false;
         let railwayActive = false;
-        
+
         // ====== UTILITY: Smart Fetch with Fallback ======
         async function smartFetch(endpoint, options = {}) {
             // Try Render first (has API keys)
@@ -626,7 +847,7 @@
             } catch(e) {
                 console.log("Render failed, trying Railway...");
             }
-            
+
             // Fallback to Railway
             try {
                 const controller = new AbortController();
@@ -644,13 +865,12 @@
             } catch(e) {
                 console.log("Railway also failed");
             }
-            
+
             return { error: "Both servers unavailable", _source: "none" };
         }
-        
+
         // ====== SERVER STATUS CHECK ======
         async function checkServers() {
-            // Check Render
             try {
                 const start = Date.now();
                 const res = await fetch(`${RENDER_API}/health`, { signal: AbortSignal.timeout(5000) });
@@ -666,8 +886,7 @@
                 document.getElementById('render-status').textContent = 'Sleeping/Waking...';
                 document.getElementById('render-modules').textContent = 'Modules: 37+';
             }
-            
-            // Check Railway
+
             try {
                 const start = Date.now();
                 const res = await fetch(`${RAILWAY_API}/health`, { signal: AbortSignal.timeout(5000) });
@@ -684,26 +903,25 @@
                 document.getElementById('railway-agents').textContent = 'Agents: --';
             }
         }
-        
+
         checkServers();
         setInterval(checkServers, 30000);
-        
+
         // ====== 🖼️ AAVISHKAR IMAGE AI ======
         async function generateImage() {
             const output = document.getElementById('image-output');
             const prompt = document.getElementById('imgPrompt').value;
             const style = document.getElementById('imgStyle').value;
-            
+
             if (!prompt) {
                 output.innerHTML = '<span style="color:#ff4444;">❌ Prompt enter karein!</span>';
                 return;
             }
-            
+
             output.innerHTML = '<span class="loading">🎨 Generating... (ZSky AI Tier 1)</span>';
-            
-            // Direct image URL — instant display!
+
             const imageUrl = `${RENDER_API}/api/aavishkar/image/generate?prompt=${encodeURIComponent(prompt)}&width=1024&height=1024&style=${style}`;
-            
+
             output.innerHTML = `
                 <img src="${imageUrl}" style="max-width:100%;border-radius:10px;border:2px solid #ffd700;" 
                      onerror="this.onerror=null;this.src='${RAILWAY_API}/api/aavishkar/image/generate?prompt=${encodeURIComponent(prompt)}&width=1024&height=1024&style=${style}';this.style.border='2px solid #ff8c00';"
@@ -713,46 +931,46 @@
                 <p id="img-source" style="color:#00ff88;font-size:12px;">⏳ Loading...</p>
             `;
         }
-        
+
         // ====== 🧠 TRISHUL MEMORY ======
         async function trishulSave() {
             const output = document.getElementById('trishul-output');
             const key = document.getElementById('trishulKey').value;
             const value = document.getElementById('trishulValue').value;
-            
+
             if (!key || !value) {
                 output.innerHTML = '<span style="color:#ff4444;">❌ Key aur Value dono daalein!</span>';
                 return;
             }
-            
+
             output.innerHTML = '<span class="loading">🧠 Saving to Trishul...</span>';
-            
+
             const data = await smartFetch('/api/trishul/save', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({key, value, category: 'user', user_id: 'singhji'})
             });
-            
+
             if (data.saved) {
                 output.innerHTML = `<span style="color:#00ff88;">✅ Saved: ${data.key} (Total: ${data.total_records})</span>`;
             } else {
                 output.innerHTML = `<span style="color:#ff4444;">❌ Error: ${data.error || 'Failed'}</span>`;
             }
         }
-        
+
         async function trishulGet() {
             const output = document.getElementById('trishul-output');
             const key = document.getElementById('trishulKey').value;
-            
+
             if (!key) {
                 output.innerHTML = '<span style="color:#ff4444;">❌ Key daalein!</span>';
                 return;
             }
-            
+
             output.innerHTML = '<span class="loading">🧠 Recalling memory...</span>';
-            
+
             const data = await smartFetch(`/api/trishul/get/${encodeURIComponent(key)}`);
-            
+
             if (data.found) {
                 output.innerHTML = `
                     <strong style="color:#ffd700;">🧠 Memory Found</strong><br>
@@ -764,24 +982,24 @@
                 output.innerHTML = `<span style="color:#ffaa00;">⚠️ Memory not found: ${key}</span>`;
             }
         }
-        
+
         async function trishulSearch() {
             const output = document.getElementById('trishul-output');
             const query = document.getElementById('trishulKey').value || document.getElementById('trishulValue').value;
-            
+
             if (!query) {
                 output.innerHTML = '<span style="color:#ff4444;">❌ Search query daalein!</span>';
                 return;
             }
-            
+
             output.innerHTML = '<span class="loading">🔍 Searching Trishul...</span>';
-            
+
             const data = await smartFetch('/api/trishul/search', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({query, user_id: 'singhji'})
             });
-            
+
             if (data.results && data.results.length > 0) {
                 const results = data.results.map(r => `
                     <div style="margin:5px 0;padding:8px;background:rgba(255,255,255,0.05);border-radius:5px;">
@@ -794,14 +1012,14 @@
                 output.innerHTML = '<span style="color:#ffaa00;">⚠️ No results found</span>';
             }
         }
-        
+
         // ====== 🐝 330 AGENT SWARM ======
         async function getSwarmStatus() {
             const output = document.getElementById('swarm-output');
             output.innerHTML = '<span class="loading">🐝 Checking swarm...</span>';
-            
+
             const data = await smartFetch('/api/swarm/');
-            
+
             if (data.active !== undefined) {
                 output.innerHTML = `
                     <strong style="color:#ffd700;">🐝 Sarwan 330 Swarm</strong><br>
@@ -815,17 +1033,17 @@
                 output.innerHTML = '<span style="color:#ff4444;">❌ Swarm data unavailable</span>';
             }
         }
-        
+
         async function executeAgent() {
             const output = document.getElementById('swarm-output');
             output.innerHTML = '<span class="loading">🤖 Executing agent_001...</span>';
-            
+
             const data = await smartFetch('/api/swarm/agent/agent_001/execute', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({task: 'system_check'})
             });
-            
+
             if (data.agent_id) {
                 output.innerHTML = `
                     <strong style="color:#00ff88;">✅ Agent Executed</strong><br>
@@ -839,17 +1057,17 @@
                 output.innerHTML = '<span style="color:#ff4444;">❌ Agent execution failed</span>';
             }
         }
-        
+
         async function broadcastAgents() {
             const output = document.getElementById('swarm-output');
             output.innerHTML = '<span class="loading">📢 Broadcasting to all agents...</span>';
-            
+
             const data = await smartFetch('/api/swarm/broadcast', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({message: 'System check from Singh Ji AI'})
             });
-            
+
             if (data.broadcast) {
                 output.innerHTML = `
                     <strong style="color:#00ff88;">📢 Broadcast Sent</strong><br>
@@ -861,25 +1079,24 @@
                 output.innerHTML = '<span style="color:#ff4444;">❌ Broadcast failed</span>';
             }
         }
-        
-        // ====== 💰 TAX CALCULATOR (Offline — No API needed!) ======
+
+        // ====== 💰 TAX CALCULATOR (Offline) ======
         function calculateTax() {
             const output = document.getElementById('tax-output');
             const income = parseFloat(document.getElementById('income-input').value) || 0;
             const regime = document.getElementById('regime-select').value;
-            
+
             if (!income || income <= 0) {
                 output.innerHTML = '<span style="color:#ff4444;">❌ Valid income daalein!</span>';
                 return;
             }
-            
+
             let tax = 0;
             let cess = 0;
             let total = 0;
             let takeHome = 0;
-            
+
             if (regime === 'new') {
-                // New Regime FY 2025-26
                 if (income <= 300000) tax = 0;
                 else if (income <= 600000) tax = (income - 300000) * 0.05;
                 else if (income <= 900000) tax = 15000 + (income - 600000) * 0.10;
@@ -887,20 +1104,19 @@
                 else if (income <= 1500000) tax = 90000 + (income - 1200000) * 0.20;
                 else tax = 150000 + (income - 1500000) * 0.30;
             } else {
-                // Old Regime
                 const deductions = parseFloat(document.getElementById('deductions-input').value) || 0;
                 const taxable = Math.max(0, income - 50000 - deductions);
-                
+
                 if (taxable <= 250000) tax = 0;
                 else if (taxable <= 500000) tax = (taxable - 250000) * 0.05;
                 else if (taxable <= 1000000) tax = 12500 + (taxable - 500000) * 0.20;
                 else tax = 112500 + (taxable - 1000000) * 0.30;
             }
-            
+
             cess = tax * 0.04;
             total = tax + cess;
             takeHome = income - total;
-            
+
             output.innerHTML = `
                 <strong style="color:#ffd700;">💰 Tax Calculation</strong><br>
                 Income: ₹${income.toLocaleString('en-IN')}<br>
@@ -912,21 +1128,20 @@
                 <small style="color:#888;">Offline Calculation — No Internet Needed!</small>
             `;
         }
-        
-        // Show/hide deductions based on regime
+
         document.getElementById('regime-select').addEventListener('change', function() {
             const dedInput = document.getElementById('deductions-input');
             dedInput.style.display = this.value === 'old' ? 'block' : 'none';
         });
-        
+
         // ====== 🌤️ WEATHER ======
         async function getWeather() {
             const output = document.getElementById('weather-output');
             const city = document.getElementById('city-input').value || 'Kanpur';
             output.innerHTML = '<span class="loading">🌤️ Loading weather...</span>';
-            
+
             const data = await smartFetch(`/api/weather/${encodeURIComponent(city)}`);
-            
+
             if (data.city || data.temp !== undefined) {
                 output.innerHTML = `
                     <strong style="color:#ffd700;">🌤️ ${data.city || city}</strong><br>
@@ -939,14 +1154,14 @@
                 output.innerHTML = '<span style="color:#ff4444;">❌ Weather data unavailable</span>';
             }
         }
-        
+
         // ====== 📰 NEWS ======
         async function getNews() {
             const output = document.getElementById('news-output');
             output.innerHTML = '<span class="loading">📰 Loading news...</span>';
-            
+
             const data = await smartFetch('/api/news/latest');
-            
+
             if (data.news || data.articles) {
                 const articles = (data.news || data.articles || []).slice(0, 5);
                 const html = articles.map(a => `
@@ -960,14 +1175,14 @@
                 output.innerHTML = '<span style="color:#ff4444;">❌ News unavailable</span>';
             }
         }
-        
+
         // ====== 👑 ADMIN STATS ======
         async function getAdminStats() {
             const output = document.getElementById('admin-output');
             output.innerHTML = '<span class="loading">👑 Loading stats...</span>';
-            
+
             const data = await smartFetch('/api/admin/stats');
-            
+
             if (data.modules !== undefined) {
                 output.innerHTML = `
                     <strong style="color:#ffd700;">👑 System Stats</strong><br>
@@ -983,32 +1198,69 @@
                 output.innerHTML = '<span style="color:#ff4444;">❌ Stats unavailable</span>';
             }
         }
-        
+
         async function checkSystemHealth() {
             const output = document.getElementById('admin-output');
             output.innerHTML = '<span class="loading">🏥 Health check...</span>';
-            
-            const renderHealth = await fetch(`${RENDER_API}/health`, { signal: AbortSignal.timeout(5000) }).catch(() => null);
-            const railwayHealth = await fetch(`${RAILWAY_API}/health`, { signal: AbortSignal.timeout(5000) }).catch(() => null);
-            
+
+            let renderStatus = '❌ Offline';
+            let railwayStatus = '❌ Offline';
+
+            try {
+                const r = await fetch(`${RENDER_API}/health`, { signal: AbortSignal.timeout(5000) });
+                if (r.ok) renderStatus = '✅ Online';
+            } catch(e) {}
+
+            try {
+                const r = await fetch(`${RAILWAY_API}/health`, { signal: AbortSignal.timeout(5000) });
+                if (r.ok) railwayStatus = '✅ Online';
+            } catch(e) {}
+
             output.innerHTML = `
                 <strong style="color:#ffd700;">🏥 System Health</strong><br>
-                🎨 Render: ${renderHealth ? '✅ Online' : '❌ Offline'}<br>
-                🚂 Railway: ${railwayHealth ? '✅ Online' : '❌ Offline'}<br>
+                🎨 Render: ${renderStatus}<br>
+                🚂 Railway: ${railwayStatus}<br>
                 🌐 GitHub Pages: ✅ Online<br>
                 <small style="color:#888;">Checked: ${new Date().toLocaleTimeString()}</small>
             `;
         }
-        
+
+        async function checkAllModules() {
+            const output = document.getElementById('admin-output');
+            output.innerHTML = '<span class="loading">🔍 Checking all modules...</span>';
+
+            const modules = ['weather', 'news', 'swarm', 'trishul', 'aavishkar', 'retirement'];
+            const results = [];
+
+            for (const mod of modules) {
+                try {
+                    const res = await fetch(`${RENDER_API}/api/${mod}/`, { signal: AbortSignal.timeout(3000) });
+                    results.push(`${mod}: ${res.ok ? '✅' : '❌'}`);
+                } catch(e) {
+                    results.push(`${mod}: ❌`);
+                }
+            }
+
+            output.innerHTML = `
+                <strong style="color:#ffd700;">🔍 Module Status</strong><br>
+                ${results.join('<br>')}<br>
+                <small style="color:#888;">Checked: ${new Date().toLocaleTimeString()}</small>
+            `;
+        }
+
         // ====== SCROLL FUNCTIONS ======
         function scrollToAI() {
             document.getElementById('ai-tools').scrollIntoView({ behavior: 'smooth' });
         }
-        
+
         function scrollToMemory() {
             document.querySelector('.trishul-card').scrollIntoView({ behavior: 'smooth' });
         }
-        
+
+        function scrollToAdmin() {
+            document.getElementById('admin').scrollIntoView({ behavior: 'smooth' });
+        }
+
         // ====== AUTO CHECK ON LOAD ======
         document.addEventListener('DOMContentLoaded', function() {
             console.log("🦁 Singh Ji AI Ultra v7.0 Loaded!");
