@@ -118,6 +118,90 @@ document.addEventListener('DOMContentLoaded', () => {
             generateVideo(email, prompt, duration);
         });
     }
+    // ====== 🎬 VIDEO GENERATOR ======
+async function generateVideo() {
+    const output = document.getElementById('video-output');
+    const email = document.getElementById('videoEmail').value;
+    const prompt = document.getElementById('videoPrompt').value;
+    const platform = document.getElementById('videoPlatform').value;
+    const duration = document.getElementById('videoDuration').value;
+
+    if (!email || !prompt) {
+        output.innerHTML = '<span style="color:#ff4444;">❌ Email aur Prompt dono daalein!</span>';
+        return;
+    }
+
+    output.innerHTML = '<span class="loading">🎬 Video generate ho raha hai...</span>';
+
+    const data = await smartFetch(`/api/oauth_connector/video/generate?email=${encodeURIComponent(email)}&prompt=${encodeURIComponent(prompt)}&duration=${duration}`);
+
+    if (data.success) {
+        output.innerHTML = `
+            <strong style="color:#00ff88;">🎬 Video Generated!</strong><br>
+            Video ID: ${data.video_id}<br>
+            Platform: ${data.platform_name}<br>
+            Duration: ${data.duration}s<br>
+            Status: ${data.status}<br>
+            Watermark: ${data.watermark ? 'Yes (will be removed)' : 'No'}<br>
+            <small style="color:#888;">${data.message}</small>
+        `;
+        // Store video ID for status check
+        window.currentVideoId = data.video_id;
+    } else {
+        output.innerHTML = `<span style="color:#ff4444;">❌ ${data.message || 'Failed'}</span>`;
+    }
+}
+
+async function checkVideoStatus() {
+    const output = document.getElementById('video-output');
+    const videoId = window.currentVideoId;
+
+    if (!videoId) {
+        output.innerHTML = '<span style="color:#ff4444;">❌ Pehle video generate karo!</span>';
+        return;
+    }
+
+    output.innerHTML = '<span class="loading">⏳ Status check kar raha hoon...</span>';
+
+    const data = await smartFetch(`/api/oauth_connector/video/status/${videoId}`);
+
+    if (data.success) {
+        output.innerHTML = `
+            <strong style="color:#ffd700;">📊 Video Status</strong><br>
+            ID: ${data.video_id}<br>
+            Status: ${data.status}<br>
+            Progress: ${data.progress || 0}%<br>
+            ${data.video_url ? `URL: <a href="${data.video_url}" target="_blank">View</a>` : ''}<br>
+            <small style="color:#888;">${data.message}</small>
+        `;
+    } else {
+        output.innerHTML = `<span style="color:#ff4444;">❌ ${data.error || 'Status check failed'}</span>`;
+    }
+}
+
+async function downloadVideo() {
+    const output = document.getElementById('video-output');
+    const videoId = window.currentVideoId;
+
+    if (!videoId) {
+        output.innerHTML = '<span style="color:#ff4444;">❌ Pehle video generate karo!</span>';
+        return;
+    }
+
+    output.innerHTML = '<span class="loading">📥 Download link generate ho raha hai...</span>';
+
+    const data = await smartFetch(`/api/oauth_connector/video/download/${videoId}`);
+
+    if (data.success) {
+        output.innerHTML = `
+            <strong style="color:#00ff88;">📥 Download Ready!</strong><br>
+            <a href="${data.clean_video_url}" target="_blank" style="color:#ffd700;">Click to Download Clean Video</a><br>
+            <small style="color:#888;">Watermark removed!</small>
+        `;
+    } else {
+        output.innerHTML = `<span style="color:#ffaa00;">⏳ ${data.message || 'Video abhi ban raha hai...'}</span>`;
+    }
+}
 
     // Image generate button
     const imageBtn = document.getElementById('generate-image-btn');
