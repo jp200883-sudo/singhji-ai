@@ -1260,6 +1260,27 @@
         function scrollToAdmin() {
             document.getElementById('admin').scrollIntoView({ behavior: 'smooth' });
         }
+        <!-- Video Section -->
+<div class="video-section">
+    <h2>🎬 Video Generator</h2>
+    <input type="email" id="user-email" placeholder="Your email">
+    <input type="text" id="video-prompt" placeholder="Video prompt">
+    <input type="number" id="video-duration" value="5" min="1" max="20">
+    <button id="generate-video-btn">Generate Video</button>
+</div>
+
+<!-- Image Section -->
+<div class="image-section">
+    <h2>🎨 Image Generator</h2>
+    <input type="text" id="image-prompt" placeholder="Image prompt">
+    <select id="image-style">
+        <option value="realistic">Realistic</option>
+        <option value="anime">Anime</option>
+        <option value="butterfly-effect">🦋 Butterfly Effect</option>
+    </select>
+    <button id="generate-image-btn">Generate Image</button>
+    <div id="image-container"></div>
+</div>
 
         // ====== AUTO CHECK ON LOAD ======
         document.addEventListener('DOMContentLoaded', function() {
