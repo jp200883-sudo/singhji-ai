@@ -1,127 +1,131 @@
-// ==================== SINGH JI AI ULTRA v7.0 ====================
-// 🙏 Jai Shri Ram | 👑 JP Singh Ji Kanpur | 🍌 KELA Mode ON
+// 🦁 Singh Ji AI Ultra v7.0 — Frontend JS Update
+// Video + Image + Butterfly Effect modules
 
-// ==================== HYBRID API SETUP ====================
-// Primary: Railway (24/7 live)
-// Fallback: Render (has all API keys but 15min sleep)
-const API_URL_PRIMARY = "https://singhji-api-production-85ca.up.railway.app";
-const API_URL_FALLBACK = "https://singhji-api.onrender.com";
-const API_URL = API_URL_PRIMARY; // Default to Railway
+const API_BASE = "https://singhji-api-production-85ca.up.railway.app";
 
-// ==================== HYBRID FETCH ====================
-async function hybridFetch(endpoint, options = {}) {
-    // Try Railway first
+// ============ VIDEO MODULE ============
+
+async function generateVideo(email, prompt, duration = 5) {
     try {
-        const response = await fetch(`${API_URL_PRIMARY}${endpoint}`, {
-            ...options,
-            signal: AbortSignal.timeout(8000) // 8 second timeout
-        });
+        const response = await fetch(`${API_BASE}/api/oauth_connector/video/generate?email=${encodeURIComponent(email)}&prompt=${encodeURIComponent(prompt)}&duration=${duration}`);
+        const data = await response.json();
+
+        if (data.success) {
+            showNotification(`🎬 Video generating! ID: ${data.video_id}`, 'success');
+            return data;
+        } else {
+            showNotification(`❌ ${data.message}`, 'error');
+        }
+    } catch (e) {
+        showNotification('❌ Video generation failed!', 'error');
+    }
+}
+
+async function checkVideoStatus(videoId) {
+    try {
+        const response = await fetch(`${API_BASE}/api/oauth_connector/video/status/${videoId}`);
+        return await response.json();
+    } catch (e) {
+        console.error("Status check failed:", e);
+    }
+}
+
+async function downloadVideo(videoId) {
+    try {
+        const response = await fetch(`${API_BASE}/api/oauth_connector/video/download/${videoId}`);
+        const data = await response.json();
+
+        if (data.success) {
+            window.open(data.clean_video_url, '_blank');
+        } else {
+            showNotification(`⏳ ${data.message}`, 'info');
+        }
+    } catch (e) {
+        showNotification('❌ Download failed!', 'error');
+    }
+}
+
+// ============ IMAGE MODULE ============
+
+async function generateImage(prompt, style = 'realistic', width = 1024, height = 1024) {
+    try {
+        const url = `${API_BASE}/api/aavishkar/image/generate?prompt=${encodeURIComponent(prompt)}&style=${style}&width=${width}&height=${height}`;
+        const response = await fetch(url);
+
         if (response.ok) {
-            const data = await response.json();
-            data._source = "Railway";
+            const blob = await response.blob();
+            const imageUrl = URL.createObjectURL(blob);
+            showImage(imageUrl, prompt);
+            showNotification('🎨 Image generated!', 'success');
+            return imageUrl;
+        } else {
+            showNotification('❌ Image generation failed!', 'error');
+        }
+    } catch (e) {
+        showNotification('❌ Image generation failed!', 'error');
+    }
+}
+
+async function butterflyEffect(imageUrl, prompt = 'butterfly flying, magical, dreamy') {
+    try {
+        const url = `${API_BASE}/api/aavishkar/image/butterfly-effect?image_url=${encodeURIComponent(imageUrl)}&prompt=${encodeURIComponent(prompt)}`;
+        const response = await fetch(url);
+        const data = await response.json();
+
+        if (data.success) {
+            showNotification(`🦋 ${data.message}`, 'success');
             return data;
         }
     } catch (e) {
-        console.log("Railway failed, trying Render fallback...");
+        showNotification('❌ Butterfly effect failed!', 'error');
     }
-    
-    // Fallback to Render
-    try {
-        const response = await fetch(`${API_URL_FALLBACK}${endpoint}`, {
-            ...options,
-            signal: AbortSignal.timeout(15000) // 15 second timeout (Render may be sleeping)
+}
+
+// ============ UI HELPERS ============
+
+function showNotification(message, type = 'info') {
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    notification.textContent = message;
+    document.body.appendChild(notification);
+
+    setTimeout(() => notification.remove(), 3000);
+}
+
+function showImage(imageUrl, prompt) {
+    const container = document.getElementById('image-container');
+    if (container) {
+        container.innerHTML = `
+            <div class="image-card">
+                <img src="${imageUrl}" alt="${prompt}">
+                <p>${prompt}</p>
+                <button onclick="butterflyEffect('${imageUrl}')">🦋 Butterfly Effect</button>
+            </div>
+        `;
+    }
+}
+
+// ============ EVENT LISTENERS ============
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Video generate button
+    const videoBtn = document.getElementById('generate-video-btn');
+    if (videoBtn) {
+        videoBtn.addEventListener('click', () => {
+            const email = document.getElementById('user-email').value;
+            const prompt = document.getElementById('video-prompt').value;
+            const duration = document.getElementById('video-duration').value;
+            generateVideo(email, prompt, duration);
         });
-        if (response.ok) {
-            const data = await response.json();
-            data._source = "Render (Fallback)";
-            return data;
-        }
-    } catch (e) {
-        console.error("Both APIs failed:", e);
     }
-    
-    return { error: "Both APIs unavailable", _source: "none" };
-}
 
-// ==================== 🌡️ WEATHER ====================
-async function getWeather(city) {
-    const data = await hybridFetch(`/api/weather/${encodeURIComponent(city)}`);
-    console.log("🌡️ Weather:", data);
-    return data;
-}
-
-// ==================== 📰 NEWS ====================
-async function getNews() {
-    const data = await hybridFetch("/api/news/latest");
-    console.log("📰 News:", data);
-    return data;
-}
-
-// ==================== 🤖 SWARM ====================
-async function getSwarmStatus() {
-    const data = await hybridFetch("/api/swarm/");
-    console.log("🤖 Swarm:", data);
-    return data;
-}
-
-async function executeAgent(agentId, task) {
-    const data = await hybridFetch(`/api/swarm/agent/${agentId}/execute`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ task })
-    });
-    console.log("🤖 Agent executed:", data);
-    return data;
-}
-
-// ==================== 💰 TAX CALCULATOR ====================
-async function calculateTax(income, regime = "new") {
-    const data = await hybridFetch("/api/retirement/tax-calculate", {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ income, regime })
-    });
-    console.log("💰 Tax:", data);
-    return data;
-}
-
-// ==================== 🧠 MEMORY ====================
-async function saveMemory(key, value) {
-    const data = await hybridFetch("/api/memory/", {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ key, value })
-    });
-    console.log("🧠 Memory saved:", data);
-    return data;
-}
-
-async function getMemory(key) {
-    const data = await hybridFetch(`/api/memory/${encodeURIComponent(key)}`);
-    console.log("🧠 Memory:", data);
-    return data;
-}
-
-// ==================== 📊 SYSTEM STATUS ====================
-async function checkSystemStatus() {
-    const data = await hybridFetch("/api/status");
-    console.log("📊 Status:", data);
-    return data;
-}
-
-// ==================== 🔔 AUTO CHECK ON LOAD ====================
-document.addEventListener('DOMContentLoaded', function() {
-    console.log("🙏 Singh Ji AI Ultra v7.0 Hybrid Loaded!");
-    console.log("👑 JP Singh Ji Kanpur");
-    console.log("🍌 KELA Mode ON");
-    console.log("🔗 Primary API:", API_URL_PRIMARY);
-    console.log("🔗 Fallback API:", API_URL_FALLBACK);
-    
-    checkSystemStatus();
+    // Image generate button
+    const imageBtn = document.getElementById('generate-image-btn');
+    if (imageBtn) {
+        imageBtn.addEventListener('click', () => {
+            const prompt = document.getElementById('image-prompt').value;
+            const style = document.getElementById('image-style').value;
+            generateImage(prompt, style);
+        });
+    }
 });
-
-// ==================== 🎯 UTILITY ====================
-function showLoading() { console.log("⏳ Loading..."); }
-function hideLoading() { console.log("✅ Loaded!"); }
-function showError(msg) { console.error("❌", msg); alert("❌ " + msg); }
-function showSuccess(msg) { console.log("✅", msg); }
