@@ -13,6 +13,23 @@ body {
     color: white;
     min-height: 100vh;
 }
+/* ==================== VIDEO CARD ==================== */
+.video-gen-card { 
+    background: linear-gradient(135deg, #ff6b6b, #feca57); 
+}
+.video-gen-card .btn-enter { color: #ff6b6b; }
+
+/* ==================== IMAGE CARD ==================== */
+.image-gen-card { 
+    background: linear-gradient(135deg, #48dbfb, #0abde3); 
+}
+.image-gen-card .btn-enter { color: #0abde3; }
+
+/* ==================== BUTTERFLY EFFECT CARD ==================== */
+.butterfly-card { 
+    background: linear-gradient(135deg, #ff9ff3, #feca57); 
+}
+.butterfly-card .btn-enter { color: #ff9ff3; }
 
 /* ==================== HEADER ==================== */
 .main-header {
