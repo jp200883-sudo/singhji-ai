@@ -935,6 +935,29 @@
                 <p id="img-source" style="color:#00ff88;font-size:12px;">⏳ Loading...</p>
             `;
         }
+        <!-- 🎬 VIDEO GENERATOR -->
+<div class="module-card">
+    <h3>🎬 Video Generator</h3>
+    <div class="tier-info">Seedance → Kling → Pika → Auto Select</div>
+    <input type="email" id="videoEmail" placeholder="Your email">
+    <input type="text" id="videoPrompt" placeholder="e.g., lion walking in jungle">
+    <select id="videoPlatform">
+        <option value="auto">🤖 Auto Select Best</option>
+        <option value="seedance">🎬 Seedance 2.0 (100 credits)</option>
+        <option value="kling">🎬 Kling AI (66 credits)</option>
+        <option value="pika">🎬 Pika Labs (150 credits)</option>
+        <option value="luma">🎬 Luma Ray (8 credits)</option>
+        <option value="hailuo">🎬 Hailuo AI (3 credits)</option>
+        <option value="veo">🎬 Google Veo (10 credits)</option>
+    </select>
+    <input type="number" id="videoDuration" value="5" min="1" max="20" placeholder="Duration (seconds)">
+    <button class="btn" onclick="generateVideo()">🎬 Generate Video</button>
+    <button class="btn btn-secondary" onclick="checkVideoStatus()">⏳ Check Status</button>
+    <button class="btn btn-success" onclick="downloadVideo()">📥 Download</button>
+    <div class="output" id="video-output">
+        <p style="color:#888;">Enter email + prompt and click Generate...</p>
+    </div>
+</div>
 
         // ====== 🧠 TRISHUL MEMORY ======
         async function trishulSave() {
