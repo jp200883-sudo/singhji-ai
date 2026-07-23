@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Mandi Predictor - Singh Ji AI</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .mandi-container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .mandi-card { background: white; border-radius: 12px; padding: 20px; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .mandi-card .price { font-size: 28px; font-weight: bold; color: #07C160; }
+        .mandi-card .prediction { font-size: 24px; color: #ff6b6b; margin-top: 5px; }
+        .mandi-card .trend-up { color: #07C160; }
+        .mandi-card .trend-down { color: #ff6b6b; }
+        .select-crop { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; font-size: 16px; margin-bottom: 15px; }
+        .confidence-bar { height: 6px; background: #f0f0f0; border-radius: 3px; margin-top: 10px; overflow: hidden; }
+        .confidence-bar .fill { height: 100%; background: #07C160; border-radius: 3px; }
+        .best-time { background: #f0f7ff; padding: 12px; border-radius: 8px; margin-top: 10px; border-left: 4px solid #07C160; }
+    </style>
+</head>
+<body>
+    <div class="mandi-container">
+        <h2>📈 AI Mandi Predictor</h2>
+        <p>कल का भाव आज जानें — ML से!</p>
+
+        <select class="select-crop" onchange="predictPrice(this.value)">
+            <option value="wheat">🌾 गेहूँ</option>
+            <option value="rice">🌾 धान</option>
+            <option value="onion">🧅 प्याज</option>
+            <option value="potato">🥔 आलू</option>
+            <option value="tomato">🍅 टमाटर</option>
+        </select>
+
+        <div class="mandi-card" id="predictionCard">
+            <div style="display: flex; justify-content: space-between;">
+                <div>
+                    <div style="font-size: 14px; color: #888;">आज का भाव</div>
+                    <div class="price" id="currentPrice">₹2,400</div>
+                </div>
+                <div style="text-align: right;">
+                    <div style="font-size: 14px; color: #888;">कल का अनुमान</div>
+                    <div class="prediction trend-up" id="predictedPrice">₹2,520</div>
+                </div>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-top: 10px;">
+                <span id="trendLabel">📈 <span class="trend-up">Trend: UP</span></span>
+                <span id="confidenceLabel">Confidence: 75%</span>
+            </div>
+            <div class="confidence-bar">
+                <div class="fill" style="width: 75%;" id="confidenceFill"></div>
+            </div>
+            <div class="best-time" id="bestTime">
+                ⏰ बेचने का सबसे अच्छा समय: कल सुबह 8-10 बजे
+            </div>
+        </div>
+
+        <h4>📊 पिछले 7 दिन</h4>
+        <div style="display: flex; gap: 8px; overflow-x: auto; padding: 10px 0;">
+            <div style="min-width: 40px; text-align: center; background: white; padding: 10px; border-radius: 8px;">
+                <div style="font-size: 12px;">दिन 1</div>
+                <div style="color: #07C160;">₹2,300</div>
+            </div>
+            <div style="min-width: 40px; text-align: center; background: white; padding: 10px; border-radius: 8px;">
+                <div style="font-size: 12px;">दिन 2</div>
+                <div style="color: #07C160;">₹2,350</div>
+            </div>
+            <div style="min-width: 40px; text-align: center; background: white; padding: 10px; border-radius: 8px;">
+                <div style="font-size: 12px;">दिन 3</div>
+                <div style="color: #ff6b6b;">₹2,280</div>
+            </div>
+            <div style="min-width: 40px; text-align: center; background: white; padding: 10px; border-radius: 8px;">
+                <div style="font-size: 12px;">दिन 4</div>
+                <div style="color: #07C160;">₹2,420</div>
+            </div>
+            <div style="min-width: 40px; text-align: center; background: white; padding: 10px; border-radius: 8px;">
+                <div style="font-size: 12px;">दिन 5</div>
+                <div style="color: #07C160;">₹2,480</div>
+            </div>
+            <div style="min-width: 40px; text-align: center; background: white; padding: 10px; border-radius: 8px;">
+                <div style="font-size: 12px;">दिन 6</div>
+                <div style="color: #07C160;">₹2,500</div>
+            </div>
+            <div style="min-width: 40px; text-align: center; background: #07C160; color: white; padding: 10px; border-radius: 8px;">
+                <div style="font-size: 12px;">आज</div>
+                <div>₹2,400</div>
+            </div>
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <a href="index.html">🏠</a>
+        <a href="moments.html">📷</a>
+        <a href="stories.html">📸</a>
+        <a href="profile.html">👤</a>
+        <a href="mini-apps.html">📱</a>
+    </nav>
+
+    <script>
+        const cropData = {
+            wheat: { current: 2400, predicted: 2520, confidence: 75, trend: 'UP', time: 'कल सुबह 8-10 बजे' },
+            rice: { current: 3200, predicted: 3150, confidence: 82, trend: 'DOWN', time: '2-3 दिन बाद' },
+            onion: { current: 1800, predicted: 1950, confidence: 70, trend: 'UP', time: 'कल शाम 5-7 बजे' },
+            potato: { current: 1500, predicted: 1600, confidence: 78, trend: 'UP', time: 'कल सुबह 9-11 बजे' },
+            tomato: { current: 2200, predicted: 2100, confidence: 68, trend: 'DOWN', time: '3-4 दिन बाद' }
+        };
+
+        function predictPrice(crop) {
+            const data = cropData[crop] || cropData.wheat;
+            document.getElementById('currentPrice').textContent = `₹${data.current}`;
+            document.getElementById('predictedPrice').textContent = `₹${data.predicted}`;
+            document.getElementById('predictedPrice').className = `prediction ${data.trend === 'UP' ? 'trend-up' : 'trend-down'}`;
+            document.getElementById('trendLabel').innerHTML = `${data.trend === 'UP' ? '📈' : '📉'} <span class="${data.trend === 'UP' ? 'trend-up' : 'trend-down'}">Trend: ${data.trend}</span>`;
+            document.getElementById('confidenceLabel').textContent = `Confidence: ${data.confidence}%`;
+            document.getElementById('confidenceFill').style.width = `${data.confidence}%`;
+            document.getElementById('bestTime').textContent = `⏰ बेचने का सबसे अच्छा समय: ${data.time}`;
+        }
+    </script>
+</body>
+</html>
