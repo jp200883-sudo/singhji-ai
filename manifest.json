@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>💰 Singh Ji AI Pricing — भारत का अपना AI</title>
+    <title>💰 Singh Ji AI Pricing — WeChat Killer v9.0</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -147,6 +147,14 @@
             margin-top: 10px;
             font-size: 1.1rem;
         }
+        .header .wechat-killer {
+            background: linear-gradient(90deg, #ff6b6b, #ffd700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-top: 5px;
+        }
 
         /* 🎁 BANNER */
         .banner {
@@ -175,6 +183,16 @@
             margin-top: 10px;
             font-size: 0.9rem;
             display: inline-block;
+        }
+        .banner-wechat {
+            background: linear-gradient(90deg, #07C160, #05a04d);
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 20px;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            display: inline-block;
+            animation: bannerPulse 2s infinite;
         }
         @keyframes bannerPulse {
             0%, 100% { transform: scale(1); }
@@ -219,7 +237,7 @@
             transform: scale(1.05) translateY(-10px);
         }
         .pricing-card.popular::before {
-            content: 'MOST POPULAR';
+            content: '🔥 MOST POPULAR';
             position: absolute;
             top: 0; left: 0; right: 0;
             background: linear-gradient(90deg, #e94560, #ff6b6b);
@@ -237,6 +255,20 @@
             font-size: 0.7rem;
             padding: 5px 35px;
             transform: rotate(45deg);
+            font-weight: bold;
+        }
+        .pricing-card.wechat-killer {
+            border-color: #ffd700;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.2);
+        }
+        .pricing-card.wechat-killer::before {
+            content: '👑 WECHAT KILLER';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            background: linear-gradient(90deg, #ffd700, #ff6b6b);
+            color: #fff;
+            font-size: 0.75rem;
+            padding: 5px;
             font-weight: bold;
         }
 
@@ -291,6 +323,10 @@
             content: '✗';
             color: #ff6b6b;
         }
+        .features-list li.wechat-feature::before {
+            content: '🦁';
+            color: #ffd700;
+        }
 
         .cta-button {
             width: 100%;
@@ -312,6 +348,11 @@
             background: linear-gradient(135deg, #e94560, #ff6b6b);
             color: #fff;
             box-shadow: 0 5px 20px rgba(233, 69, 96, 0.4);
+        }
+        .cta-button.killer {
+            background: linear-gradient(135deg, #ffd700, #ff6b6b);
+            color: #1a1a2e;
+            box-shadow: 0 5px 20px rgba(255, 215, 0, 0.4);
         }
         .cta-button:hover {
             transform: scale(1.05);
@@ -353,6 +394,7 @@
             z-index: 1;
         }
         .footer .highlight { color: #e94560; }
+        .footer .killer { color: #ffd700; }
 
         @media (max-width: 600px) {
             .pricing-card { width: 100%; max-width: 350px; }
@@ -362,7 +404,6 @@
             .stat-number { font-size: 2rem; }
         }
     </style>
-<base target="_blank">
 </head>
 <body>
     <!-- Particles -->
@@ -381,14 +422,16 @@
             <div class="sparkle sparkle-3"></div>
             <div class="sparkle sparkle-4"></div>
         </div>
-        <h1>Singh Ji AI</h1>
-        <p class="tagline">ChatGPT से बेहतर — भारत का अपना AI! 🇮🇳</p>
+        <h1>🦁 Singh Ji AI</h1>
+        <p class="tagline">WeChat से 1000% BETTER — भारत का अपना AI! 🇮🇳</p>
+        <p class="wechat-killer">🔥 WECHAT KILLER v9.0 — 70 Modules | 300 Agents</p>
     </div>
 
     <!-- Banner -->
     <div class="banner">
         <div class="banner-india">🇮🇳 India Special: Ultra Max — 6 MONTHS FREE!</div>
         <div class="banner-global">🌍 Global: 3 Months Free on All Plans!</div>
+        <div class="banner-wechat">🦁 WeChat Killer — 73 Features | 4 Tags | 10 Schemas</div>
     </div>
 
     <!-- Pricing Cards -->
@@ -404,10 +447,15 @@
                 <li>Basic Chat</li>
                 <li>Hindi + English</li>
                 <li>AI Image (5/day)</li>
+                <li>AI Moments (Read Only)</li>
                 <li class="disabled">Voice Chat</li>
                 <li class="disabled">Image Analysis</li>
                 <li class="disabled">Code Generation</li>
                 <li class="disabled">Live Crypto + Stocks</li>
+                <li class="disabled">Mini-Programs</li>
+                <li class="disabled">AI Kisaan Doctor</li>
+                <li class="disabled">AI Mandi Predictor</li>
+                <li class="disabled">Sarkari Yojana Checker</li>
                 <li class="disabled">Priority Support</li>
                 <li class="disabled">Guard Agent (CCTV)</li>
                 <li class="disabled">API Access</li>
@@ -428,10 +476,15 @@
                 <li>Basic Chat</li>
                 <li>Hindi + English</li>
                 <li>AI Image (20/day)</li>
+                <li>AI Moments (Post)</li>
                 <li>Voice Chat</li>
                 <li>Image Analysis (10/day)</li>
                 <li class="disabled">Code Generation</li>
                 <li class="disabled">Live Crypto + Stocks</li>
+                <li class="disabled">Mini-Programs</li>
+                <li class="disabled">AI Kisaan Doctor</li>
+                <li class="disabled">AI Mandi Predictor</li>
+                <li class="disabled">Sarkari Yojana Checker</li>
                 <li class="disabled">Priority Support</li>
                 <li class="disabled">Guard Agent (CCTV)</li>
                 <li class="disabled">API Access</li>
@@ -452,10 +505,16 @@
                 <li>Basic Chat</li>
                 <li>Hindi + English</li>
                 <li>AI Image (Unlimited)</li>
+                <li>AI Moments (Post + AI Caption)</li>
+                <li>AI Stories (Create)</li>
                 <li>Voice Chat</li>
                 <li>Image Analysis (Unlimited)</li>
                 <li>Code Generation</li>
                 <li>Live Crypto + Stocks</li>
+                <li>Mini-Programs (5 Apps)</li>
+                <li class="disabled">AI Kisaan Doctor</li>
+                <li class="disabled">AI Mandi Predictor</li>
+                <li class="disabled">Sarkari Yojana Checker</li>
                 <li class="disabled">Priority Support</li>
                 <li class="disabled">Guard Agent (CCTV)</li>
                 <li class="disabled">API Access</li>
@@ -476,11 +535,17 @@
                 <li>Basic Chat</li>
                 <li>Hindi + English</li>
                 <li>AI Image (Unlimited)</li>
+                <li>AI Moments (Post + AI Caption)</li>
+                <li>AI Stories (Create + AI Filter)</li>
                 <li>Voice Chat</li>
                 <li>Image Analysis (Unlimited)</li>
                 <li>Code Generation</li>
                 <li>Live Crypto + Stocks</li>
-                <li>Priority Support</li>
+                <li>Mini-Programs (20 Apps)</li>
+                <li>AI Kisaan Doctor</li>
+                <li>AI Mandi Predictor</li>
+                <li>Sarkari Yojana Checker</li>
+                <li class="disabled">Priority Support</li>
                 <li class="disabled">Guard Agent (CCTV)</li>
                 <li class="disabled">API Access</li>
             </ul>
@@ -500,15 +565,66 @@
                 <li>Basic Chat</li>
                 <li>Hindi + English + 24 Languages</li>
                 <li>AI Image (Unlimited)</li>
+                <li>AI Moments (Post + AI Caption)</li>
+                <li>AI Stories (Create + AI Filter)</li>
                 <li>Voice Chat</li>
                 <li>Image Analysis (Unlimited)</li>
                 <li>Code Generation</li>
                 <li>Live Crypto + Stocks</li>
+                <li>Mini-Programs (Unlimited)</li>
+                <li>AI Kisaan Doctor</li>
+                <li>AI Mandi Predictor</li>
+                <li>Sarkari Yojana Checker</li>
+                <li>AI Exam Prep</li>
+                <li>Singh Ji TV</li>
+                <li>Singh Ji Radio</li>
+                <li>Singh Ji Health</li>
+                <li>Singh Ji Bazaar</li>
                 <li>Priority Support</li>
                 <li>Guard Agent (CCTV)</li>
                 <li>API Access</li>
             </ul>
             <button class="cta-button paid">Get Ultra Max</button>
+        </div>
+
+        <!-- WeChat Killer -->
+        <div class="pricing-card wechat-killer">
+            <div class="plan-icon">🦁</div>
+            <div class="plan-name">WeChat Killer</div>
+            <div class="plan-price">
+                <span class="currency">₹</span>999<span class="period">/month</span>
+            </div>
+            <div class="plan-original">₹11,988 ₹9,999/year</div>
+            <div class="plan-save">Save 17%</div>
+            <ul class="features-list">
+                <li class="wechat-feature">Basic Chat</li>
+                <li class="wechat-feature">Hindi + English + 24 Languages</li>
+                <li class="wechat-feature">AI Image (Unlimited)</li>
+                <li class="wechat-feature">AI Moments (Post + AI Caption)</li>
+                <li class="wechat-feature">AI Stories (Create + AI Filter)</li>
+                <li class="wechat-feature">Voice Chat</li>
+                <li class="wechat-feature">Image Analysis (Unlimited)</li>
+                <li class="wechat-feature">Code Generation</li>
+                <li class="wechat-feature">Live Crypto + Stocks</li>
+                <li class="wechat-feature">Mini-Programs (Unlimited)</li>
+                <li class="wechat-feature">AI Kisaan Doctor</li>
+                <li class="wechat-feature">AI Mandi Predictor</li>
+                <li class="wechat-feature">Sarkari Yojana Checker</li>
+                <li class="wechat-feature">AI Exam Prep</li>
+                <li class="wechat-feature">Singh Ji TV</li>
+                <li class="wechat-feature">Singh Ji Radio</li>
+                <li class="wechat-feature">Singh Ji Health</li>
+                <li class="wechat-feature">Singh Ji Bazaar</li>
+                <li class="wechat-feature">Singh Ji Emergency (SOS)</li>
+                <li class="wechat-feature">AI Voice Clone</li>
+                <li class="wechat-feature">AI Video Call</li>
+                <li class="wechat-feature">Priority Support</li>
+                <li class="wechat-feature">Guard Agent (CCTV)</li>
+                <li class="wechat-feature">API Access (Unlimited)</li>
+                <li class="wechat-feature">Dedicated Server</li>
+                <li class="wechat-feature">White Label Option</li>
+            </ul>
+            <button class="cta-button killer">🚀 Become WeChat Killer</button>
         </div>
     </div>
 
@@ -530,12 +646,21 @@
             <div class="stat-number">24/7</div>
             <div class="stat-label">Support</div>
         </div>
+        <div class="stat-item">
+            <div class="stat-number">73</div>
+            <div class="stat-label">Endpoints</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">300</div>
+            <div class="stat-label">Agents</div>
+        </div>
     </div>
 
     <!-- Footer -->
     <div class="footer">
-        <p>🦁 <span class="highlight">Singh Ji AI Ultra v4.0</span> | KELA Mode</p>
-        <p>"अकेला सही रास्ते पे" ❤️</p>
+        <p>🦁 <span class="highlight">Singh Ji AI Ultra v8.0</span> | <span class="killer">🔥 WeChat Killer v9.0</span></p>
+        <p>"अकेला सही रास्ते पे" ❤️ 🇮🇳</p>
+        <p style="font-size: 0.8rem; margin-top: 10px;">70+ Modules | 300 Agents | 24 Languages | Made in India</p>
     </div>
 
     <script>
