@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Stories - Singh Ji AI</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .stories-container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .story-ring { width: 80px; height: 80px; border-radius: 50%; border: 3px solid #07C160; padding: 3px; display: inline-block; margin: 10px; }
+        .story-ring img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+        .story-user { text-align: center; font-size: 12px; margin-top: -5px; }
+        .story-viewer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: black; z-index: 1000; display: none; }
+        .story-content { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; flex-direction: column; color: white; }
+        .story-content img { max-height: 80%; max-width: 100%; object-fit: contain; }
+        .story-progress { position: absolute; top: 20px; left: 20px; right: 20px; display: flex; gap: 5px; }
+        .story-progress-bar { flex: 1; height: 3px; background: rgba(255,255,255,0.3); }
+        .story-progress-bar.active { background: white; }
+        .story-close { position: absolute; top: 20px; right: 20px; color: white; font-size: 30px; cursor: pointer; z-index: 1001; }
+        .upload-story { position: fixed; bottom: 80px; right: 20px; background: #07C160; color: white; border: none; border-radius: 50%; width: 60px; height: 60px; font-size: 30px; box-shadow: 0 4px 12px rgba(7,193,96,0.4); cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="stories-container">
+        <h2>📸 AI Stories</h2>
+        <div style="display: flex; overflow-x: auto; padding: 10px 0;">
+            <div style="text-align: center;">
+                <div class="story-ring" style="border: 3px dashed #ccc;" onclick="uploadStory()">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Ctext y='70' font-size='50' text-anchor='middle' x='50'%3E➕%3C/text%3E%3C/svg%3E" alt="Add">
+                </div>
+                <div class="story-user">Add</div>
+            </div>
+            <div style="text-align: center;">
+                <div class="story-ring" onclick="viewStory(0)">
+                    <img src="https://i.pravatar.cc/150?img=1" alt="User">
+                </div>
+                <div class="story-user">Singh Ji</div>
+            </div>
+            <div style="text-align: center;">
+                <div class="story-ring" onclick="viewStory(1)">
+                    <img src="https://i.pravatar.cc/150?img=2" alt="User">
+                </div>
+                <div class="story-user">Kisaan</div>
+            </div>
+            <div style="text-align: center;">
+                <div class="story-ring" onclick="viewStory(2)">
+                    <img src="https://i.pravatar.cc/150?img=3" alt="User">
+                </div>
+                <div class="story-user">AI Bot</div>
+            </div>
+        </div>
+
+        <div class="story-viewer" id="storyViewer">
+            <span class="story-close" onclick="closeStory()">✕</span>
+            <div class="story-progress">
+                <div class="story-progress-bar active"></div>
+                <div class="story-progress-bar"></div>
+                <div class="story-progress-bar"></div>
+                <div class="story-progress-bar"></div>
+                <div class="story-progress-bar"></div>
+            </div>
+            <div class="story-content" id="storyContent">
+                <img src="https://picsum.photos/seed/story1/500/800" alt="Story">
+                <p style="margin-top: 20px; font-size: 18px;">🌾 आज की फसल बहुत अच्छी है!</p>
+                <p style="font-size: 14px; color: #888;">🦁 AI: "यह स्टोरी 24 घंटे में गायब हो जाएगी"</p>
+            </div>
+        </div>
+    </div>
+
+    <button class="upload-story" onclick="uploadStory()">📸</button>
+
+    <nav class="bottom-nav">
+        <a href="index.html">🏠</a>
+        <a href="moments.html">📷</a>
+        <a href="stories.html" class="active">📸</a>
+        <a href="profile.html">👤</a>
+        <a href="mini-apps.html">📱</a>
+    </nav>
+
+    <script>
+        function viewStory(index) {
+            document.getElementById('storyViewer').style.display = 'block';
+            document.getElementById('storyContent').innerHTML = `
+                <img src="https://picsum.photos/seed/story${index+1}/500/800" alt="Story">
+                <p style="margin-top: 20px; font-size: 18px;">📸 स्टोरी ${index+1}</p>
+                <p style="font-size: 14px; color: #888;">🦁 AI: "इसे 24 घंटे में देखना न भूलें"</p>
+            `;
+            setTimeout(() => closeStory(), 5000);
+        }
+
+        function closeStory() {
+            document.getElementById('storyViewer').style.display = 'none';
+        }
+
+        function uploadStory() {
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.accept = 'image/*,video/*';
+            fileInput.onchange = function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    alert(`✅ "${file.name}" स्टोरी अपलोड हो गई! AI फिल्टर लगा रहा है...`);
+                }
+            };
+            fileInput.click();
+        }
+    </script>
+</body>
+</html>
