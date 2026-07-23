@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - Singh Ji AI</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .profile-container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .profile-header { text-align: center; padding: 30px 0; background: linear-gradient(135deg, #07C160, #05a04d); border-radius: 16px; color: white; }
+        .profile-avatar { width: 100px; height: 100px; border-radius: 50%; border: 4px solid white; margin: 0 auto; display: block; object-fit: cover; }
+        .profile-name { font-size: 24px; margin: 10px 0 5px; font-weight: bold; }
+        .profile-id { font-size: 14px; opacity: 0.8; }
+        .profile-stats { display: flex; justify-content: space-around; padding: 20px; background: white; border-radius: 12px; margin-top: -20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .stat-item { text-align: center; }
+        .stat-number { font-size: 22px; font-weight: bold; color: #07C160; }
+        .stat-label { font-size: 12px; color: #888; }
+        .profile-menu { margin-top: 20px; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .menu-item { display: flex; align-items: center; padding: 15px 20px; border-bottom: 1px solid #f0f0f0; cursor: pointer; }
+        .menu-item:hover { background: #f5f5f5; }
+        .menu-item .icon { font-size: 24px; margin-right: 15px; }
+        .menu-item .text { flex: 1; }
+        .menu-item .arrow { color: #ccc; }
+        .qr-section { background: white; border-radius: 12px; padding: 20px; margin-top: 20px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .qr-code { width: 150px; height: 150px; margin: 10px auto; background: #f0f0f0; display: flex; align-items: center; justify-content: center; border-radius: 12px; font-size: 60px; }
+    </style>
+</head>
+<body>
+    <div class="profile-container">
+        <div class="profile-header">
+            <img src="https://i.pravatar.cc/200?img=11" alt="Profile" class="profile-avatar">
+            <div class="profile-name">🦁 Singh Ji</div>
+            <div class="profile-id">@singhji • ID: SJ-001</div>
+        </div>
+
+        <div class="profile-stats">
+            <div class="stat-item">
+                <div class="stat-number">47</div>
+                <div class="stat-label">Moments</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">12.5K</div>
+                <div class="stat-label">Followers</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">258</div>
+                <div class="stat-label">Following</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">🪙 1,245</div>
+                <div class="stat-label">Coins</div>
+            </div>
+        </div>
+
+        <div class="qr-section">
+            <p><strong>📱 My QR Code</strong></p>
+            <div class="qr-code">⬛🟩⬛</div>
+            <p style="font-size: 12px; color: #888;">Scan to add @singhji</p>
+        </div>
+
+        <div class="profile-menu">
+            <div class="menu-item" onclick="location.href='moments.html'">
+                <span class="icon">📷</span>
+                <span class="text">My Moments</span>
+                <span class="arrow">›</span>
+            </div>
+            <div class="menu-item" onclick="location.href='stories.html'">
+                <span class="icon">📸</span>
+                <span class="text">My Stories</span>
+                <span class="arrow">›</span>
+            </div>
+            <div class="menu-item" onclick="alert('🪙 Wallet: ₹1,245')">
+                <span class="icon">💰</span>
+                <span class="text">Wallet</span>
+                <span class="arrow">›</span>
+            </div>
+            <div class="menu-item" onclick="alert('🎯 Daily Streak: 7 days!')">
+                <span class="icon">🔥</span>
+                <span class="text">Daily Streak</span>
+                <span class="arrow">›</span>
+            </div>
+            <div class="menu-item" onclick="location.href='settings.html'">
+                <span class="icon">⚙️</span>
+                <span class="text">Settings</span>
+                <span class="arrow">›</span>
+            </div>
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <a href="index.html">🏠</a>
+        <a href="moments.html">📷</a>
+        <a href="stories.html">📸</a>
+        <a href="profile.html" class="active">👤</a>
+        <a href="mini-apps.html">📱</a>
+    </nav>
+</body>
+</html>
