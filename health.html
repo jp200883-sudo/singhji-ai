@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Singh Ji Health - Singh Ji AI</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .health-container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .health-card { background: white; border-radius: 16px; padding: 20px; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .health-card .icon { font-size: 40px; display: block; text-align: center; }
+        .health-card .title { text-align: center; font-weight: bold; margin: 10px 0; }
+        .health-card .desc { text-align: center; font-size: 14px; color: #888; }
+        .symptom-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 15px; }
+        .symptom-btn { background: #f5f5f5; border: none; border-radius: 20px; padding: 10px; cursor: pointer; transition: all 0.2s; }
+        .symptom-btn:hover, .symptom-btn.selected { background: #07C160; color: white; }
+        .medicine-reminder { background: #f0f7ff; padding: 15px; border-radius: 12px; border-left: 4px solid #07C160; margin-top: 15px; }
+        .medicine-reminder .time { color: #07C160; font-weight: bold; }
+        .ai-doctor { background: #f0faf5; padding: 15px; border-radius: 12px; margin-top: 15px; border: 1px solid #07C160; }
+        .ai-doctor .msg { font-size: 14px; color: #333; }
+    </style>
+</head>
+<body>
+    <div class="health-container">
+        <h2>🏥 Singh Ji Health</h2>
+        <p>🤖 AI Doctor — 24/7 आपकी सेवा में!</p>
+
+        <div class="health-card">
+            <span class="icon">💊</span>
+            <div class="title">Medicine Reminder</div>
+            <div class="desc">आज की दवा का समय</div>
+            <div class="medicine-reminder">
+                <div>🕐 <span class="time">8:00 AM</span> — Blood Pressure</div>
+                <div>🕐 <span class="time">1:00 PM</span> — Diabetes Medicine</div>
+                <div>🕐 <span class="time">9:00 PM</span> — Cholesterol</div>
+            </div>
+        </div>
+
+        <div class="health-card">
+            <span class="icon">🤒</span>
+            <div class="title">Symptom Checker</div>
+            <div class="desc">अपने लक्षण चुनें</div>
+            <div class="symptom-grid">
+                <button class="symptom-btn" onclick="selectSymptom(this)">😰 Fever</button>
+                <button class="symptom-btn" onclick="selectSymptom(this)">🤧 Cold</button>
+                <button class="symptom-btn" onclick="selectSymptom(this)">🤕 Headache</button>
+                <button class="symptom-btn" onclick="selectSymptom(this)">💪 Body Pain</button>
+                <button class="symptom-btn" onclick="selectSymptom(this)">🤢 Nausea</button>
+                <button class="symptom-btn" onclick="selectSymptom(this)">😫 Fatigue</button>
+            </div>
+        </div>
+
+        <div class="ai-doctor" id="aiDoctor">
+            <strong>🩺 AI Doctor:</strong>
+            <p class="msg" id="healthMessage">नमस्ते! मुझे अपनी समस्या बताएं, मैं मदद करूंगा।</p>
+        </div>
+
+        <div style="margin-top: 15px; display: flex; gap: 10px;">
+            <input type="text" id="healthInput" placeholder="अपनी समस्या लिखें..." style="flex:1; padding:12px; border:1px solid #ddd; border-radius:10px; font-size:16px;" onkeydown="if(event.key==='Enter') askHealth()">
+            <button onclick="askHealth()" style="background:#07C160; color:white; border:none; padding:12px 20px; border-radius:10px; cursor:pointer;">💬 Ask</button>
+        </div>
+
+        <div style="margin-top: 15px; background: #fff3cd; padding: 12px; border-radius: 10px; border-left: 4px solid #ffc107;">
+            ⚠️ <strong>Emergency:</strong> तुरंत मदद के लिए <a href="emergency.html" style="color: #07C160;">🚨 SOS</a>
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <a href="index.html">🏠</a>
+        <a href="moments.html">📷</a>
+        <a href="stories.html">📸</a>
+        <a href="profile.html">👤</a>
+        <a href="mini-apps.html">📱</a>
+    </nav>
+
+    <script>
+        function selectSymptom(btn) {
+            document.querySelectorAll('.symptom-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            const symptom = btn.textContent.trim();
+            const responses = {
+                'Fever': '🤒 बुखार है? आराम करें, पानी पीयें, पेरासिटामॉल 500mg लें। अगर 3 दिन से ज्यादा हो तो डॉक्टर को दिखाएं।',
+                'Cold': '🤧 जुकाम है? गर्म पानी पीयें, नींबू-शहद का सेवन करें, स्टीम लें।',
+                'Headache': '🤕 सिरदर्द? अंधेरे में आराम करें, पानी पीयें, बिना डॉक्टर की सलाह के दवा न लें।',
+                'Body Pain': '💪 शरीर में दर्द? गर्म पानी से नहाएं, आराम करें, पैन-टू-पैन 5 mg लें।',
+                'Nausea': '🤢 मिचली? अदरक वाली चाय पीयें, हल्का खाना खाएं, घूमें नहीं।',
+                'Fatigue': '😫 थकान? पर्याप्त नींद लें, पानी पीयें, विटामिन-B12 चेक करवाएं।'
+            };
+            document.getElementById('healthMessage').textContent = responses[symptom] || 'डॉक्टर से संपर्क करें।';
+        }
+
+        function askHealth() {
+            const input = document.getElementById('healthInput');
+            const text = input.value.trim();
+            if (!text) return;
+
+            const responses = [
+                "🩺 आपकी समस्या समझ गया। कुछ दिन आराम करें और हल्का खाना खाएं।",
+                "💊 यह सामान्य है। पानी पीयें और डॉक्टर को दिखाएं अगर 2 दिन में ठीक न हो।",
+                "🦁 Singh Ji Health: आपकी सेहत का ध्यान रखना मेरा काम है!",
+                "🏥 नजदीकी अस्पताल में जाएं अगर ये गंभीर है। हमेशा सावधान रहें।"
+            ];
+            document.getElementById('healthMessage').textContent = responses[Math.floor(Math.random() * responses.length)];
+            input.value = '';
+        }
+    </script>
+</body>
+</html>
