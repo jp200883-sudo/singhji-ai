@@ -1,12 +1,14 @@
 /**
- * Singh Ji AI Ultra v8.0 - Glassmorphism Design System
+ * 🦁 Singh Ji AI Ultra v8.0 — WeChat Killer Design System
  * Dark Mode Default (#0A0A0F)
  * Gold/Orange/Pink Gradient Borders
  * Micro Animations + Skeleton Loading
+ * WeChat Killer Theme + Indian Colors
  */
 
 /* ============== CSS VARIABLES ============== */
 :root {
+    /* Backgrounds */
     --bg-primary: #0A0A0F;
     --bg-secondary: #12121A;
     --bg-card: rgba(18, 18, 26, 0.7);
@@ -14,29 +16,45 @@
     --glass-border: rgba(255, 255, 255, 0.08);
     --glass-highlight: rgba(255, 255, 255, 0.05);
 
+    /* Brand Colors — WeChat Killer */
     --gold: #FFD700;
     --gold-light: #FFE55C;
     --orange: #FF6B35;
     --pink: #FF3366;
     --purple: #8B5CF6;
     --cyan: #00D4FF;
+    
+    /* Indian Colors 🇮🇳 */
+    --saffron: #FF9933;
+    --white: #FFFFFF;
+    --green: #138808;
+    --indigo: #1A1A6E;
 
+    /* Gradients */
     --gradient-primary: linear-gradient(135deg, var(--gold) 0%, var(--orange) 50%, var(--pink) 100%);
     --gradient-border: linear-gradient(135deg, var(--gold), var(--orange), var(--pink), var(--purple));
     --gradient-glow: linear-gradient(135deg, rgba(255, 215, 0, 0.3), rgba(255, 107, 53, 0.3), rgba(255, 51, 102, 0.3));
+    --gradient-india: linear-gradient(90deg, var(--saffron), var(--white), var(--green));
+    --gradient-wechat-killer: linear-gradient(135deg, #FFD700, #FF6B35, #FF3366, #8B5CF6);
 
+    /* Text */
     --text-primary: #FFFFFF;
     --text-secondary: rgba(255, 255, 255, 0.7);
     --text-muted: rgba(255, 255, 255, 0.4);
 
+    /* Shadows */
     --shadow-glow: 0 0 40px rgba(255, 215, 0, 0.1), 0 0 80px rgba(255, 107, 53, 0.05);
     --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.4);
+    --shadow-gold: 0 0 60px rgba(255, 215, 0, 0.15);
 
+    /* Radius */
     --radius-sm: 8px;
     --radius-md: 16px;
     --radius-lg: 24px;
     --radius-xl: 32px;
+    --radius-full: 9999px;
 
+    /* Transitions */
     --transition-fast: 0.2s ease;
     --transition-normal: 0.3s ease;
     --transition-slow: 0.5s ease;
@@ -50,7 +68,7 @@
 }
 
 body {
-    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    font-family: 'Inter', 'Segoe UI', 'Noto Sans Devanagari', system-ui, -apple-system, sans-serif;
     background: var(--bg-primary);
     color: var(--text-primary);
     min-height: 100vh;
@@ -132,9 +150,57 @@ body::before {
     box-shadow: var(--shadow-glow);
 }
 
+/* WeChat Killer Card */
+.glass-card-wechat {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+    transition: var(--transition-normal);
+}
+
+.glass-card-wechat::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: var(--radius-lg);
+    background: var(--gradient-wechat-killer);
+    z-index: -1;
+    opacity: 0.5;
+    transition: var(--transition-normal);
+}
+
+.glass-card-wechat:hover::before {
+    opacity: 1;
+}
+
+.glass-card-wechat:hover {
+    transform: translateY(-4px) scale(1.01);
+    box-shadow: 0 0 60px rgba(255, 215, 0, 0.2);
+}
+
 /* ============== GRADIENT TEXT ============== */
 .gradient-text {
     background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.gradient-text-india {
+    background: var(--gradient-india);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.gradient-text-wechat {
+    background: var(--gradient-wechat-killer);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -176,102 +242,289 @@ body::before {
     box-shadow: 0 8px 25px rgba(255, 107, 53, 0.4);
 }
 
-.btn-primary:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    transform: none;
+.btn-wechat {
+    background: var(--gradient-wechat-killer);
+    color: var(--bg-primary);
+    font-weight: 700;
+    padding: 14px 32px;
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: var(--transition-normal);
+    font-size: 16px;
+    letter-spacing: 0.5px;
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.2);
 }
 
-.btn-secondary {
-    background: transparent;
-    color: var(--text-primary);
-    font-weight: 600;
+.btn-wechat::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transition: var(--transition-slow);
+}
+
+.btn-wechat:hover::before {
+    left: 100%;
+}
+
+.btn-wechat:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 8px 40px rgba(255, 215, 0, 0.5);
+}
+
+.btn-india {
+    background: var(--gradient-india);
+    color: var(--bg-primary);
+    font-weight: 700;
     padding: 14px 32px;
-    border: 1.5px solid var(--glass-border);
+    border: none;
     border-radius: var(--radius-md);
     cursor: pointer;
     transition: var(--transition-normal);
     font-size: 16px;
 }
 
-.btn-secondary:hover {
-    border-color: var(--gold);
-    background: rgba(255, 215, 0, 0.05);
+.btn-india:hover {
     transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(255, 153, 51, 0.4);
 }
 
-/* ============== INPUT FIELDS ============== */
-.glass-input {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1.5px solid var(--glass-border);
-    border-radius: var(--radius-md);
-    padding: 14px 18px;
-    color: var(--text-primary);
-    font-size: 16px;
-    width: 100%;
+/* ============== WECHAT NAVIGATION ============== */
+.wechat-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(10, 10, 15, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid var(--glass-border);
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0 8px;
+    z-index: 100;
+}
+
+.wechat-nav a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 20px;
+    padding: 6px 16px;
+    border-radius: var(--radius-sm);
     transition: var(--transition-normal);
-    outline: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 12px;
+    gap: 2px;
 }
 
-.glass-input:focus {
-    border-color: var(--orange);
-    box-shadow: 0 0 20px rgba(255, 107, 53, 0.15);
-    background: rgba(255, 255, 255, 0.05);
+.wechat-nav a span {
+    font-size: 20px;
 }
 
-.glass-input::placeholder {
+.wechat-nav a .label {
+    font-size: 10px;
+    opacity: 0.6;
+}
+
+.wechat-nav a:hover {
+    color: var(--text-primary);
+}
+
+.wechat-nav a.active {
+    color: var(--gold);
+}
+
+.wechat-nav a.active .label {
+    color: var(--gold);
+    opacity: 1;
+}
+
+/* ============== STORY RINGS ============== */
+.story-ring {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    padding: 3px;
+    background: var(--gradient-border);
+    display: inline-block;
+    cursor: pointer;
+    transition: var(--transition-normal);
+}
+
+.story-ring:hover {
+    transform: scale(1.05);
+}
+
+.story-ring img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--bg-primary);
+}
+
+.story-ring.add-story {
+    background: var(--glass-border);
+}
+
+.story-ring.add-story:hover {
+    background: var(--gradient-border);
+}
+
+/* ============== MOMENT CARDS ============== */
+.moment-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    margin-bottom: 16px;
+    transition: var(--transition-normal);
+}
+
+.moment-card:hover {
+    border-color: rgba(255, 215, 0, 0.2);
+    box-shadow: var(--shadow-glow);
+}
+
+.moment-header {
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    gap: 12px;
+}
+
+.moment-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--gradient-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    color: var(--bg-primary);
+}
+
+.moment-user {
+    flex: 1;
+}
+
+.moment-user .name {
+    font-weight: 600;
+}
+
+.moment-user .time {
+    font-size: 12px;
     color: var(--text-muted);
 }
 
-/* ============== SELECT DROPDOWN ============== */
-.glass-select {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1.5px solid var(--glass-border);
-    border-radius: var(--radius-md);
-    padding: 12px 16px;
+.moment-image {
+    width: 100%;
+    max-height: 400px;
+    object-fit: cover;
+}
+
+.moment-text {
+    padding: 16px;
+}
+
+.moment-actions {
+    display: flex;
+    padding: 10px 16px;
+    border-top: 1px solid var(--glass-border);
+}
+
+.moment-actions button {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    flex: 1;
+    padding: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: var(--radius-sm);
+    transition: var(--transition-normal);
+}
+
+.moment-actions button:hover {
+    background: rgba(255, 255, 255, 0.05);
     color: var(--text-primary);
-    font-size: 15px;
+}
+
+/* ============== MINI APP GRID ============== */
+.mini-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.mini-app {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    text-align: center;
     cursor: pointer;
     transition: var(--transition-normal);
-    outline: none;
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='white' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 12px center;
-    padding-right: 40px;
 }
 
-.glass-select:focus {
-    border-color: var(--orange);
+.mini-app:hover {
+    transform: translateY(-4px);
+    border-color: var(--gold);
+    box-shadow: var(--shadow-glow);
 }
 
-/* ============== SHIMMER / SKELETON LOADING ============== */
-.shimmer-text {
-    background: linear-gradient(90deg, var(--text-muted) 25%, var(--text-secondary) 50%, var(--text-muted) 75%);
-    background-size: 200% 100%;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    animation: shimmer 2s infinite;
+.mini-app .icon {
+    font-size: 32px;
+    display: block;
+    margin-bottom: 6px;
 }
 
-@keyframes shimmer {
-    0% { background-position: 200% 0; }
-    100% { background-position: -200% 0; }
+.mini-app .name {
+    font-size: 12px;
+    font-weight: 500;
 }
 
-.skeleton-card {
-    background: linear-gradient(90deg, rgba(255, 255, 255, 0.03) 25%, rgba(255, 255, 255, 0.06) 50%, rgba(255, 255, 255, 0.03) 75%);
-    background-size: 200% 100%;
-    border-radius: var(--radius-md);
-    height: 200px;
-    animation: shimmer 1.5s infinite;
+/* ============== LOADER ============== */
+.loader {
+    width: 48px;
+    height: 48px;
+    border: 3px solid var(--glass-border);
+    border-top-color: var(--gold);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 20px auto;
+}
+
+.loader-wechat {
+    width: 48px;
+    height: 48px;
+    border: 3px solid var(--glass-border);
+    border-top-color: var(--orange);
+    border-right-color: var(--pink);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 20px auto;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
 }
 
 /* ============== TOAST NOTIFICATIONS ============== */
 .toast {
     position: fixed;
-    bottom: 24px;
+    bottom: 80px;
     right: 24px;
     padding: 16px 24px;
     border-radius: var(--radius-md);
@@ -280,6 +533,7 @@ body::before {
     animation: slideIn 0.3s ease;
     backdrop-filter: blur(20px);
     border: 1px solid var(--glass-border);
+    max-width: 400px;
 }
 
 .toast-success {
@@ -300,6 +554,12 @@ body::before {
     color: #60a5fa;
 }
 
+.toast-wechat {
+    background: rgba(255, 215, 0, 0.15);
+    border-color: rgba(255, 215, 0, 0.3);
+    color: var(--gold);
+}
+
 .toast-exit {
     animation: slideOut 0.3s ease forwards;
 }
@@ -312,49 +572,6 @@ body::before {
 @keyframes slideOut {
     from { transform: translateX(0); opacity: 1; }
     to { transform: translateX(100%); opacity: 0; }
-}
-
-/* Inline status toasts */
-.success-toast {
-    background: rgba(34, 197, 94, 0.1);
-    border: 1px solid rgba(34, 197, 94, 0.2);
-    border-radius: var(--radius-md);
-    padding: 16px;
-    color: #4ade80;
-    margin-top: 12px;
-}
-
-.error-toast {
-    background: rgba(239, 68, 68, 0.1);
-    border: 1px solid rgba(239, 68, 68, 0.2);
-    border-radius: var(--radius-md);
-    padding: 16px;
-    color: #f87171;
-    margin-top: 12px;
-}
-
-.info-toast {
-    background: rgba(59, 130, 246, 0.1);
-    border: 1px solid rgba(59, 130, 246, 0.2);
-    border-radius: var(--radius-md);
-    padding: 16px;
-    color: #60a5fa;
-    margin-top: 12px;
-}
-
-/* ============== LOADER ============== */
-.loader {
-    width: 48px;
-    height: 48px;
-    border: 3px solid var(--glass-border);
-    border-top-color: var(--gold);
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    margin: 20px auto;
-}
-
-@keyframes spin {
-    to { transform: rotate(360deg); }
 }
 
 /* ============== KELA BADGE ============== */
@@ -378,139 +595,133 @@ body::before {
     border-color: var(--gold);
 }
 
-/* ============== BUTTERFLY GRID ============== */
-.butterfly-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 16px;
-    margin-top: 20px;
-}
-
-.butterfly-card {
-    position: relative;
-    border-radius: var(--radius-md);
-    overflow: hidden;
-    cursor: pointer;
-    transition: var(--transition-normal);
-    aspect-ratio: 1;
-}
-
-.butterfly-card img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: var(--transition-normal);
-}
-
-.butterfly-card:hover {
-    transform: scale(1.05);
-    z-index: 2;
-}
-
-.butterfly-card:hover img {
-    filter: brightness(1.1);
-}
-
-.butterfly-overlay {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 12px;
-    background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
-    display: flex;
-    justify-content: space-between;
-    font-size: 12px;
-    color: var(--text-secondary);
-    opacity: 0;
-    transition: var(--transition-normal);
-}
-
-.butterfly-card:hover .butterfly-overlay {
-    opacity: 1;
-}
-
-/* ============== IMAGE RESULT ============== */
-.image-result {
-    width: 100%;
-    max-width: 512px;
-    border-radius: var(--radius-md);
-    border: 2px solid var(--glass-border);
-    margin-top: 16px;
-    display: none;
-    transition: var(--transition-normal);
-}
-
-.image-result:hover {
-    border-color: var(--orange);
-    box-shadow: 0 0 30px rgba(255, 107, 53, 0.2);
-}
-
-/* ============== DOWNLOAD LINK ============== */
-.download-link {
+.wechat-badge {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    background: var(--gradient-primary);
-    color: var(--bg-primary);
-    padding: 12px 24px;
-    border-radius: var(--radius-md);
-    text-decoration: none;
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 51, 102, 0.2));
+    border: 1.5px solid rgba(255, 215, 0, 0.4);
+    border-radius: 100px;
+    padding: 8px 20px;
     font-weight: 700;
+    font-size: 14px;
+    background: var(--gradient-wechat-killer);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: 0.5px;
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.15);
+}
+
+/* ============== WECHAT KILLER HEADER ============== */
+.wechat-header {
+    text-align: center;
+    padding: 40px 20px;
+    position: relative;
+}
+
+.wechat-header .logo {
+    font-size: 64px;
+    display: block;
+    margin-bottom: 12px;
+    animation: float 3s ease-in-out infinite;
+}
+
+.wechat-header h1 {
+    font-size: 2.8rem;
+    font-weight: 800;
+    background: var(--gradient-wechat-killer);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 60px rgba(255, 215, 0, 0.1);
+}
+
+.wechat-header .subtitle {
+    color: var(--text-secondary);
+    margin-top: 8px;
+    font-size: 1.1rem;
+}
+
+.wechat-header .killer-tag {
+    display: inline-block;
     margin-top: 12px;
-    transition: var(--transition-normal);
+    padding: 6px 20px;
+    background: rgba(255, 215, 0, 0.1);
+    border: 1px solid rgba(255, 215, 0, 0.2);
+    border-radius: var(--radius-full);
+    font-size: 14px;
+    color: var(--gold);
+    letter-spacing: 2px;
 }
 
-.download-link:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(255, 107, 53, 0.4);
+/* ============== STATS BAR ============== */
+.stats-bar {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    padding: 30px 20px;
+    flex-wrap: wrap;
 }
 
-/* ============== CODE BLOCKS ============== */
-code {
-    background: rgba(255, 255, 255, 0.05);
-    padding: 2px 8px;
-    border-radius: 6px;
-    font-family: 'JetBrains Mono', 'Fira Code', monospace;
-    font-size: 13px;
-    color: var(--cyan);
+.stat-item {
+    text-align: center;
 }
 
-/* ============== SCROLLBAR ============== */
-::-webkit-scrollbar {
-    width: 8px;
+.stat-number {
+    font-size: 2.5rem;
+    font-weight: 800;
+    background: var(--gradient-wechat-killer);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
-::-webkit-scrollbar-track {
-    background: var(--bg-primary);
-}
-
-::-webkit-scrollbar-thumb {
-    background: var(--glass-border);
-    border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 215, 0, 0.3);
+.stat-label {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-top: 4px;
 }
 
 /* ============== RESPONSIVE ============== */
 @media (max-width: 768px) {
     .glass-card,
-    .glass-card-gradient {
+    .glass-card-gradient,
+    .glass-card-wechat {
         padding: 16px;
         border-radius: var(--radius-md);
     }
 
-    .butterfly-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
+    .mini-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
     }
 
-    .btn-primary,
-    .btn-secondary {
-        padding: 12px 24px;
-        font-size: 14px;
+    .wechat-header h1 {
+        font-size: 2rem;
+    }
+
+    .stats-bar {
+        gap: 20px;
+    }
+
+    .stat-number {
+        font-size: 1.8rem;
+    }
+
+    .wechat-nav a {
+        font-size: 10px;
+        padding: 4px 10px;
+    }
+
+    .wechat-nav a span {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .mini-grid {
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
@@ -528,6 +739,15 @@ code {
 @keyframes float {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-10px); }
+}
+
+@keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
 }
 
 .animate-fade-in {
@@ -548,9 +768,32 @@ code {
     animation: fadeIn 0.5s ease forwards;
 }
 
-.stagger-children > *:nth-child(1) { animation-delay: 0.1s; }
-.stagger-children > *:nth-child(2) { animation-delay: 0.2s; }
-.stagger-children > *:nth-child(3) { animation-delay: 0.3s; }
-.stagger-children > *:nth-child(4) { animation-delay: 0.4s; }
-.stagger-children > *:nth-child(5) { animation-delay: 0.5s; }
-.stagger-children > *:nth-child(6) { animation-delay: 0.6s; }
+.stagger-children > *:nth-child(1) { animation-delay: 0.05s; }
+.stagger-children > *:nth-child(2) { animation-delay: 0.1s; }
+.stagger-children > *:nth-child(3) { animation-delay: 0.15s; }
+.stagger-children > *:nth-child(4) { animation-delay: 0.2s; }
+.stagger-children > *:nth-child(5) { animation-delay: 0.25s; }
+.stagger-children > *:nth-child(6) { animation-delay: 0.3s; }
+.stagger-children > *:nth-child(7) { animation-delay: 0.35s; }
+.stagger-children > *:nth-child(8) { animation-delay: 0.4s; }
+.stagger-children > *:nth-child(9) { animation-delay: 0.45s; }
+.stagger-children > *:nth-child(10) { animation-delay: 0.5s; }
+
+/* ============== SCROLLBAR ============== */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--glass-border);
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 215, 0, 0.3);
+}
