@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Singh Ji TV - Singh Ji AI</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .tv-container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .tv-player { background: #000; border-radius: 16px; overflow: hidden; position: relative; padding-bottom: 56.25%; height: 0; }
+        .tv-player iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+        .channel-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 20px; }
+        .channel-btn { background: white; border: 1px solid #ddd; border-radius: 10px; padding: 12px; text-align: center; cursor: pointer; transition: all 0.2s; }
+        .channel-btn:hover, .channel-btn.active { border-color: #07C160; background: #f0faf5; }
+        .channel-btn .icon { font-size: 24px; display: block; }
+        .channel-btn .name { font-size: 12px; font-weight: 500; }
+        .news-ticker { background: #f5f5f5; padding: 10px; border-radius: 10px; margin-top: 15px; overflow: hidden; white-space: nowrap; }
+        .news-ticker span { display: inline-block; animation: ticker 20s linear infinite; }
+        @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+        .ai-news { background: #f0f7ff; padding: 15px; border-radius: 12px; margin-top: 15px; border-left: 4px solid #07C160; }
+    </style>
+</head>
+<body>
+    <div class="tv-container">
+        <h2>📺 Singh Ji TV</h2>
+        <p>🦁 AI News Anchor + Live TV</p>
+
+        <div class="tv-player">
+            <iframe id="tvFrame" src="https://www.youtube.com/embed/live_stream?channel=UC4R8DWoMoI7CAwX8_LjQHig" frameborder="0" allowfullscreen></iframe>
+        </div>
+
+        <div class="channel-grid">
+            <div class="channel-btn active" onclick="changeChannel('news', this)">
+                <span class="icon">📰</span>
+                <span class="name">News</span>
+            </div>
+            <div class="channel-btn" onclick="changeChannel('entertainment', this)">
+                <span class="icon">🎬</span>
+                <span class="name">Entertainment</span>
+            </div>
+            <div class="channel-btn" onclick="changeChannel('sports', this)">
+                <span class="icon">🏏</span>
+                <span class="name">Sports</span>
+            </div>
+            <div class="channel-btn" onclick="changeChannel('kisaan', this)">
+                <span class="icon">🌾</span>
+                <span class="name">Kisaan</span>
+            </div>
+            <div class="channel-btn" onclick="changeChannel('devotional', this)">
+                <span class="icon">🕉️</span>
+                <span class="name">Devotional</span>
+            </div>
+            <div class="channel-btn" onclick="changeChannel('music', this)">
+                <span class="icon">🎵</span>
+                <span class="name">Music</span>
+            </div>
+        </div>
+
+        <div class="news-ticker">
+            <span>🦁 Singh Ji AI WeChat Killer v9.0 Launching Soon! | 🌾 Kisaan Doctor Now Live! | 📈 Mandi Predictor Active! | 🏛️ Sarkari Yojana Checker Available!</span>
+        </div>
+
+        <div class="ai-news">
+            <strong>🤖 AI News Summary</strong>
+            <p style="font-size: 14px; margin-top: 5px; color: #555;">
+                🇮🇳 भारत में मंडी भाव बढ़े | 🌾 किसानों को नई सरकारी योजना | 🦁 Singh Ji AI ने WeChat को पीछे छोड़ा | 💰 UPI ने नया रिकॉर्ड बनाया
+            </p>
+            <span style="font-size: 12px; color: #888;">🕐 AI Update: 2 minutes ago</span>
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <a href="index.html">🏠</a>
+        <a href="moments.html">📷</a>
+        <a href="stories.html">📸</a>
+        <a href="profile.html">👤</a>
+        <a href="mini-apps.html">📱</a>
+    </nav>
+
+    <script>
+        const channels = {
+            news: 'https://www.youtube.com/embed/live_stream?channel=UC4R8DWoMoI7CAwX8_LjQHig',
+            entertainment: 'https://www.youtube.com/embed/live_stream?channel=UCftwRNsjfRo08xYE31tHi5A',
+            sports: 'https://www.youtube.com/embed/live_stream?channel=UCiWLfSweyRNmLpgEHekhoMg',
+            kisaan: 'https://www.youtube.com/embed/live_stream?channel=UC8BTXHd7PPR-8rjxwW4nR9w',
+            devotional: 'https://www.youtube.com/embed/live_stream?channel=UCrXZ5jS3FGLmH3zGz3Lb8sQ',
+            music: 'https://www.youtube.com/embed/live_stream?channel=UC0B9g1jM_TkRrM6jB-FN9qg'
+        };
+
+        function changeChannel(id, btn) {
+            document.querySelectorAll('.channel-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById('tvFrame').src = channels[id] || channels.news;
+        }
+    </script>
+</body>
+</html>
