@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Exam Prep - Singh Ji AI</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .exam-container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .exam-header { background: linear-gradient(135deg, #4a90d9, #357abd); color: white; padding: 20px; border-radius: 16px; text-align: center; }
+        .exam-header .sub { font-size: 14px; opacity: 0.8; }
+        .exam-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-top: 20px; }
+        .exam-card { background: white; border-radius: 12px; padding: 20px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1); cursor: pointer; transition: transform 0.2s; }
+        .exam-card:hover { transform: translateY(-3px); box-shadow: 0 4px 16px rgba(0,0,0,0.15); }
+        .exam-card .icon { font-size: 40px; display: block; }
+        .exam-card .name { font-weight: 500; margin-top: 5px; }
+        .exam-card .count { font-size: 12px; color: #888; }
+        .quiz-box { background: white; border-radius: 12px; padding: 20px; margin-top: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); display: none; }
+        .quiz-box .question { font-size: 18px; font-weight: 500; }
+        .quiz-box .options { margin-top: 15px; }
+        .quiz-box .option { display: block; width: 100%; padding: 12px; margin-bottom: 8px; border: 1px solid #ddd; border-radius: 10px; background: white; cursor: pointer; text-align: left; transition: all 0.2s; }
+        .quiz-box .option:hover { background: #f0f0f0; }
+        .quiz-box .option.correct { background: #d4edda; border-color: #07C160; }
+        .quiz-box .option.wrong { background: #f8d7da; border-color: #ff6b6b; }
+        .quiz-box .score { margin-top: 15px; font-size: 16px; }
+        .ai-tutor { background: #f0f7ff; padding: 15px; border-radius: 12px; margin-top: 15px; border-left: 4px solid #4a90d9; }
+    </style>
+</head>
+<body>
+    <div class="exam-container">
+        <div class="exam-header">
+            <h2>📚 AI Exam Prep</h2>
+            <div class="sub">🤖 AI Tutor — NCERT + Competitive Exams</div>
+        </div>
+
+        <div class="exam-grid">
+            <div class="exam-card" onclick="startQuiz('maths')">
+                <span class="icon">📐</span>
+                <div class="name">Mathematics</div>
+                <div class="count">15 Questions</div>
+            </div>
+            <div class="exam-card" onclick="startQuiz('science')">
+                <span class="icon">🔬</span>
+                <div class="name">Science</div>
+                <div class="count">12 Questions</div>
+            </div>
+            <div class="exam-card" onclick="startQuiz('english')">
+                <span class="icon">📖</span>
+                <div class="name">English</div>
+                <div class="count">10 Questions</div>
+            </div>
+            <div class="exam-card" onclick="startQuiz('gk')">
+                <span class="icon">🌍</span>
+                <div class="name">General Knowledge</div>
+                <div class="count">20 Questions</div>
+            </div>
+        </div>
+
+        <div class="ai-tutor">
+            <strong>🤖 AI Tutor Says:</strong>
+            <p style="font-size: 14px; color: #555; margin-top: 5px;" id="tutorMessage">"NCERT से पढ़ाई करो! मैं तुम्हारी मदद करूंगा।"</p>
+        </div>
+
+        <div class="quiz-box" id="quizBox">
+            <div class="question" id="questionText">प्रश्न 1: 2 + 2 = ?</div>
+            <div class="options" id="optionsContainer">
+                <button class="option" onclick="checkAnswer(this, 1)">A) 3</button>
+                <button class="option" onclick="checkAnswer(this, 2)">B) 4</button>
+                <button class="option" onclick="checkAnswer(this, 3)">C) 5</button>
+                <button class="option" onclick="checkAnswer(this, 4)">D) 6</button>
+            </div>
+            <div class="score" id="scoreDisplay">Score: 0/0</div>
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <a href="index.html">🏠</a>
+        <a href="moments.html">📷</a>
+        <a href="stories.html">
