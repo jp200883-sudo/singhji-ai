@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Kisaan Doctor - Singh Ji AI</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .kisaan-container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .upload-area { border: 2px dashed #07C160; border-radius: 16px; padding: 40px; text-align: center; cursor: pointer; background: #f9f9f9; }
+        .upload-area:hover { background: #f0f0f0; }
+        .upload-area .icon { font-size: 60px; display: block; }
+        .result-card { background: white; border-radius: 12px; padding: 20px; margin-top: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); display: none; }
+        .disease-tag { background: #ff6b6b; color: white; padding: 4px 12px; border-radius: 20px; display: inline-block; font-size: 14px; }
+        .treatment { background: #f0f7ff; padding: 15px; border-radius: 8px; margin-top: 15px; border-left: 4px solid #07C160; }
+        .confidence { color: #888; font-size: 14px; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <div class="kisaan-container">
+        <h2>🌾 AI Kisaan Doctor</h2>
+        <p>फोटो लो करो, AI बीमारी पहचानेगा और इलाज बताएगा!</p>
+
+        <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+            <span class="icon">📸</span>
+            <p><strong>फोटो अपलोड करें</strong></p>
+            <p style="color: #888; font-size: 14px;">JPG, PNG, WEBP</p>
+            <input type="file" id="fileInput" accept="image/*" style="display:none" onchange="analyzePlant(this)">
+        </div>
+
+        <div class="result-card" id="resultCard">
+            <h3>🔍 निदान परिणाम</h3>
+            <div id="resultContent">
+                <p><strong>🌱 फसल:</strong> <span id="cropName">गेहूँ</span></p>
+                <p><span class="disease-tag" id="diseaseTag">रोग: पीला रतुआ</span></p>
+                <div class="treatment" id="treatmentBox">
+                    <strong>💊 इलाज:</strong><br>
+                    <span id="treatmentText">Propiconazole 25% EC 500ml प्रति एकड़ छिड़काव करें</span>
+                </div>
+                <div class="confidence" id="confidenceText">🤖 AI Confidence: 94%</div>
+            </div>
+        </div>
+
+        <div style="margin-top: 20px;">
+            <h4>📚 आम बीमारियाँ</h4>
+            <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                <span style="background: #f0f0f0; padding: 8px 15px; border-radius: 20px;">🌾 पीला रतुआ</span>
+                <span style="background: #f0f0f0; padding: 8
