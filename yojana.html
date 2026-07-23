@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Sarkari Yojana - Singh Ji AI</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .yojana-container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-weight: 500; margin-bottom: 5px; }
+        .form-group input, .form-group select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; font-size: 16px; }
+        .check-btn { background: #07C160; color: white; border: none; padding: 15px; border-radius: 10px; font-size: 18px; width: 100%; cursor: pointer; }
+        .check-btn:hover { background: #05a04d; }
+        .scheme-card { background: white; border-radius: 12px; padding: 15px; margin-top: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border-left: 4px solid #07C160; }
+        .scheme-card .amount { color: #07C160; font-weight: bold; font-size: 20px; }
+        .scheme-card .eligibility { font-size: 14px; color: #888; }
+        .eligible-tag { background: #07C160; color: white; padding: 2px 10px; border-radius: 12px; font-size: 12px; }
+        .not-eligible-tag { background: #ff6b6b; color: white; padding: 2px 10px; border-radius: 12px; font-size: 12px; }
+        .total-benefit { background: #f0f7ff; padding: 15px; border-radius: 12px; margin-top: 20px; text-align: center; border: 2px solid #07C160; }
+        .total-benefit .number { font-size: 36px; font-weight: bold; color: #07C160; }
+    </style>
+</head>
+<body>
+    <div class="yojana-container">
+        <h2>🏛️ AI Sarkari Yojana</h2>
+        <p>अपनी जानकारी भरो — AI बताएगा कौन सी योजना तुम्हारे लिए है!</p>
+
+        <div class="form-group">
+            <label>👤 नाम</label>
+            <input type="text" id="name" placeholder="अपना नाम" value="राम कुमार">
+        </div>
+        <div class="form-group">
+            <label>📅 उम्र</label>
+            <input type="number" id="age" placeholder="उम्र" value="35">
+        </div>
+        <div class="form-group">
+            <label>💰 सालाना आय (₹)</label>
+            <input type="number" id="income" placeholder="सालाना आय" value="120000">
+        </div>
+        <div class="form-group">
+            <label>🧑‍🌾 व्यवसाय</label>
+            <select id="occupation">
+                <option value="farmer">किसान</option>
+                <option value="worker">मजदूर</option>
+                <option value="business">व्यवसायी</option>
+                <option value="service">नौकरी</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>🏠 राज्य</label>
+            <select id="state">
+                <option value="up">उत्तर प्रदेश</option>
+                <option value="delhi">दिल्ली</option>
+                <option value="punjab">पंजाब</option>
+                <option value="maharashtra">महाराष्ट्र</option>
+            </select>
+        </div>
+
+        <button class="check-btn" onclick="checkEligibility()">🔍 Eligibility Check करो</button>
+
+        <div id="results" style="margin-top: 20px;"></div>
+    </div>
+
+    <nav class="bottom-nav">
+        <a href="index.html">🏠</a>
+        <a href="moments.html">📷</a>
+        <a href="stories.html">📸</a>
+        <a href="profile.html">👤</a>
+        <a href="mini-apps.html">📱</a>
+    </nav>
+
+    <script>
+        function checkEligibility() {
+            const age = parseInt(document.getElementById('age').value);
+            const income = parseInt(document.getElementById('income').value);
+            const occupation = document.getElementById('occupation').value;
+            const name = document.getElementById('name').value;
+
+            const schemes = [
+                { name: 'PM-KISAN', amount: 6000, eligible: income < 200000 && occupation === 'farmer', desc: 'किसानों को सालाना ₹6,000' },
+                { name: 'Ayushman Bharat', amount: 500000, eligible: income < 500000, desc: '₹5,00,000 का स्वास्थ्य बीमा' },
+                { name: 'Kisan Credit Card', amount: 300000, eligible: occupation === 'farmer', desc: '₹3,00,000 तक का किसान क्रेडिट कार्ड' },
+                { name: 'PM Awas Yojana', amount: 267000, eligible: income < 300000, desc: '₹2,67,000 तक का घर बनाने का सब्सिडी' },
+                { name: 'Sukanya Samriddhi', amount: 150000, eligible: age < 10, desc: 'बेटी के लिए ₹1,50,000 तक की बचत योजना' },
+            ];
+
+            const eligible = schemes.filter(s => s.eligible);
+            const totalAmount = eligible.reduce((sum, s) => sum + s.amount, 0);
+
+            let html = `<div class="total-benefit">
+                <div style="font-size: 14px; color: #888;">${name}, आपके लिए कुल लाभ</div>
+                <div class="number">₹${totalAmount.toLocaleString()}</div>
+                <div>${eligible.length} योजनाओं में एलिजिबल</div>
+            </div>`;
+
+            schemes.forEach(s => {
+                html += `<div class="scheme-card">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <strong>${s.name}</strong>
+                        <span class="${s.eligible ? 'eligible-tag' : 'not-eligible-tag'}">${s.eligible ? '✅ Eligible' : '❌ Not Eligible'}</span>
+                    </div>
+                    <div class="amount">₹${s.amount.toLocaleString()}</div>
+                    <div class="eligibility">${s.desc}</div>
+                </div>`;
+            });
+
+            document.getElementById('results').innerHTML = html;
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
