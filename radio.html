@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Singh Ji Radio - Singh Ji AI</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .radio-container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .radio-player { background: linear-gradient(135deg, #1a1a2e, #16213e); border-radius: 20px; padding: 40px; text-align: center; color: white; }
+        .radio-disk { width: 150px; height: 150px; border-radius: 50%; background: radial-gradient(circle, #333, #000); margin: 0 auto; display: flex; align-items: center; justify-content: center; border: 4px solid #07C160; animation: spin 4s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .radio-disk .icon { font-size: 60px; }
+        .radio-now { margin-top: 20px; font-size: 20px; font-weight: bold; }
+        .radio-desc { font-size: 14px; color: #aaa; }
+        .radio-controls { display: flex; justify-content: center; gap: 20px; margin-top: 25px; }
+        .radio-controls button { background: #07C160; color: white; border: none; border-radius: 50%; width: 60px; height: 60px; font-size: 30px; cursor: pointer; transition: all 0.2s; }
+        .radio-controls button:hover { transform: scale(1.05); background: #05a04d; }
+        .radio-controls button.stop { background: #ff6b6b; }
+        .radio-controls button.stop:hover { background: #e55a5a; }
+        .station-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 20px; }
+        .station-btn { background: white; border: 1px solid #ddd; border-radius: 10px; padding: 12px; text-align: center; cursor: pointer; transition: all 0.2s; }
+        .station-btn:hover, .station-btn.active { border-color: #07C160; background: #f0faf5; }
+        .station-btn .lang { font-size: 12px; color: #888; }
+        .ai-jockey { background: #f0f7ff; padding: 15px; border-radius: 12px; margin-top: 20px; border-left: 4px solid #07C160; }
+    </style>
+</head>
+<body>
+    <div class="radio-container">
+        <h2>📻 Singh Ji Radio</h2>
+        <p>24/7 AI Radio — देश की आवाज़!</p>
+
+        <div class="radio-player">
+            <div class="radio-disk">
+                <span class="icon">📻</span>
+            </div>
+            <div class="radio-now" id="nowPlaying">🎵 AI Jockey: हिंदी हिट्स</div>
+            <div class="radio-desc" id="stationDesc">🦁 Singh Ji AI Radio — 24/7 Live</div>
+            <div class="radio-controls">
+                <button id="playBtn" onclick="playRadio()">▶️</button>
+                <button class="stop" onclick="stopRadio()">⏹️</button>
+            </div>
+        </div>
+
+        <div class="station-grid">
+            <div class="station-btn active" onclick="changeStation('hindi', this)">
+                🇮🇳 Hindi
+                <div class="lang">🎵 Bollywood</div>
+            </div>
+            <div class="station-btn" onclick="changeStation('punjabi', this)">
+                🎵 Punjabi
+                <div class="lang">🕺 Bhangra</div>
+            </div>
+            <div class="station-btn" onclick="changeStation('devotional', this)">
+                🕉️ Devotional
+                <div class="lang">🙏 Bhajan</div>
+            </div>
+            <div class="station-btn" onclick="changeStation('classic', this)">
+                🎸 Classic
+                <div class="lang">🎶 Old Hits</div>
+            </div>
+        </div>
+
+        <div class="ai-jockey">
+            <strong>🎙️ AI Jockey Says:</strong>
+            <p style="font-size: 14px; margin-top: 5px; color: #555;" id="aiMessage">
+                "नमस्ते दोस्तों! Singh Ji Radio पर आपका स्वागत है। आज का पहला गाना — 'Ae Watan...' "
+            </p>
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <a href="index.html">🏠</a>
+        <a href="moments.html">📷</a>
+        <a href="stories.html">📸</a>
+        <a href="profile.html">👤</a>
+        <a href="mini-apps.html">📱</a>
+    </nav>
+
+    <script>
+        const stations = {
+            hindi: { name: '🇮🇳 Hindi', desc: 'Bollywood Hits', jockey: '"नमस्ते! आज के हिट गाने सुनो"' },
+            punjabi: { name: '🎵 Punjabi', desc: 'Bhangra Beats', jockey: '"Sat Sri Akal! भांगड़ा करो!"' },
+            devotional: { name: '🕉️ Devotional', desc: 'Bhajan & Mantra', jockey: '"ॐ शांति! भजन सुनो"' },
+            classic: { name: '🎸 Classic', desc: 'Old Gold', jockey: '"पुरानी यादें ताज़ा करो!"' }
+        };
+
+        let isPlaying = false;
+
+        function changeStation(id, btn) {
+            document.querySelectorAll('.station-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            const station = stations[id] || stations.hindi;
+            document.getElementById('nowPlaying').textContent = `🎵 ${station.name}`;
+            document.getElementById('stationDesc').textContent = station.desc;
+            document.getElementById('aiMessage').textContent = `🎙️ ${station.jockey}`;
+            if (isPlaying) playRadio();
+        }
+
+        function playRadio() {
+            isPlaying = true;
+            document.getElementById('playBtn').textContent = '⏸️';
+            document.getElementById('playBtn').onclick = pauseRadio;
+            document.getElementById('aiMessage').textContent = '▶️ रेडियो चालू हो गया! 🎵';
+        }
+
+        function pauseRadio() {
+            isPlaying = false;
+            document.getElementById('playBtn').textContent = '▶️';
+            document.getElementById('playBtn').onclick = playRadio;
+            document.getElementById('aiMessage').textContent = '⏸️ रेडियो रोका गया';
+        }
+
+        function stopRadio() {
+            isPlaying = false;
+            document.getElementById('playBtn').textContent = '▶️';
+            document.getElementById('playBtn').onclick = playRadio;
+            document.getElementById('aiMessage').textContent = '⏹️ रेडियो बंद किया गया';
+        }
+    </script>
+</body>
+</html>
