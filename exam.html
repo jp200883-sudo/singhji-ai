@@ -76,4 +76,88 @@
     <nav class="bottom-nav">
         <a href="index.html">🏠</a>
         <a href="moments.html">📷</a>
-        <a href="stories.html">
+        <a href="stories.html">📸</a>
+        <a href="profile.html">👤</a>
+        <a href="mini-apps.html">📱</a>
+    </nav>
+
+    <script>
+        let currentQuiz = [];
+        let currentIndex = 0;
+        let score = 0;
+        let totalQuestions = 0;
+
+        const quizzes = {
+            maths: {
+                questions: [
+                    { q: '2 + 2 = ?', options: ['3', '4', '5', '6'], correct: 1 },
+                    { q: '5 × 5 = ?', options: ['20', '25', '30', '35'], correct: 1 },
+                    { q: '100 ÷ 4 = ?', options: ['20', '25', '30', '35'], correct: 1 }
+                ]
+            },
+            science: {
+                questions: [
+                    { q: 'पानी का रासायनिक सूत्र क्या है?', options: ['H2O', 'CO2', 'NaCl', 'HCl'], correct: 0 },
+                    { q: 'सूर्य किस गैस से बना है?', options: ['Oxygen', 'Hydrogen', 'Nitrogen', 'Helium'], correct: 1 }
+                ]
+            },
+            english: {
+                questions: [
+                    { q: 'What is the synonym of "Happy"?', options: ['Sad', 'Joyful', 'Angry', 'Tired'], correct: 1 },
+                    { q: 'What is the plural of "Child"?', options: ['Childs', 'Children', 'Childrens', 'Childes'], correct: 1 }
+                ]
+            },
+            gk: {
+                questions: [
+                    { q: 'भारत की राजधानी क्या है?', options: ['Mumbai', 'Delhi', 'Kolkata', 'Chennai'], correct: 1 },
+                    { q: 'भारत का राष्ट्रीय पशु क्या है?', options: ['Lion', 'Tiger', 'Elephant', 'Peacock'], correct: 1 },
+                    { q: 'गंगा नदी कहाँ से निकलती है?', options: ['Himalaya', 'Vindhya', 'Satpura', 'Western Ghats'], correct: 0 }
+                ]
+            }
+        };
+
+        function startQuiz(subject) {
+            currentQuiz = quizzes[subject]?.questions || [];
+            if (currentQuiz.length === 0) return alert('❌ No questions available!');
+            currentIndex = 0;
+            score = 0;
+            totalQuestions = currentQuiz.length;
+            document.getElementById('quizBox').style.display = 'block';
+            document.getElementById('tutorMessage').textContent = `📚 ${subject.toUpperCase()} की पढ़ाई शुरू करो! ${totalQuestions} प्रश्न हैं।`;
+            renderQuestion();
+            document.getElementById('quizBox').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function renderQuestion() {
+            if (currentIndex >= totalQuestions) {
+                document.getElementById('questionText').textContent = '🎉 Quiz Complete!';
+                document.getElementById('optionsContainer').innerHTML = '';
+                document.getElementById('scoreDisplay').textContent = `Final Score: ${score}/${totalQuestions}`;
+                document.getElementById('tutorMessage').textContent = `🎉 बधाई! ${score}/${totalQuestions} सही। ${score/totalQuestions*100 > 70 ? 'शानदार!' : 'फिर से कोशिश करो!'}`;
+                return;
+            }
+            const q = currentQuiz[currentIndex];
+            document.getElementById('questionText').textContent = `प्रश्न ${currentIndex+1}: ${q.q}`;
+            document.getElementById('optionsContainer').innerHTML = q.options.map((opt, i) =>
+                `<button class="option" onclick="checkAnswer(this, ${i})">${String.fromCharCode(65+i)}) ${opt}</button>`
+            ).join('');
+            document.getElementById('scoreDisplay').textContent = `Score: ${score}/${totalQuestions}`;
+        }
+
+        function checkAnswer(btn, selected) {
+            const q = currentQuiz[currentIndex];
+            const correct = q.correct;
+            const allOptions = document.querySelectorAll('.option');
+            allOptions.forEach((b, i) => {
+                if (i === correct) b.classList.add('correct');
+                if (i === selected && selected !== correct) b.classList.add('wrong');
+                b.onclick = null;
+            });
+            if (selected === correct) score++;
+            document.getElementById('scoreDisplay').textContent = `Score: ${score}/${totalQuestions}`;
+            currentIndex++;
+            setTimeout(() => renderQuestion(), 1000);
+        }
+    </script>
+</body>
+</html>
