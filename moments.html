@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Moments - Singh Ji AI</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .moments-container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .moment-card { background: white; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); overflow: hidden; }
+        .moment-header { display: flex; align-items: center; padding: 15px; }
+        .moment-avatar { width: 40px; height: 40px; border-radius: 50%; background: #07C160; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+        .moment-user { margin-left: 12px; flex: 1; }
+        .moment-user h4 { margin: 0; font-size: 16px; }
+        .moment-user span { font-size: 12px; color: #888; }
+        .moment-image { width: 100%; max-height: 400px; object-fit: cover; }
+        .moment-text { padding: 15px; }
+        .moment-actions { display: flex; padding: 10px 15px; border-top: 1px solid #eee; }
+        .moment-actions button { background: none; border: none; flex: 1; padding: 8px; cursor: pointer; font-size: 14px; }
+        .moment-actions button:hover { background: #f0f0f0; border-radius: 6px; }
+        .create-moment { position: fixed; bottom: 80px; right: 20px; background: #07C160; color: white; border: none; border-radius: 50%; width: 60px; height: 60px; font-size: 30px; box-shadow: 0 4px 12px rgba(7,193,96,0.4); cursor: pointer; }
+        .ai-caption { background: #f0f7ff; padding: 10px; border-radius: 8px; margin: 10px 15px; font-size: 14px; color: #0055cc; }
+    </style>
+</head>
+<body>
+    <div class="moments-container">
+        <h2>📷 AI Moments</h2>
+        
+        <!-- Post 1 -->
+        <div class="moment-card">
+            <div class="moment-header">
+                <div class="moment-avatar">🦁</div>
+                <div class="moment-user">
+                    <h4>Singh Ji</h4>
+                    <span>2 hours ago • Delhi</span>
+                </div>
+            </div>
+            <img src="https://picsum.photos/seed/1/600/400" alt="Moment" class="moment-image">
+            <div class="moment-text">
+                <p>🌾 आज खेतों में नई फसल लगाई! #Kisaan #Bharat</p>
+                <div class="ai-caption">🤖 AI: "हरियाली से भरा दिन! ये फसल देश को खिलाएगी"</div>
+            </div>
+            <div class="moment-actions">
+                <button onclick="likeMoment(this)">❤️ 47</button>
+                <button onclick="commentMoment(this)">💬 12</button>
+                <button onclick="shareMoment(this)">↗️ Share</button>
+            </div>
+        </div>
+
+        <!-- Post 2 -->
+        <div class="moment-card">
+            <div class="moment-header">
+                <div class="moment-avatar">💻</div>
+                <div class="moment-user">
+                    <h4>AI Assistant</h4>
+                    <span>4 hours ago • Online</span>
+                </div>
+            </div>
+            <img src="https://picsum.photos/seed/2/600/400" alt="Moment" class="moment-image">
+            <div class="moment-text">
+                <p>🤖 Singh Ji AI v8.0 Launch! 300 Agents, 70 Modules</p>
+                <div class="ai-caption">🤖 AI: "सुपर ऐप की शुरुआत! WeChat को टक्कर देने आ रहे हैं"</div>
+            </div>
+            <div class="moment-actions">
+                <button onclick="likeMoment(this)">❤️ 128</button>
+                <button onclick="commentMoment(this)">💬 34</button>
+                <button onclick="shareMoment(this)">↗️ Share</button>
+            </div>
+        </div>
+    </div>
+
+    <button class="create-moment" onclick="openCreateMoment()">✏️</button>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="index.html">🏠</a>
+        <a href="moments.html" class="active">📷</a>
+        <a href="stories.html">📸</a>
+        <a href="profile.html">👤</a>
+        <a href="mini-apps.html">📱</a>
+    </nav>
+
+    <script>
+        function likeMoment(btn) {
+            const text = btn.textContent;
+            const count = parseInt(text.match(/\d+/)[0]);
+            btn.textContent = `❤️ ${count + 1}`;
+        }
+
+        function commentMoment(btn) {
+            const comment = prompt("💬 अपनी टिप्पणी लिखें:");
+            if (comment) {
+                const count = parseInt(btn.textContent.match(/\d+/)[0]);
+                btn.textContent = `💬 ${count + 1}`;
+                alert("✅ टिप्पणी जोड़ दी गई!");
+            }
+        }
+
+        function shareMoment(btn) {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Singh Ji AI Moment',
+                    text: '🦁 देखो ये मोमेंट!',
+                    url: window.location.href
+                });
+            } else {
+                navigator.clipboard.writeText(window.location.href);
+                alert("✅ लिंक कॉपी हो गया!");
+            }
+        }
+
+        function openCreateMoment() {
+            const text = prompt("📝 क्या सोच रहे हो?");
+            if (text) {
+                alert("✅ मोमेंट पोस्ट हो गया! AI कैप्शन बना रहा है...");
+            }
+        }
+    </script>
+</body>
+</html>
