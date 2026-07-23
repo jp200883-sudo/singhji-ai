@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Singh Ji Bazaar - Singh Ji AI</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .bazaar-container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .bazaar-header { background: linear-gradient(135deg, #ff6b6b, #ee5a24); color: white; padding: 20px; border-radius: 16px; text-align: center; }
+        .bazaar-header .btn { background: white; color: #ee5a24; border: none; padding: 10px 25px; border-radius: 25px; font-weight: bold; margin-top: 10px; cursor: pointer; }
+        .product-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-top: 20px; }
+        .product-card { background: white; border-radius: 12px; padding: 15px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1); cursor: pointer; transition: transform 0.2s; }
+        .product-card:hover { transform: translateY(-3px); box-shadow: 0 4px 16px rgba(0,0,0,0.15); }
+        .product-card .img { font-size: 60px; display: block; }
+        .product-card .name { font-weight: 500; margin-top: 5px; }
+        .product-card .price { color: #07C160; font-weight: bold; }
+        .product-card .seller { font-size: 12px; color: #888; }
+        .cart-summary { background: white; border-radius: 12px; padding: 15px; margin-top: 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1); position: sticky; bottom: 80px; }
+        .cart-summary .total { font-size: 20px; font-weight: bold; color: #07C160; }
+        .cart-summary .btn { background: #07C160; color: white; border: none; padding: 10px 25px; border-radius: 25px; cursor: pointer; }
+        .ai-recommend { background: #f0f7ff; padding: 15px; border-radius: 12px; margin-top: 15px; border-left: 4px solid #07C160; }
+    </style>
+</head>
+<body>
+    <div class="bazaar-container">
+        <div class="bazaar-header">
+            <h2>🛒 Singh Ji Bazaar</h2>
+            <p>🤖 AI Marketplace — स्थानीय दुकानदार</p>
+            <button class="btn" onclick="location.href='payment.html'">💰 Pay via UPI</button>
+        </div>
+
+        <div class="ai-recommend">
+            <strong>🤖 AI Recommendation:</strong>
+            <p style="font-size: 14px; color: #555; margin-top: 5px;">🌾 आज के लिए बेस्ट डील: Organic Basmati Rice — ₹180/kg</p>
+        </div>
+
+        <div class="product-grid">
+            <div class="product-card" onclick="addToCart(this, 'Organic Basmati Rice', 180)">
+                <span class="img">🍚</span>
+                <div class="name">Organic Basmati Rice</div>
+                <div class="price">₹180/kg</div>
+                <div class="seller">🛒 Local Farmer</div>
+            </div>
+            <div class="product-card" onclick="addToCart(this, 'Fresh Vegetables', 120)">
+                <span class="img">🥬</span>
+                <div class="name">Fresh Vegetables</div>
+                <div class="price">₹120/kg</div>
+                <div class="seller">🛒 Daily Market</div>
+            </div>
+            <div class="product-card" onclick="addToCart(this, 'Organic Honey', 350)">
+                <span class="img">🍯</span>
+                <div class="name">Organic Honey</div>
+                <div class="price">₹350/jar</div>
+                <div class="seller">🛒 Local Bee Farm</div>
+            </div>
+            <div class="product-card" onclick="addToCart(this, 'Handicraft Items', 250)">
+                <span class="img">🎨</span>
+                <div class="name">Handicraft Items</div>
+                <div class="price">₹250/piece</div>
+                <div class="seller">🛒 Rural Artisan</div>
+            </div>
+        </div>
+
+        <div class="cart-summary" id="cartSummary">
+            <div>
+                <div style="font-size: 14px; color: #888;">Cart Total</div>
+                <div class="total" id="cartTotal">₹0</div>
+            </div>
+            <button class="btn" onclick="checkout()">🛒 Checkout</button>
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <a href="index.html">🏠</a>
+        <a href="moments.html">📷</a>
+        <a href="stories.html">📸</a>
+        <a href="profile.html">👤</a>
+        <a href="mini-apps.html">📱</a>
+    </nav>
+
+    <script>
+        let cartTotal = 0;
+        let cartItems = [];
+
+        function addToCart(btn, name, price) {
+            cartItems.push({ name, price });
+            cartTotal += price;
+            document.getElementById('cartTotal').textContent = `₹${cartTotal}`;
+            btn.style.border = '2px solid #07C160';
+            setTimeout(() => btn.style.border = 'none', 500);
+            alert(`✅ ${name} — कार्ट में जोड़ा गया!`);
+        }
+
+        function checkout() {
+            if (cartItems.length === 0) {
+                alert('🛒 कार्ट खाली है! कुछ खरीदें!');
+                return;
+            }
+            const items = cartItems.map(i => i.name).join(', ');
+            if (confirm(`🛒 Checkout: ${items}\n💰 Total: ₹${cartTotal}\n\n✅ UPI Payment: jp200883@sbi`)) {
+                alert('✅ ऑर्डर कन्फर्म! UPI से ₹${cartTotal} भेजें: jp200883@sbi');
+                cartItems = [];
+                cartTotal = 0;
+                document.getElementById('cartTotal').textContent = '₹0';
+            }
+        }
+    </script>
+</body>
+</html>
