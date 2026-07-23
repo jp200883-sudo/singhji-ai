@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Apps - Singh Ji AI</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .mini-container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .mini-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 20px; }
+        .mini-item { background: white; border-radius: 12px; padding: 20px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1); cursor: pointer; transition: transform 0.2s; }
+        .mini-item:hover { transform: translateY(-5px); box-shadow: 0 4px 16px rgba(0,0,0,0.15); }
+        .mini-item .icon { font-size: 40px; display: block; margin-bottom: 10px; }
+        .mini-item .name { font-size: 14px; font-weight: 500; }
+        .mini-item .desc { font-size: 11px; color: #888; }
+        .mini-search { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 20px; outline: none; font-size: 16px; }
+        .ai-create { background: linear-gradient(135deg, #07C160, #05a04d); color: white; border-radius: 12px; padding: 20px; text-align: center; margin-top: 20px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="mini-container">
+        <h2>📱 AI Mini-Apps</h2>
+        <input class="mini-search" placeholder="🔍 मिनी-ऐप खोजें..." onkeyup="searchMini(this.value)">
+
+        <div class="mini-grid" id="miniGrid">
+            <div class="mini-item" onclick="openMiniApp('kisaan')">
+                <span class="icon">🌾</span>
+                <div class="name">Kisaan Doctor</div>
+                <div class="desc">फसल रोग पहचान</div>
+            </div>
+            <div class="mini-item" onclick="openMiniApp('mandi')">
+                <span class="icon">📈</span>
+                <div class="name">Mandi Predictor</div>
+                <div class="desc">भाव की भविष्यवाणी</div>
+            </div>
+            <div class="mini-item" onclick="openMiniApp('yojana')">
+                <span class="icon">🏛️</span>
+                <div class="name">Sarkari Yojana</div>
+                <div class="desc">सरकारी योजनाएं</div>
+            </div>
+            <div class="mini-item" onclick="openMiniApp('payment')">
+                <span class="icon">💰</span>
+                <div class="name">Payment</div>
+                <div class="desc">UPI & Razorpay</div>
+            </div>
+            <div class="mini-item" onclick="openMiniApp('exam')">
+                <span class="icon">📚</span>
+                <div class="name">Exam Prep</div>
+                <div class="desc">Mock Tests</div>
+            </div>
+            <div class="mini-item" onclick="openMiniApp('health')">
+                <span class="icon">🏥</span>
+                <div class="name">Health</div>
+                <div class="desc">AI Doctor</div>
+            </div>
+        </div>
+
+        <div class="ai-create" onclick="createMiniApp()">
+            🤖 AI से नया मिनी-ऐप बनाएं
+            <p style="font-size: 12px; opacity: 0.8; margin-top: 5px;">"किराने की दुकान के लिए ऐप बनाओ"</p>
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <a href="index.html">🏠</a>
+        <a href="moments.html">📷</a>
+        <a href="stories.html">📸</a>
+        <a href="profile.html">👤</a>
+        <a href="mini-apps.html" class="active">📱</a>
+    </nav>
+
+    <script>
+        function openMiniApp(app) {
+            alert(`📱 ${app} मिनी-ऐप खुल रहा है...\n\n🦁 Singh Ji AI WeChat Killer!`);
+            // Real implementation would load app dynamically
+        }
+
+        function searchMini(query) {
+            const items = document.querySelectorAll('.mini-item');
+            items.forEach(item => {
+                const name = item.querySelector('.name').textContent.toLowerCase();
+                item.style.display = name.includes(query.toLowerCase()) ? 'block' : 'none';
+            });
+        }
+
+        function createMiniApp() {
+            const prompt = prompt("🤖 बताओ कैसा मिनी-ऐप चाहिए?\n\nExample: 'किराने की दुकान के लिए ऑर्डर बुक करने वाला ऐप'");
+            if (prompt) {
+                alert(`✅ AI ने "${prompt}" के लिए मिनी-ऐप बना दिया!\n\n📱 ऐप आपके डैशबोर्ड में जुड़ गया है।`);
+            }
+        }
+    </script>
+</body>
+</html>
