@@ -45,4 +45,52 @@
             <h4>📚 आम बीमारियाँ</h4>
             <div style="display: flex; flex-wrap: wrap; gap: 10px;">
                 <span style="background: #f0f0f0; padding: 8px 15px; border-radius: 20px;">🌾 पीला रतुआ</span>
-                <span style="background: #f0f0f0; padding: 8
+                <span style="background: #f0f0f0; padding: 8px 15px; border-radius: 20px;">🌿 खरपतवार नियंत्रण</span>
+                <span style="background: #f0f0f0; padding: 8px 15px; border-radius: 20px;">🐛 तना छेदक</span>
+                <span style="background: #f0f0f0; padding: 8px 15px; border-radius: 20px;">🍂 पत्ती झुलसा</span>
+            </div>
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <a href="index.html">🏠</a>
+        <a href="moments.html">📷</a>
+        <a href="stories.html">📸</a>
+        <a href="profile.html">👤</a>
+        <a href="mini-apps.html">📱</a>
+    </nav>
+
+    <script>
+        function analyzePlant(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('resultCard').style.display = 'block';
+                    document.getElementById('resultCard').scrollIntoView({ behavior: 'smooth' });
+
+                    // AI Simulation
+                    const diseases = [
+                        { name: 'पीला रतुआ', treatment: 'Propiconazole 25% EC 500ml प्रति एकड़', confidence: 94 },
+                        { name: 'खरपतवार', treatment: 'मैन्युअल निराई या हर्बीसाइड', confidence: 87 },
+                        { name: 'तना छेदक', treatment: 'कार्बोफ्यूरान 3% GR 10kg प्रति एकड़', confidence: 91 },
+                        { name: 'पत्ती झुलसा', treatment: 'कॉपर ऑक्सीक्लोराइड 50% WP', confidence: 89 }
+                    ];
+                    const result = diseases[Math.floor(Math.random() * diseases.length)];
+
+                    document.getElementById('cropName').textContent = ['गेहूँ', 'धान', 'सोयाबीन', 'मक्का'][Math.floor(Math.random() * 4)];
+                    document.getElementById('diseaseTag').textContent = `रोग: ${result.name}`;
+                    document.getElementById('treatmentText').textContent = result.treatment;
+                    document.getElementById('confidenceText').textContent = `🤖 AI Confidence: ${result.confidence}%`;
+
+                    // Show AI analyzing animation
+                    document.getElementById('treatmentText').textContent = '⏳ AI विश्लेषण कर रहा है...';
+                    setTimeout(() => {
+                        document.getElementById('treatmentText').textContent = result.treatment;
+                    }, 1000);
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+</body>
+</html>
